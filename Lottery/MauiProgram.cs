@@ -1,4 +1,6 @@
-﻿using Lottery.ViewModel;
+﻿using Lottery.Domain;
+using Lottery.Service;
+using Lottery.ViewModel;
 using Microsoft.Extensions.Logging;
 
 namespace Lottery;
@@ -15,6 +17,8 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+		builder.Services.AddSingleton<IRestAPI, RestAPI>();
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();
