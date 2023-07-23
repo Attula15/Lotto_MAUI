@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SQLite;
 
-namespace Lottery.Domain.Database.Entity
+namespace Lottery.Domain.Database.Entity;
+public class MyNumbers
 {
-    internal class MyNumbers
-    {
-    }
+    [PrimaryKey, AutoIncrement]
+    public int id { get; set; }
+    public DateTime date { get; set; }
+    public string numbers { get; set; }
 }
+
