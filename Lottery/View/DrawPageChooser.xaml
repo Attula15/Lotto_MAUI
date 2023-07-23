@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.DrawPageChooser"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:DrawPageChooserViewModel"
+             Title="DrawPageChooser"
+             BackgroundImageSource="layered_waves_haikei.png">
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Label Text="For which lottery do you want to draw numbers"/>
+        <VerticalStackLayout HorizontalOptions="Center" 
+                             RadioButtonGroup.GroupName="Numbers" 
+                             RadioButtonGroup.SelectedValue="{Binding Value}">
+            <RadioButton Content="5" Value="5"/>
+            <RadioButton Content="6" Value="6"/>
+        </VerticalStackLayout>
+        <Button Text="Choose" 
+                Command="{Binding ConfirmSelectionCommand}"/>
+        <Label Text="{Binding Message}" 
+               IsVisible="{Binding MessageVisible}" 
+               Margin="10"/>
+    </VerticalStackLayout>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>

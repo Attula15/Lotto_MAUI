@@ -30,7 +30,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void welcomeMessage()
+    public async Task welcomeMessage()
     {
         Name = TempName;
         WinningNumbersEntity entity = await restAPI.GetWinningnumbers("5");
@@ -55,7 +55,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void OpenBrowser()
+    public async Task OpenBrowser()
     {
         try
         {

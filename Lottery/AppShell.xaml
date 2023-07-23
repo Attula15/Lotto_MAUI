@@ -15,7 +15,7 @@
         </Tab>
         <Tab Title="Draw"
             Icon="ticket.png">
-            <ShellContent ContentTemplate="{DataTemplate views:DrawPage}" Route="DrawPage"/>
+            <ShellContent ContentTemplate="{DataTemplate views:DrawPageChooser}" Route="DrawPageChooser"/>
         </Tab>
     </TabBar>
 

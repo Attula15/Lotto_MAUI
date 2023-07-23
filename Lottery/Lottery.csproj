@@ -64,7 +64,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\DrawPageChooser.xaml.cs">
+	    <DependentUpon>DrawPageChooser.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="View\DrawPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\DrawPageChooser.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
