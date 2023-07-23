@@ -44,10 +44,11 @@ public class RestAPI : IRestAPI
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64String);
 
         PrizesHolderEntity returnable = new PrizesHolderEntity();
-        returnable.prizes = new List<PrizesEntity>();
-        
-        returnable.prizes.Add(await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize5"));
-        returnable.prizes.Add(await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize6"));
+        returnable.prizes = new List<PrizesEntity>
+        {
+            await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize5"),
+            await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize6")
+        };
 
         return returnable;
     }

@@ -1,6 +1,6 @@
 ﻿using Lottery.ViewModel;
 
-namespace Lottery;
+namespace Lottery.View;
 
 public partial class MainPage : ContentPage
 {

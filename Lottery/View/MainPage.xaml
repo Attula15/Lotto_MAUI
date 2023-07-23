@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.MainPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:MainPageViewModel"
+             Title="Main menu"
+             BackgroundImageSource="layered_waves_haikei.png"
+             NavigatedTo="ContentPage_NavigatedTo">
+
+    <VerticalStackLayout>
+        <VerticalStackLayout HorizontalOptions="Center"
+                             Margin="10">
+            <Label Text="Get to the webpage" FontSize="Large"/>
+            <Button 
+                x:Name="myWButton"
+                ImageSource="globe.png" 
+                    MinimumWidthRequest="100"
+                    MaximumWidthRequest="150" 
+                    MaximumHeightRequest="50"
+                    Margin="10"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenBrowserCommand}"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+            <Label Text="Usefull informations" HorizontalTextAlignment="Center" FontSize="Large"/>
+            <Label x:Name="HugeText" Text="If the circle is blue, then it means, that your number has been choosen" HorizontalTextAlignment="Center" MaximumWidthRequest="200"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+            <Label Text="Current prizes" 
+                   FontSize="Large" 
+                   HorizontalTextAlignment="Center"/>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label Text="Lottery 5: " HorizontalTextAlignment="Start"/>
+                <Label Text="{Binding Prize5}" HorizontalTextAlignment="End"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label Text="Lottery 6: " HorizontalTextAlignment="Start"/>
+                <Label Text="{Binding Prize6}" HorizontalTextAlignment="End"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="myWButton" Property="MinimumWidthRequest" Value="150"/>
+                    <Setter TargetName="myWButton" Property="Padding" Value="10, 0, 0, 0"/>
+                    <Setter TargetName="HugeText" Property="MaximumWidthRequest" Value="10000"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+</ContentPage>

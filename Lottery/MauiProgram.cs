@@ -1,5 +1,6 @@
 ﻿using Lottery.Domain;
 using Lottery.Service;
+using Lottery.View;
 using Lottery.ViewModel;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,8 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();
+
+		builder.Services.AddSingleton<DrawPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

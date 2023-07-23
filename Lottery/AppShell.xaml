@@ -4,11 +4,19 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Lottery"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:views="clr-namespace:Lottery.View"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.TabBarBackgroundColor="#1E7836">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <TabBar >
+        <Tab Title="Main"
+            Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate views:MainPage}" Route="MainPage"/>
+        </Tab>
+        <Tab Title="Draw"
+            Icon="ticket.png">
+            <ShellContent ContentTemplate="{DataTemplate views:DrawPage}" Route="DrawPage"/>
+        </Tab>
+    </TabBar>
 
 </Shell>
