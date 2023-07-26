@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
+using System.Diagnostics;
 
 namespace Lottery.ViewModel;
 
@@ -39,19 +40,35 @@ public partial class MainPageViewModel : ObservableObject
 
     public async void getPrizes()
     {
-        PrizesHolderEntity result = await restAPI.GetPrizes();
-        List<PrizesEntity> prizes = result.prizes;
-        for(int i = 0; i < prizes.Count; i++)
+        PrizesHolderEntity result = null;
+        try
         {
-            if (prizes[i].whichOne.Equals("5"))
+            result = await restAPI.GetPrizes();
+        }
+        catch (Exception ex){
+            Debug.WriteLine(ex);
+        }
+        if(result != null)
+        {
+            List<PrizesEntity> prizes = result.prizes;
+            for (int i = 0; i < prizes.Count; i++)
             {
-                Prize5 = prizes[i].prize.ToString() + " million HUF";
-            }
-            if (prizes[i].whichOne.Equals("6"))
-            {
-                Prize6 = prizes[i].prize.ToString() + " million HUF";
+                if (prizes[i].whichOne.Equals("5"))
+                {
+                    Prize5 = prizes[i].prize.ToString() + " million HUF";
+                }
+                if (prizes[i].whichOne.Equals("6"))
+                {
+                    Prize6 = prizes[i].prize.ToString() + " million HUF";
+                }
             }
         }
+        else
+        {
+            Prize5 = "Could not connect to the internet";
+            Prize6 = "Could not connect to the internet";
+        }
+        
     }
 
     [RelayCommand]

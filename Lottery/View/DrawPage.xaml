@@ -4,6 +4,7 @@
              x:Class="Lottery.View.DrawPage"
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:DrawPageViewModel"
+             xmlns:helper="clr-namespace:Lottery.HelperView"
              Title="DrawPage">
     <VerticalStackLayout>
         <Label 
@@ -11,5 +12,6 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Label Text="{Binding Choosen}"/>
+        <helper:MyNumber NumberTitle="{Binding Choosen}"></helper:MyNumber>
     </VerticalStackLayout>
 </ContentPage>
