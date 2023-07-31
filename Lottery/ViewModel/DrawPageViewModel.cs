@@ -29,11 +29,22 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public void drawNumbers()
     {
+        if(!IsButtonEnabled)
+        {
+            return;
+        }
+
+        IsButtonEnabled = false;
+
         int howMany = 0;
         Numbers = new ObservableCollection<MyDrawableNumbers>();
         try
         {
             howMany = int.Parse(HowMany);
+            if(howMany > 15)
+            {
+                howMany = 15;
+            }
         }
         catch(Exception ex)
         {
@@ -49,29 +60,27 @@ public partial class DrawPageViewModel : ObservableObject
             //A row of numbers
             for(int e = 0; e < Choosen; e++)
             {
-                int number;
-                if(Choosen == 5)
-                {
-                    do
-                    {
-                        number = rand.Next(91);
-                    } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
-                }
-                else if(Choosen == 6)
-                {
-                    do
-                    {
-                        number = rand.Next(46);
-                    } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
-                }
-                else
-                {
-                    number = -1;
-                }
-                rowOfNumbers.Append(new MyDrawableNumber(number, false));
+                rowOfNumbers = drawNumber(Choosen);
             }
             Numbers.Add(rowOfNumbers);
         }
+
+        IsButtonEnabled = true;
+    }
+
+    private MyDrawableNumbers drawNumber(int choosen)
+    {
+        MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
+        int number;
+        for(int i = 0; i < choosen; i++)
+        {
+            do
+            {
+                number = rand.Next(choosen == 5 ? 91 : 46);
+            } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
+            rowOfNumbers.Append(new MyDrawableNumber(number, false));
+        }
+        return rowOfNumbers;
     }
 
     public void checkEntry(string newText)
@@ -93,7 +102,7 @@ public partial class DrawPageViewModel : ObservableObject
         if (!ok)
         {
             IsButtonEnabled = false;
-            Communication = "Number that you gave is not a number!";
+            Communication = "Number that you gave is not a valid number!";
         }
     }
 }

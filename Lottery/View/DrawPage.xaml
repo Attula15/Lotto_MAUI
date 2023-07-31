@@ -8,7 +8,7 @@
              xmlns:model="clr-namespace:Lottery.Model"
              Title="DrawPage"
              BackgroundImageSource="layered_waves_haikei.png">
-    <VerticalStackLayout>
+    <VerticalStackLayout Spacing="20">
         <Label 
             Text="{Binding Communication}"
             VerticalOptions="Center" 
@@ -20,18 +20,20 @@
                HorizontalOptions="Center"
                MaximumWidthRequest="300"
                MinimumWidthRequest="300"
-               TextChanged="Entry_TextChanged"/>
+               TextChanged="Entry_TextChanged"
+               ReturnCommand="{Binding drawNumbersCommand}"/>
         <CollectionView ItemsSource="{Binding Numbers}" 
                         ItemsLayout="VerticalList" 
                         MaximumHeightRequest="400"
                         HorizontalOptions="Center"
-                        MaximumWidthRequest="600">
+                        MaximumWidthRequest="300"
+                        x:Name="MyMainCollection">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumbers">
-                    <CollectionView ItemsSource="{Binding DrawnNumbers}" ItemsLayout="HorizontalList">
+                    <CollectionView ItemsSource="{Binding DrawnNumbers}" ItemsLayout="HorizontalList" HorizontalOptions="Center" Margin="5, 0, 5, 0">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:MyDrawableNumber">
-                                <helper:MyNumber NumberTitle="{Binding Number}"></helper:MyNumber>
+                                <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -40,7 +42,23 @@
         </CollectionView>
         <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
-                MaximumWidthRequest="300"
-                IsEnabled="{Binding IsButtonEnabled}"/>
+                WidthRequest="300"
+                IsEnabled="{Binding IsButtonEnabled}"
+                VerticalOptions="End"/>
     </VerticalStackLayout>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="MyMainCollection" Property="MaximumWidthRequest" Value="600"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
 </ContentPage>
