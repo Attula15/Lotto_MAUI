@@ -5,13 +5,42 @@
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:DrawPageViewModel"
              xmlns:helper="clr-namespace:Lottery.HelperView"
-             Title="DrawPage">
+             xmlns:model="clr-namespace:Lottery.Model"
+             Title="DrawPage"
+             BackgroundImageSource="layered_waves_haikei.png">
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="{Binding Communication}"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label Text="{Binding Choosen}"/>
-        <helper:MyNumber NumberTitle="{Binding Choosen}"></helper:MyNumber>
+            HorizontalOptions="Center"
+            TextColor="Red"/>
+        <Entry Placeholder="How many tickets do you want to draw?" 
+               Text="{Binding HowMany}" 
+               Keyboard="Numeric"
+               HorizontalOptions="Center"
+               MaximumWidthRequest="300"
+               MinimumWidthRequest="300"
+               TextChanged="Entry_TextChanged"/>
+        <CollectionView ItemsSource="{Binding Numbers}" 
+                        ItemsLayout="VerticalList" 
+                        MaximumHeightRequest="400"
+                        HorizontalOptions="Center"
+                        MaximumWidthRequest="600">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumbers">
+                    <CollectionView ItemsSource="{Binding DrawnNumbers}" ItemsLayout="HorizontalList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:MyDrawableNumber">
+                                <helper:MyNumber NumberTitle="{Binding Number}"></helper:MyNumber>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Press me to draw" 
+                Command="{Binding drawNumbersCommand}" 
+                MaximumWidthRequest="300"
+                IsEnabled="{Binding IsButtonEnabled}"/>
     </VerticalStackLayout>
 </ContentPage>
