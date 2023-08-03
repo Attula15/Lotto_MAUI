@@ -1,4 +1,5 @@
 ﻿using Lottery.Domain;
+using Lottery.Domain.Database.Entity;
 using Lottery.Service;
 using Lottery.View;
 using Lottery.ViewModel;

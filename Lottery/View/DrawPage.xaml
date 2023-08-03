@@ -24,19 +24,21 @@
                ReturnCommand="{Binding drawNumbersCommand}"/>
         <CollectionView ItemsSource="{Binding Numbers}" 
                         ItemsLayout="VerticalList" 
-                        MaximumHeightRequest="400"
+                        MaximumHeightRequest="200"
                         HorizontalOptions="Center"
                         MaximumWidthRequest="300"
                         x:Name="MyMainCollection">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumbers">
-                    <CollectionView ItemsSource="{Binding DrawnNumbers}" ItemsLayout="HorizontalList" HorizontalOptions="Center" Margin="5, 0, 5, 0">
-                        <CollectionView.ItemTemplate>
+                    <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
+                                 Orientation="Horizontal"
+                                 Spacing="10">
+                        <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="model:MyDrawableNumber">
                                 <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
                             </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
@@ -45,6 +47,13 @@
                 WidthRequest="300"
                 IsEnabled="{Binding IsButtonEnabled}"
                 VerticalOptions="End"/>
+        <Button Text="Save"
+                Command="{Binding saveTheNumbersCommand}"
+                IsEnabled="{Binding IsButtonEnabled}"
+                WidthRequest="300"/>
+        <Button Text="show"
+                Command="{Binding showCommand}"
+                WidthRequest="300"/>
     </VerticalStackLayout>
 
     <!--PC-->

@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using Lottery.Model;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
+using Lottery.Domain.Database.Entity;
+using Lottery.Service;
 
 namespace Lottery.ViewModel;
 
@@ -36,51 +38,51 @@ public partial class DrawPageViewModel : ObservableObject
 
         IsButtonEnabled = false;
 
-        int howMany = 0;
-        Numbers = new ObservableCollection<MyDrawableNumbers>();
+        Thread numberGenerator = new Thread(new ThreadStart(drawNumber));
+        numberGenerator.Start();
+
+        numberGenerator.Join();
+
+        IsButtonEnabled = true;
+    }
+
+    private void drawNumber()
+    {
+        int howMany;
         try
         {
             howMany = int.Parse(HowMany);
-            if(howMany > 15)
-            {
-                howMany = 15;
-            }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex);
             Communication = "The number that you gave is not an actual number!";
             return;
         }
-        
-        //Multiple rows
-        for(int i = 0; i < howMany; i++)
-        {
-            MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
-            //A row of numbers
-            for(int e = 0; e < Choosen; e++)
-            {
-                rowOfNumbers = drawNumber(Choosen);
-            }
-            Numbers.Add(rowOfNumbers);
-        }
 
-        IsButtonEnabled = true;
-    }
+        Numbers = new ObservableCollection<MyDrawableNumbers>();
+        ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
 
-    private MyDrawableNumbers drawNumber(int choosen)
-    {
-        MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
         int number;
-        for(int i = 0; i < choosen; i++)
+
+        MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
+
+        for (int e = 0; e < howMany; e++)
         {
-            do
+            for (int i = 0; i < Choosen; i++)
             {
-                number = rand.Next(choosen == 5 ? 91 : 46);
-            } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
-            rowOfNumbers.Append(new MyDrawableNumber(number, false));
+                do
+                {
+                    Debug.WriteLine("Random number");
+                    number = rand.Next(Choosen == 5 ? 91 : 46);
+                } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
+                rowOfNumbers.Append(new MyDrawableNumber(number, false));
+            }
+            temp.Add(rowOfNumbers);
+            Debug.WriteLine("Random row");
+            rowOfNumbers = new MyDrawableNumbers();
         }
-        return rowOfNumbers;
+        Numbers = temp;
     }
 
     public void checkEntry(string newText)
@@ -104,6 +106,45 @@ public partial class DrawPageViewModel : ObservableObject
             IsButtonEnabled = false;
             Communication = "Number that you gave is not a valid number!";
         }
+    }
+
+    [RelayCommand]
+    public async Task saveTheNumbers()
+    {
+        Communication = "";
+        if (Numbers == null)
+        {
+            Communication = "There are no numbers to be saved!";
+            return;
+        }
+        
+        string numbersInString = "";
+
+        foreach (MyDrawableNumbers numbers in Numbers)
+        {
+            
+            for(int i = 0; i < numbers.GetNumbers().Count; i++)
+            {
+                Debug.WriteLine("Ez az egyik szám: " + numbers.GetNumbers()[i].ToString());
+                numbersInString += (numbers.GetNumbers()[i].ToString() + ';');
+            }
+        }
+        Debug.WriteLine("Ez pedig a végeleges" + numbersInString);
+        await DatabaseService.AddNumer(numbersInString, Choosen);
+
+        Communication = "Save completed";
+    }
+
+    [RelayCommand]
+    public async Task show()
+    {
+        Debug.WriteLine("hello");
+        MyNumbers mynumbers = await DatabaseService.GetLatestNumbers();
+        Debug.WriteLine(mynumbers);
+        Debug.WriteLine(mynumbers.date);
+        Debug.WriteLine(mynumbers.numbers);
+        Debug.WriteLine(mynumbers.numberType);
+        Communication = mynumbers.numbers;
     }
 }
 
