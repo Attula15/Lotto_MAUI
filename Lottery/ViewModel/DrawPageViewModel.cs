@@ -94,7 +94,14 @@ public partial class DrawPageViewModel : ObservableObject
         {
             if(int.Parse(newText) > 0)
             {
-                ok = true;
+                if(int.Parse(newText) > 15)
+                {
+                    Communication = "The number you choose is too high!";
+                }
+                else
+                {
+                    ok = true;
+                }
             }
         }
         catch(Exception ex)
@@ -125,11 +132,9 @@ public partial class DrawPageViewModel : ObservableObject
             
             for(int i = 0; i < numbers.GetNumbers().Count; i++)
             {
-                Debug.WriteLine("Ez az egyik szám: " + numbers.GetNumbers()[i].ToString());
                 numbersInString += (numbers.GetNumbers()[i].ToString() + ';');
             }
         }
-        Debug.WriteLine("Ez pedig a végeleges" + numbersInString);
         await DatabaseService.AddNumer(numbersInString, Choosen);
 
         Communication = "Save completed";
@@ -138,12 +143,7 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public async Task show()
     {
-        Debug.WriteLine("hello");
         MyNumbers mynumbers = await DatabaseService.GetLatestNumbers();
-        Debug.WriteLine(mynumbers);
-        Debug.WriteLine(mynumbers.date);
-        Debug.WriteLine(mynumbers.numbers);
-        Debug.WriteLine(mynumbers.numberType);
         Communication = mynumbers.numbers;
     }
 }

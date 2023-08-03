@@ -2,7 +2,6 @@
 using Lottery.Domain.Database.Entity;
 using SQLite;
 using System.Diagnostics;
-using Windows.Security.Authentication.OnlineId;
 
 namespace Lottery.Service;
 public static class DatabaseService
