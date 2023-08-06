@@ -8,13 +8,23 @@
              xmlns:model="clr-namespace:Lottery.Model"
              Title="DrawPage"
              BackgroundImageSource="layered_waves_haikei.png">
-    <VerticalStackLayout Spacing="20">
-        <Label 
+    <ScrollView>
+        <VerticalStackLayout Spacing="15">
+            <Label 
             Text="{Binding Communication}"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             TextColor="Red"/>
-        <Entry Placeholder="How many tickets do you want to draw?" 
+            <Label Text="For which lottery do you want to draw numbers"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"/>
+            <HorizontalStackLayout HorizontalOptions="Center" 
+                             RadioButtonGroup.GroupName="Numbers" 
+                             RadioButtonGroup.SelectedValue="{Binding Choosen}">
+                <RadioButton Content="5" Value="5"/>
+                <RadioButton Content="6" Value="6"/>
+            </HorizontalStackLayout>
+            <Entry Placeholder="How many tickets do you want to draw?" 
                Text="{Binding HowMany}" 
                Keyboard="Numeric"
                HorizontalOptions="Center"
@@ -22,39 +32,41 @@
                MinimumWidthRequest="300"
                TextChanged="Entry_TextChanged"
                ReturnCommand="{Binding drawNumbersCommand}"/>
-        <CollectionView ItemsSource="{Binding Numbers}" 
+            <CollectionView ItemsSource="{Binding Numbers}" 
                         ItemsLayout="VerticalList" 
                         MaximumHeightRequest="200"
                         HorizontalOptions="Center"
                         MaximumWidthRequest="300"
                         x:Name="MyMainCollection">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumbers">
-                    <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumbers">
+                        <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
                                  Orientation="Horizontal"
                                  Spacing="10">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="model:MyDrawableNumber">
-                                <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Button Text="Press me to draw" 
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:MyDrawableNumber">
+                                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
                 WidthRequest="300"
                 IsEnabled="{Binding IsButtonEnabled}"
                 VerticalOptions="End"/>
-        <Button Text="Save"
+            <Button Text="Save"
                 Command="{Binding saveTheNumbersCommand}"
                 IsEnabled="{Binding IsButtonEnabled}"
                 WidthRequest="300"/>
-        <Button Text="show"
+            <Button Text="show"
                 Command="{Binding showCommand}"
                 WidthRequest="300"/>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+    
 
     <!--PC-->
     <VisualStateManager.VisualStateGroups>

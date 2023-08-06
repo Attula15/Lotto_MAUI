@@ -8,7 +8,6 @@ using Lottery.Service;
 
 namespace Lottery.ViewModel;
 
-[QueryProperty(nameof(Choosen), "Choosen")]
 public partial class DrawPageViewModel : ObservableObject
 {
     [ObservableProperty]
@@ -31,6 +30,13 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public void drawNumbers()
     {
+        Communication = "";
+        if (Choosen == 0)
+        {
+            Communication = "You must first choose a drawable number!";
+            return;
+        }
+
         if(!IsButtonEnabled)
         {
             return;

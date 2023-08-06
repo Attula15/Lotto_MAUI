@@ -65,8 +65,8 @@ public partial class MainPageViewModel : ObservableObject
         }
         else
         {
-            Prize5 = "Could not connect to the internet";
-            Prize6 = "Could not connect to the internet";
+            Prize5 = "Could not connect to the server";
+            Prize6 = "Could not connect to the server";
         }
         
     }

@@ -25,9 +25,6 @@ public static class MauiProgram
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();
 
-		builder.Services.AddTransient<DrawPageChooser>();
-		builder.Services.AddTransient<DrawPageChooserViewModel>();
-
 		builder.Services.AddTransient<DrawPage>();
 		builder.Services.AddTransient<DrawPageViewModel>();
 
