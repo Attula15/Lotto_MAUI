@@ -17,6 +17,11 @@ public partial class MyDrawableNumbers : ObservableObject
         return DrawnNumbers.Contains(listOfNumbers);
     }
 
+    public int Size()
+    {
+        return DrawnNumbers.Count;
+    }
+
     public List<int> GetNumbers()
     {
         List<int> returnable = new List<int>();

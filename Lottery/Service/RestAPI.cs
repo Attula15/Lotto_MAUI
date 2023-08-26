@@ -9,7 +9,7 @@ using System.Net.Http.Json;
 namespace Lottery.Service;
 public class RestAPI : IRestAPI
 {
-    private const string baseURL = "http://89.132.218.168:8080/api";
+    private const string baseURL = "http://89.132.166.88:8080/api";
     private const string user = "nepthys";
     private const string passwd = "Hernita5";
     private const string authenticationString = $"{user}:{passwd}";

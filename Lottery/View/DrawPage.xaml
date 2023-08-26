@@ -42,7 +42,7 @@
                     <DataTemplate x:DataType="model:MyDrawableNumbers">
                         <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
                                  Orientation="Horizontal"
-                                 Spacing="10">
+                                 Spacing="5">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="model:MyDrawableNumber">
                                     <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
@@ -51,6 +51,9 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="There is nothing to show"/>
+                </CollectionView.EmptyView>
             </CollectionView>
             <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 

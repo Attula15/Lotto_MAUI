@@ -1,8 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
+using Lottery.Domain.Database.Entity;
 using Lottery.Domain.Entity;
+using Lottery.Model;
+using Lottery.Service;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Lottery.ViewModel;
 
@@ -22,6 +28,9 @@ public partial class MainPageViewModel : ObservableObject
     
     [ObservableProperty]
     private string prize6;
+
+    [ObservableProperty]
+    private ObservableCollection<MyDrawableNumbers> myNumbers;
 
     private readonly IRestAPI restAPI;
 
@@ -82,6 +91,46 @@ public partial class MainPageViewModel : ObservableObject
         catch (Exception ex)
         {
             Console.WriteLine("Error");
+        }
+    }
+
+    [RelayCommand]
+    public async void GetMyNumbers()
+    {
+        MyNumbers MyNumbers = await DatabaseService.GetLatestNumbers();
+        if(MyNumbers == null)
+        {
+            return;
+        }
+        string NumbersInString = MyNumbers.numbers;
+        if (MyNumbers.numberType == 5)
+        {
+            string[] listOfNumbers = NumbersInString.Split(';');
+            List<int> ints = new List<int>();
+            
+            foreach(string number in listOfNumbers){
+                string cleanNumber = number.Replace(";", "");
+                Debug.WriteLine(cleanNumber);
+                if(cleanNumber != "")
+                {
+                    ints.Add(int.Parse(cleanNumber));
+                }
+            }
+
+            ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
+            MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
+            for(int i = 0; i < ints.Count; i++)
+            {
+                rowOfNumbers.Append(new MyDrawableNumber(ints[i], false));
+                if(rowOfNumbers.Size() % 5 == 0)
+                {
+                    temp.Add(rowOfNumbers);
+                    rowOfNumbers = new MyDrawableNumbers();
+                }
+            }
+            
+            this.MyNumbers = temp;
+            Debug.WriteLine("The listOfNumbers: " + listOfNumbers);
         }
     }
 }

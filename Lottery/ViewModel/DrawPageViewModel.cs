@@ -85,7 +85,6 @@ public partial class DrawPageViewModel : ObservableObject
                 rowOfNumbers.Append(new MyDrawableNumber(number, false));
             }
             temp.Add(rowOfNumbers);
-            Debug.WriteLine("Random row");
             rowOfNumbers = new MyDrawableNumbers();
         }
         Numbers = temp;
@@ -100,7 +99,7 @@ public partial class DrawPageViewModel : ObservableObject
         {
             if(int.Parse(newText) > 0)
             {
-                if(int.Parse(newText) > 15)
+                if(int.Parse(newText) > 6)
                 {
                     Communication = "The number you choose is too high!";
                 }

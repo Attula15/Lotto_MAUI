@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Lottery.View.MainPage"
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             xmlns:model="clr-namespace:Lottery.Model"
+             xmlns:helper="clr-namespace:Lottery.HelperView"
              x:DataType="viewmodel:MainPageViewModel"
              Title="Main menu"
              BackgroundImageSource="layered_waves_haikei.png"
@@ -40,6 +42,28 @@
                 <Label Text="{Binding Prize6}" HorizontalTextAlignment="End"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>
+
+        <Label Text="Your numbers:"/>
+        <CollectionView ItemsSource="{Binding MyNumbers}" 
+                        ItemsLayout="VerticalList" 
+                        MaximumHeightRequest="200"
+                        HorizontalOptions="Center"
+                        MaximumWidthRequest="300"
+                        x:Name="MyMainCollection">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumbers">
+                    <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
+                                 Orientation="Horizontal"
+                                 Spacing="5">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="model:MyDrawableNumber">
+                                <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 
     <!--PC-->
