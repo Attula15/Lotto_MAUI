@@ -5,16 +5,17 @@
              x:Name="Number">
     <Grid RowDefinitions="Auto, Auto, Auto" 
           ColumnDefinitions="Auto, Auto, Auto"
-          BindingContext="{x:Reference Number}">
-        <Ellipse Fill="{StaticResource LotteryDarkGreen}" 
-                 Stroke="{StaticResource LotteryLightGreen}"
-                 StrokeThickness="4"
-                 WidthRequest="40" 
-                 HeightRequest="40"
-                 Grid.ColumnSpan="3"
-                 Grid.RowSpan="3"
-                 Grid.Row="0"
-                 Grid.Column="0"/>
+          BindingContext="{x:Reference Number}"
+          BackgroundColor="Transparent">
+
+        <Image Source="green_circle.png"
+               WidthRequest="40" 
+               HeightRequest="40"
+               Grid.ColumnSpan="3"
+               Grid.RowSpan="3"
+               Grid.Row="0"
+               Grid.Column="0"
+               BackgroundColor="Transparent"/>
         <Label Text="{Binding NumberTitle}" 
                Grid.Column="1" 
                Grid.Row="1"

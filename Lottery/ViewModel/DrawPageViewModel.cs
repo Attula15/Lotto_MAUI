@@ -99,9 +99,9 @@ public partial class DrawPageViewModel : ObservableObject
         {
             if(int.Parse(newText) > 0)
             {
-                if(int.Parse(newText) > 6)
+                if(int.Parse(newText) > 50)
                 {
-                    Communication = "The number you choose is too high!";
+                    Communication = "The number you choose is too high! The maximum number is 50";
                 }
                 else
                 {

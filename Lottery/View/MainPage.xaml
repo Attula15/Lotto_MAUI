@@ -10,7 +10,8 @@
              BackgroundImageSource="layered_waves_haikei.png"
              NavigatedTo="ContentPage_NavigatedTo">
 
-    <VerticalStackLayout>
+    <VerticalStackLayout HorizontalOptions="Center" 
+                         Margin="10">
         <VerticalStackLayout HorizontalOptions="Center"
                              Margin="10">
             <Label Text="Get to the webpage" FontSize="Large"/>
@@ -43,27 +44,32 @@
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
-        <Label Text="Your numbers:"/>
-        <CollectionView ItemsSource="{Binding MyNumbers}" 
-                        ItemsLayout="VerticalList" 
-                        MaximumHeightRequest="200"
-                        HorizontalOptions="Center"
-                        MaximumWidthRequest="300"
-                        x:Name="MyMainCollection">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumbers">
-                    <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
-                                 Orientation="Horizontal"
-                                 Spacing="5">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="model:MyDrawableNumber">
-                                <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </StackLayout>
+        <Label Text="Currently winning numbers: " HorizontalOptions="Center"/>
+        <Label Text="Lottery 5" HorizontalOptions="Center"/>
+
+        <StackLayout BindableLayout.ItemsSource="{Binding Lottery5WinningNumbers}" 
+                     Orientation="Horizontal"
+                     Spacing="5"
+                     HorizontalOptions="Center">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumber">
+                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+
+        <Label Text="Lottery 6" HorizontalOptions="Center"/>
+
+        <StackLayout BindableLayout.ItemsSource="{Binding Lottery6WinningNumbers}" 
+                     Orientation="Horizontal"
+                     Spacing="5"
+                     HorizontalOptions="Center">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumber">
+                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
     </VerticalStackLayout>
 
     <!--PC-->

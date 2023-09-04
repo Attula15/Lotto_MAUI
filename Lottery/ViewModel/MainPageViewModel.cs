@@ -15,12 +15,6 @@ namespace Lottery.ViewModel;
 public partial class MainPageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private string name = "";
-
-    [ObservableProperty]
-    private string tempName = "";
-
-    [ObservableProperty]
     private bool visible = true;
 
     [ObservableProperty]
@@ -32,19 +26,16 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<MyDrawableNumbers> myNumbers;
 
+    [ObservableProperty]
+    private ObservableCollection<MyDrawableNumber> lottery5WinningNumbers;
+    [ObservableProperty]
+    private ObservableCollection<MyDrawableNumber> lottery6WinningNumbers;
+
     private readonly IRestAPI restAPI;
 
     public MainPageViewModel(IRestAPI rest)
     {
         restAPI = rest;
-    }
-
-    [RelayCommand]
-    public async Task welcomeMessage()
-    {
-        Name = TempName;
-        WinningNumbersEntity entity = await restAPI.GetWinningnumbers("5");
-        Name = entity.numbers;
     }
 
     public async void getPrizes()
@@ -94,6 +85,7 @@ public partial class MainPageViewModel : ObservableObject
         }
     }
 
+    /*
     [RelayCommand]
     public async void GetMyNumbers()
     {
@@ -103,6 +95,7 @@ public partial class MainPageViewModel : ObservableObject
             return;
         }
         string NumbersInString = MyNumbers.numbers;
+        Debug.WriteLine("MyNumberType: " + MyNumbers.numberType);
         if (MyNumbers.numberType == 5)
         {
             string[] listOfNumbers = NumbersInString.Split(';');
@@ -132,6 +125,46 @@ public partial class MainPageViewModel : ObservableObject
             this.MyNumbers = temp;
             Debug.WriteLine("The listOfNumbers: " + listOfNumbers);
         }
+    }*/
+
+    public async void GetWinning5()
+    {
+        WinningNumbersEntity winning5 = await restAPI.GetWinningnumbers("5");
+        WinningNumbersEntity winning6 = await restAPI.GetWinningnumbers("6");
+        string[] listOfNumbers;
+        for(int i = 0; i < 2; i++)
+        {
+            if (i % 2 == 0)
+            {
+                listOfNumbers = winning5.numbers.Split(';');
+            }
+            else
+            {
+                listOfNumbers = winning6.numbers.Split(';');
+            }
+
+            ObservableCollection<MyDrawableNumber> temp = new ObservableCollection<MyDrawableNumber>();
+
+            foreach (string number in listOfNumbers)
+            {
+                string cleanNumber = number.Replace(";", "");
+                cleanNumber = cleanNumber.Trim();
+                if (cleanNumber != string.Empty)
+                {
+                    temp.Add(new MyDrawableNumber(int.Parse(cleanNumber), false));
+                }
+            }
+
+            if (i % 2 == 0)
+            {
+                Lottery5WinningNumbers = temp;
+            }
+            else
+            {
+                Lottery6WinningNumbers = temp;
+            }
+            Debug.WriteLine("The listOfNumbers: " + listOfNumbers);
+        }        
     }
 }
 
