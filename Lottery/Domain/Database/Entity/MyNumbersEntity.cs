@@ -1,7 +1,7 @@
 ﻿using SQLite;
 
 namespace Lottery.Domain.Database.Entity;
-public class MyNumbers
+public class MyNumbersEntity
 {
     [PrimaryKey, AutoIncrement]
     public int id { get; set; }

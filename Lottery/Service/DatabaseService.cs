@@ -93,12 +93,12 @@ public static class DatabaseService
         return numbers;
     }
 
-    public static async Task<MyNumbers> GetLatestNumbers()
+    public static async Task<MyNumbers> GetLatestNumbers(int type)
     {
         await Init();
 
         var q = db.Table<MyNumbers>();
-        return await q.OrderByDescending(x => x.date).FirstOrDefaultAsync();
+        return await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
     }
 }
 

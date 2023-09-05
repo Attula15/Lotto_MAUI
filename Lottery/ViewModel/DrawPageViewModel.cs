@@ -148,7 +148,7 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public async Task show()
     {
-        MyNumbers mynumbers = await DatabaseService.GetLatestNumbers();
+        MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers();
         Communication = mynumbers.numbers;
     }
 }
