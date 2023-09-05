@@ -1,4 +1,5 @@
 ﻿
+using Lottery.Domain.Database;
 using Lottery.Domain.Database.Entity;
 using SQLite;
 using System.Diagnostics;
@@ -20,7 +21,7 @@ public static class DatabaseService
         try
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
-            await db.CreateTableAsync<MyNumbers>();
+            await db.CreateTableAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
         {
@@ -28,13 +29,13 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<MyNumbers> AddNumer(string number, int type)
+    public static async Task<MyNumbersEntity> AddNumer(string number, int type)
     {
         await Init();
 
         try
         {
-            MyNumbers insertable = new MyNumbers();
+            MyNumbersEntity insertable = new MyNumbersEntity();
             insertable.numbers = number;
             insertable.date = DateTime.Now;
             insertable.numberType = type;
@@ -50,18 +51,18 @@ public static class DatabaseService
             Debug.WriteLine(ex + "\n\n");
         }
 
-        var q = db.Table<MyNumbers>();
+        var q = db.Table<MyNumbersEntity>();
         q = q.Where(x => x.numbers.Equals(number));
         var myNumber = await q.FirstOrDefaultAsync();
 
         return myNumber;
     }
 
-    public static async Task<MyNumbers> DeleteNumber(MyNumbers number)
+    public static async Task<MyNumbersEntity> DeleteNumber(MyNumbersEntity number)
     {
         await Init();
 
-        var q = db.Table<MyNumbers>();
+        var q = db.Table<MyNumbersEntity>();
         q = q.Where(x => x.id.Equals(number.id));
         var myNumber = await q.FirstOrDefaultAsync();
 
@@ -81,24 +82,29 @@ public static class DatabaseService
     {
         await Init();
 
-        await db.DeleteAllAsync<MyNumbers>();
+        await db.DeleteAllAsync<MyNumbersEntity>();
     }
 
-    public static async Task<List<MyNumbers>> GetAllNumbers()
+    public static async Task<List<MyNumbersEntity>> GetAllNumbers()
     {
         await Init();
-        var q = db.Table<MyNumbers>();
-        List<MyNumbers> numbers = await q.ToListAsync();
+        var q = db.Table<MyNumbersEntity>();
+        List<MyNumbersEntity> numbers = await q.ToListAsync();
 
         return numbers;
     }
 
-    public static async Task<MyNumbers> GetLatestNumbers(int type)
+    public static async Task<MyNumbersEntity> GetLatestNumbers(int type)
     {
         await Init();
 
-        var q = db.Table<MyNumbers>();
+        var q = db.Table<MyNumbersEntity>();
         return await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+    }
+
+    public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
+    {
+
     }
 }
 
