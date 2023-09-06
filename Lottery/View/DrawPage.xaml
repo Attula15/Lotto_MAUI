@@ -32,29 +32,21 @@
                MinimumWidthRequest="300"
                TextChanged="Entry_TextChanged"
                ReturnCommand="{Binding drawNumbersCommand}"/>
-            <CollectionView ItemsSource="{Binding Numbers}" 
-                        ItemsLayout="VerticalList" 
-                        MaximumHeightRequest="200"
-                        HorizontalOptions="Center"
-                        MaximumWidthRequest="300"
-                        x:Name="MyMainCollection">
+
+            <CollectionView ItemsSource="{Binding ShownNumbers}"
+                            ItemsLayout="VerticalGrid, 5" 
+                            MaximumHeightRequest="200"
+                            HorizontalOptions="Center"
+                            
+                            WidthRequest="300"
+                            x:Name="MyMainCollection">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:MyDrawableNumbers">
-                        <StackLayout BindableLayout.ItemsSource="{Binding DrawnNumbers}" 
-                                 Orientation="Horizontal"
-                                 Spacing="5">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="model:MyDrawableNumber">
-                                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
+                    <DataTemplate x:DataType="model:MyDrawableNumber">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                <CollectionView.EmptyView>
-                    <Label Text="There is nothing to show"/>
-                </CollectionView.EmptyView>
             </CollectionView>
+            
             <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
                 WidthRequest="300"

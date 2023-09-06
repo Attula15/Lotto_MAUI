@@ -29,14 +29,14 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<MyNumbersEntity> AddNumer(string number, int type)
+    public static async Task<MyNumbersEntity> AddNumer(List<int> listOfNumbers, int type)
     {
         await Init();
 
         try
         {
             MyNumbersEntity insertable = new MyNumbersEntity();
-            insertable.numbers = number;
+            insertable.numbers = listOfNumbers;
             insertable.date = DateTime.Now;
             insertable.numberType = type;
             Debug.WriteLine("Database-ből: " + insertable.numbers);
@@ -52,7 +52,7 @@ public static class DatabaseService
         }
 
         var q = db.Table<MyNumbersEntity>();
-        q = q.Where(x => x.numbers.Equals(number));
+        q = q.Where(x => x.numbers.Equals(listOfNumbers));
         var myNumber = await q.FirstOrDefaultAsync();
 
         return myNumber;
@@ -101,10 +101,16 @@ public static class DatabaseService
         var q = db.Table<MyNumbersEntity>();
         return await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
     }
-
+    /*
     public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
     {
+        List<int> extractedNumbers = new List<int>();
+        await Init();
 
-    }
+        var q = db.Table<MyNumbersEntity>();
+        var numbersFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+
+        numbersFromDB
+    }*/
 }
 

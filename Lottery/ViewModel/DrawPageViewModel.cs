@@ -13,8 +13,13 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private int choosen = 0;
 
+    //[ObservableProperty]
+    //private ObservableCollection<MyDrawableNumbers> numbers;
+
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumbers> numbers;
+    private ObservableCollection<MyDrawableNumber> shownNumbers;
+
+    private List<int> drawnNumbers;
 
     private Random rand = new Random();
 
@@ -26,6 +31,13 @@ public partial class DrawPageViewModel : ObservableObject
 
     [ObservableProperty]
     private bool isButtonEnabled = true;
+
+    private int drawnChoosen = 0;
+
+    public DrawPageViewModel() 
+    {
+        drawnNumbers = new List<int>();
+    }
 
     [RelayCommand]
     public void drawNumbers()
@@ -66,28 +78,34 @@ public partial class DrawPageViewModel : ObservableObject
             return;
         }
 
-        Numbers = new ObservableCollection<MyDrawableNumbers>();
-        ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
+        //Numbers = new ObservableCollection<MyDrawableNumbers>();
+        //ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
 
         int number;
 
-        MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
+        //MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
+
+        drawnChoosen = Choosen;
+        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
+        drawnNumbers.Clear();
 
         for (int e = 0; e < howMany; e++)
         {
-            for (int i = 0; i < Choosen; i++)
+            for (int i = 0; i < drawnChoosen; i++)
             {
                 do
                 {
-                    Debug.WriteLine("Random number");
-                    number = rand.Next(Choosen == 5 ? 91 : 46);
-                } while (rowOfNumbers.Contains(new MyDrawableNumber(number, false)));
-                rowOfNumbers.Append(new MyDrawableNumber(number, false));
+                    number = rand.Next(drawnChoosen == 5 ? 91 : 46);
+                } while (drawnNumbers.Contains(number));
+                //rowOfNumbers.Append(new MyDrawableNumber(number, false));
+                drawnNumbers.Add(number);
+                ShownNumbers.Add(new MyDrawableNumber(number, false));
             }
-            temp.Add(rowOfNumbers);
-            rowOfNumbers = new MyDrawableNumbers();
+            //temp.Add(rowOfNumbers);
+            //rowOfNumbers = new MyDrawableNumbers();
         }
-        Numbers = temp;
+        
+        //Numbers = temp;
     }
 
     public void checkEntry(string newText)
@@ -124,12 +142,24 @@ public partial class DrawPageViewModel : ObservableObject
     public async Task saveTheNumbers()
     {
         Communication = "";
-        if (Numbers == null)
+        if (drawnNumbers.Count != 0)
         {
             Communication = "There are no numbers to be saved!";
             return;
         }
-        
+
+        /*
+        List<int> saveableNumbers = new List<int>();
+
+        foreach (MyDrawableNumbers numbers in Numbers)
+        {
+            saveableNumbers.Add(numbers.GetNumbers);
+        }
+
+        await DatabaseService.AddNumer(saveableNumbers, drawnChoosen);
+
+
+
         string numbersInString = "";
 
         foreach (MyDrawableNumbers numbers in Numbers)
@@ -140,16 +170,16 @@ public partial class DrawPageViewModel : ObservableObject
                 numbersInString += (numbers.GetNumbers()[i].ToString() + ';');
             }
         }
-        await DatabaseService.AddNumer(numbersInString, Choosen);
-
+        await DatabaseService.AddNumer(numbersInString, drawnChoosen);
+        */
         Communication = "Save completed";
     }
 
     [RelayCommand]
     public async Task show()
     {
-        MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers();
-        Communication = mynumbers.numbers;
+        //MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers();
+        //Communication = mynumbers.numbers;
     }
 }
 
