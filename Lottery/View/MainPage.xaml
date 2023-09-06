@@ -96,6 +96,7 @@
                     <Setter TargetName="myWButton" Property="MinimumWidthRequest" Value="150"/>
                     <Setter TargetName="myWButton" Property="Padding" Value="10, 0, 0, 0"/>
                     <Setter TargetName="HugeText" Property="MaximumWidthRequest" Value="10000"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="500"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

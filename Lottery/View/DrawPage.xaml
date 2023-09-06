@@ -59,7 +59,7 @@
                             IsVisible="{Binding IsCollection6Visible}"
                             x:Name="MyMainCollection6">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -70,18 +70,18 @@
 
         <Grid ColumnDefinitions="Auto, Auto"
                   RowDefinitions="Auto" HorizontalOptions="Center" ColumnSpacing="50">
-            <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125"></Button>
-            <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125"></Button>
+            <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding PrevButtonEnabled}"></Button>
+            <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125" Command="{Binding NextPageCommand}" IsEnabled="{Binding NextButtonEnabled}"></Button>
         </Grid>
 
         <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
                 WidthRequest="300"
-                IsEnabled="{Binding IsButtonEnabled}"
+                IsEnabled="{Binding IsDrawButtonEnabled}"
                 VerticalOptions="End"/>
         <Button Text="Save"
                 Command="{Binding saveTheNumbersCommand}"
-                IsEnabled="{Binding IsButtonEnabled}"
+                IsEnabled="{Binding IsDrawButtonEnabled}"
                 WidthRequest="300"/>
         <Button Text="Show" Command="{Binding showCommand}"/>
     </VerticalStackLayout>
@@ -96,6 +96,7 @@
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="325"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using Lottery.Service;
 using Lottery.Domain.Database.Entity;
+using SQLitePCL;
 
 namespace Lottery.ViewModel;
 
@@ -30,7 +31,7 @@ public partial class DrawPageViewModel : ObservableObject
     private string communication = "";
 
     [ObservableProperty]
-    private bool isButtonEnabled = true;
+    private bool isDrawButtonEnabled = true;
 
     [ObservableProperty]
     private bool isCollection5Visible = false;
@@ -39,6 +40,17 @@ public partial class DrawPageViewModel : ObservableObject
     private bool isCollection6Visible = false;
 
     private int drawnChoosen = 0;
+
+    [ObservableProperty]
+    private bool prevButtonEnabled = false;
+    [ObservableProperty]
+    private bool nextButtonEnabled = false;
+
+    private int currentPage = 1;
+    private int maxNumberOfElements = 0;
+
+    private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
+    private static int NUMBER_OF_NUMBERS_IN_LOTTERY6 = 18;
 
     public DrawPageViewModel() 
     {
@@ -56,19 +68,21 @@ public partial class DrawPageViewModel : ObservableObject
             return;
         }
 
-        if(!IsButtonEnabled)
+        if(!IsDrawButtonEnabled)
         {
             return;
         }
 
-        IsButtonEnabled = false;
+        IsDrawButtonEnabled = false;
 
         Thread numberGenerator = new Thread(new ThreadStart(drawNumberThread));
         numberGenerator.Start();
 
         numberGenerator.Join();
 
-        IsButtonEnabled = true;
+        IsDrawButtonEnabled = true;
+        NextButtonEnabled = true;
+        PrevButtonEnabled = false;
     }
 
     private void drawNumberThread()
@@ -122,29 +136,32 @@ public partial class DrawPageViewModel : ObservableObject
 
         for (int e = 0; e < howMany; e++)
         {
+            List<int> ticket = new List<int>();
             for (int i = 0; i < drawnChoosen; i++)
             {
                 do
                 {
                     number = rand.Next(drawnChoosen == 5 ? 91 : 46);
-                } while (drawnNumbers.Contains(number));
+                } while (ticket.Contains(number));
                 drawnNumbers.Add(number);
+                ticket.Add(number);
                 //ShownNumbersTemp.Add(new MyDrawableNumber(number, false));
             }
         }
-        for(int i = 0; i < Math.Min(drawnChoosen == 5 ? 25 : 30, howMany*drawnChoosen);i++)
+        for(int i = 0; i < Math.Min(drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6, howMany*drawnChoosen);i++)
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
         Debug.WriteLine("Number of elements: " + ShownNumbers.Count);
         Debug.WriteLine("Collection 5: " + IsCollection5Visible + " Collection 6: " + IsCollection6Visible);
-        IsButtonEnabled = true;
+        maxNumberOfElements = drawnNumbers.Count;
+        currentPage = 1;
     }
 
     public void checkEntry(string newText)
     {
         Communication = "";
-        IsButtonEnabled = true;
+        IsDrawButtonEnabled = true;
         bool ok = false;
         try
         {
@@ -166,7 +183,7 @@ public partial class DrawPageViewModel : ObservableObject
         }
         if (!ok)
         {
-            IsButtonEnabled = false;
+            IsDrawButtonEnabled = false;
             Communication = "Number that you gave is not a valid number!";
         }
     }
@@ -204,6 +221,50 @@ public partial class DrawPageViewModel : ObservableObject
     {
         ShownNumbers = new ObservableCollection<MyDrawableNumber>();
         Communication = "";
+    }
+
+    [RelayCommand]
+    private void NextPage()
+    {
+        int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
+
+        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
+
+        for (int i = currentPage * numberOfNumbers; i < Math.Min((currentPage + 1) * numberOfNumbers, maxNumberOfElements); i++)
+        {
+            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+        }
+
+        PrevButtonEnabled = true;
+        currentPage++;
+        
+        if (maxNumberOfElements <= currentPage * numberOfNumbers)
+        {
+            NextButtonEnabled = false;
+        }
+    }
+
+    [RelayCommand]
+    private void PreviousPage()
+    {
+        int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
+        
+        ShownNumbers = new ObservableCollection<MyDrawableNumber>();                                            
+
+        for (int i = (currentPage - 2) * numberOfNumbers; i < (currentPage - 1) * numberOfNumbers; i++)
+        {
+            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+        }
+
+        Debug.WriteLine("Start of i: " + (currentPage - 1) * numberOfNumbers);
+        Debug.WriteLine("End of i: " + currentPage * numberOfNumbers);
+
+        NextButtonEnabled = true;
+        currentPage--;
+        if (currentPage == 1)
+        {
+            PrevButtonEnabled = false;
+        }
     }
 }
 
