@@ -29,7 +29,7 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<MyNumbersEntity> AddNumer(List<int> listOfNumbers, int type)
+    public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)
     {
         await Init();
 

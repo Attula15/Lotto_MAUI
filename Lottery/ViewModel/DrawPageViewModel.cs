@@ -3,8 +3,8 @@ using System.Collections.ObjectModel;
 using Lottery.Model;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
-using Lottery.Domain.Database.Entity;
 using Lottery.Service;
+using Lottery.Domain.Database.Entity;
 
 namespace Lottery.ViewModel;
 
@@ -13,11 +13,11 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private int choosen = 0;
 
-    //[ObservableProperty]
-    //private ObservableCollection<MyDrawableNumbers> numbers;
-
     [ObservableProperty]
     private ObservableCollection<MyDrawableNumber> shownNumbers;
+
+    //[ObservableProperty]
+    //private GridItemsLayout collectionViewItemsLayout;
 
     private List<int> drawnNumbers;
 
@@ -32,11 +32,18 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private bool isButtonEnabled = true;
 
+    [ObservableProperty]
+    private bool isCollection5Visible = false;
+    
+    [ObservableProperty]
+    private bool isCollection6Visible = false;
+
     private int drawnChoosen = 0;
 
     public DrawPageViewModel() 
     {
         drawnNumbers = new List<int>();
+        //CollectionViewItemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
     }
 
     [RelayCommand]
@@ -56,7 +63,7 @@ public partial class DrawPageViewModel : ObservableObject
 
         IsButtonEnabled = false;
 
-        Thread numberGenerator = new Thread(new ThreadStart(drawNumber));
+        Thread numberGenerator = new Thread(new ThreadStart(drawNumberThread));
         numberGenerator.Start();
 
         numberGenerator.Join();
@@ -64,7 +71,7 @@ public partial class DrawPageViewModel : ObservableObject
         IsButtonEnabled = true;
     }
 
-    private void drawNumber()
+    private void drawNumberThread()
     {
         int howMany;
         try
@@ -78,16 +85,40 @@ public partial class DrawPageViewModel : ObservableObject
             return;
         }
 
-        //Numbers = new ObservableCollection<MyDrawableNumbers>();
-        //ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
-
         int number;
 
-        //MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
-
-        drawnChoosen = Choosen;
         ShownNumbers = new ObservableCollection<MyDrawableNumber>();
-        drawnNumbers.Clear();
+        drawnChoosen = Choosen;
+        /*
+        if(drawnChoosen == 5)
+        {
+            Debug.WriteLine("Itt az 5");
+            CollectionViewItemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Horizontal);
+        }
+        else
+        {
+            Debug.WriteLine("Itt a 6");
+            CollectionViewItemsLayout = new GridItemsLayout(6, ItemsLayoutOrientation.Horizontal);
+        }
+        */
+        Debug.WriteLine("Choosen: " + Choosen);
+        Debug.WriteLine("drawChoosen: " + drawnChoosen);
+
+        if (drawnChoosen == 5)
+        {
+            Debug.WriteLine("Itt az 5");
+            IsCollection5Visible = true;
+            IsCollection6Visible = false;
+        }
+        else
+        {
+            Debug.WriteLine("Itt a 6");
+            IsCollection6Visible = true;
+            IsCollection5Visible = false;
+        }
+
+        //ObservableCollection<MyDrawableNumber> ShownNumbersTemp = new ObservableCollection<MyDrawableNumber>();
+        drawnNumbers = new List<int>();
 
         for (int e = 0; e < howMany; e++)
         {
@@ -97,15 +128,17 @@ public partial class DrawPageViewModel : ObservableObject
                 {
                     number = rand.Next(drawnChoosen == 5 ? 91 : 46);
                 } while (drawnNumbers.Contains(number));
-                //rowOfNumbers.Append(new MyDrawableNumber(number, false));
                 drawnNumbers.Add(number);
-                ShownNumbers.Add(new MyDrawableNumber(number, false));
+                //ShownNumbersTemp.Add(new MyDrawableNumber(number, false));
             }
-            //temp.Add(rowOfNumbers);
-            //rowOfNumbers = new MyDrawableNumbers();
         }
-        
-        //Numbers = temp;
+        for(int i = 0; i < Math.Min(drawnChoosen == 5 ? 25 : 30, howMany*drawnChoosen);i++)
+        {
+            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+        }
+        Debug.WriteLine("Number of elements: " + ShownNumbers.Count);
+        Debug.WriteLine("Collection 5: " + IsCollection5Visible + " Collection 6: " + IsCollection6Visible);
+        IsButtonEnabled = true;
     }
 
     public void checkEntry(string newText)
@@ -142,44 +175,22 @@ public partial class DrawPageViewModel : ObservableObject
     public async Task saveTheNumbers()
     {
         Communication = "";
-        if (drawnNumbers.Count != 0)
+        if (drawnNumbers.Count == 0)
         {
             Communication = "There are no numbers to be saved!";
             return;
         }
 
-        /*
-        List<int> saveableNumbers = new List<int>();
+        await DatabaseService.AddNumber(drawnNumbers, drawnChoosen);
 
-        foreach (MyDrawableNumbers numbers in Numbers)
-        {
-            saveableNumbers.Add(numbers.GetNumbers);
-        }
-
-        await DatabaseService.AddNumer(saveableNumbers, drawnChoosen);
-
-
-
-        string numbersInString = "";
-
-        foreach (MyDrawableNumbers numbers in Numbers)
-        {
-            
-            for(int i = 0; i < numbers.GetNumbers().Count; i++)
-            {
-                numbersInString += (numbers.GetNumbers()[i].ToString() + ';');
-            }
-        }
-        await DatabaseService.AddNumer(numbersInString, drawnChoosen);
-        */
         Communication = "Save completed";
     }
 
     [RelayCommand]
     public async Task show()
     {
-        //MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers();
-        //Communication = mynumbers.numbers;
+        MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers(drawnChoosen);
+        Communication = mynumbers.numbers.ToString();
     }
 }
 

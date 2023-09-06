@@ -34,18 +34,46 @@
                ReturnCommand="{Binding drawNumbersCommand}"/>
 
             <CollectionView ItemsSource="{Binding ShownNumbers}"
-                            ItemsLayout="VerticalGrid, 5" 
-                            MaximumHeightRequest="200"
+                            MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            
-                            WidthRequest="300"
-                            x:Name="MyMainCollection">
+                            MaximumWidthRequest="300"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            IsVisible="{Binding IsCollection5Visible}"
+                            x:Name="MyMainCollection5">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyDrawableNumber">
                         <helper:MyNumber NumberTitle="{Binding Number}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <CollectionView ItemsSource="{Binding ShownNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="300"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            IsVisible="{Binding IsCollection6Visible}"
+                            x:Name="MyMainCollection6">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumber">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid ColumnDefinitions="Auto, Auto"
+                  RowDefinitions="Auto" HorizontalOptions="Center" ColumnSpacing="50">
+                <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125"></Button>
+                <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125"></Button>
+            </Grid>
             
             <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
@@ -56,9 +84,7 @@
                 Command="{Binding saveTheNumbersCommand}"
                 IsEnabled="{Binding IsButtonEnabled}"
                 WidthRequest="300"/>
-            <Button Text="show"
-                Command="{Binding showCommand}"
-                WidthRequest="300"/>
+            <Button Text="Show" Command="{Binding showCommand}"/>
         </VerticalStackLayout>
     </ScrollView>
     
@@ -72,7 +98,6 @@
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
-                    <Setter TargetName="MyMainCollection" Property="MaximumWidthRequest" Value="600"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

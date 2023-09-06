@@ -81,7 +81,7 @@ public partial class MainPageViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error");
+            Console.WriteLine("Error: " + ex);
         }
     }
 
