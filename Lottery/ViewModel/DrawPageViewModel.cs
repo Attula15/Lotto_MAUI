@@ -190,7 +190,15 @@ public partial class DrawPageViewModel : ObservableObject
     public async Task show()
     {
         MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers(drawnChoosen);
-        Communication = mynumbers.numbers.ToString();
+        if(mynumbers != null && mynumbers.numbers != null)
+        {
+            Communication = mynumbers.numbers.ToString();
+        }
+        else
+        {
+            Communication = "Database is empty";
+        }
+        
     }
 }
 

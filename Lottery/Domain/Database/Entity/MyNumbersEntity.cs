@@ -9,7 +9,7 @@ public class MyNumbersEntity
     public DateTime date { get; set; }
     
     public int numberType { get; set; }
-    [TextBlob("numbersBlobbed")]
-    public List<int> numbers { get; set; }
+
+    public string numbers { get; set; }
 }
 

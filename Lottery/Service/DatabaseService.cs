@@ -16,12 +16,13 @@ public static class DatabaseService
             return;
         }
 
-        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db3");
+        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData2.db3");
 
         try
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
+            await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
         {
@@ -33,13 +34,32 @@ public static class DatabaseService
     {
         await Init();
 
+        Debug.WriteLine("Saving started");
+        DateTime currentDate = DateTime.Now;
+        string numbersInList = "";
+
+        //Convert list of numbers to storeable string
+        for(int i = 0; i < listOfNumbers.Count; i++)
+        {
+            if(listOfNumbers.Count == i)
+            {
+                numbersInList = numbersInList + listOfNumbers[i] + "#";
+            }
+            else
+            {
+                numbersInList = numbersInList + listOfNumbers[i] + ";";
+            }
+        }
+        Debug.WriteLine(numbersInList);
+
         try
         {
             MyNumbersEntity insertable = new MyNumbersEntity();
-            insertable.numbers = listOfNumbers;
-            insertable.date = DateTime.Now;
+            numbersInList.Trim();
+            insertable.numbers = numbersInList;
+            insertable.date = currentDate;
             insertable.numberType = type;
-            Debug.WriteLine("Database-ből: " + insertable.numbers);
+            Debug.WriteLine("Database-ből: " + insertable.numbers.ToString());
             Debug.WriteLine("Database-ből: " + insertable.date);
             Debug.WriteLine("Database-ből: " + insertable.id);
             Debug.WriteLine("Database-ből: " + insertable.numberType);
@@ -52,8 +72,7 @@ public static class DatabaseService
         }
 
         var q = db.Table<MyNumbersEntity>();
-        q = q.Where(x => x.numbers.Equals(listOfNumbers));
-        var myNumber = await q.FirstOrDefaultAsync();
+        var myNumber = await q.OrderByDescending(x => x.date).FirstOrDefaultAsync();
 
         return myNumber;
     }
