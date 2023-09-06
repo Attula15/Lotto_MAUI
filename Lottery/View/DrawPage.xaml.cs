@@ -25,4 +25,10 @@ public partial class DrawPage : ContentPage
         base.OnDisappearing();
         viewModel.Disappear();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        viewModel.Appear();
+    }
 }

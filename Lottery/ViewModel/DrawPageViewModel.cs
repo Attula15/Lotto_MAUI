@@ -223,6 +223,18 @@ public partial class DrawPageViewModel : ObservableObject
         Communication = "";
     }
 
+    public void Appear()
+    {
+        if(drawnNumbers.Count != 0)
+        {
+            int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
+            for (int i = (currentPage - 1) * numberOfNumbers; i < Math.Min(currentPage * numberOfNumbers, maxNumberOfElements); i++)
+            {
+                ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+            }
+        }
+    }
+
     [RelayCommand]
     private void NextPage()
     {
