@@ -47,29 +47,41 @@
         <Label Text="Currently winning numbers: " HorizontalOptions="Center"/>
         <Label Text="Lottery 5" HorizontalOptions="Center"/>
 
-        <StackLayout BindableLayout.ItemsSource="{Binding Lottery5WinningNumbers}" 
-                     Orientation="Horizontal"
-                     Spacing="5"
-                     HorizontalOptions="Center">
-            <BindableLayout.ItemTemplate>
+        <CollectionView ItemsSource="{Binding Lottery5WinningNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="325"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            x:Name="MyMainCollection5">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="5" HorizontalItemSpacing="3"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
-                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
+                    <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
         <Label Text="Lottery 6" HorizontalOptions="Center"/>
 
-        <StackLayout BindableLayout.ItemsSource="{Binding Lottery6WinningNumbers}" 
-                     Orientation="Horizontal"
-                     Spacing="5"
-                     HorizontalOptions="Center">
-            <BindableLayout.ItemTemplate>
+        <CollectionView ItemsSource="{Binding Lottery6WinningNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="325"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            x:Name="MyMainCollection6">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="6" HorizontalItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
-                    <helper:MyNumber NumberTitle="{Binding Number}" Margin="2.5, 0, 2.5, 0"></helper:MyNumber>
+                    <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 
     <!--PC-->

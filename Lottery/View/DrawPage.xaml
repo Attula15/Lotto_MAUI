@@ -8,23 +8,22 @@
              xmlns:model="clr-namespace:Lottery.Model"
              Title="DrawPage"
              BackgroundImageSource="layered_waves_haikei.png">
-    <ScrollView>
-        <VerticalStackLayout Spacing="15">
-            <Label 
+    <VerticalStackLayout Spacing="15">
+        <Label 
             Text="{Binding Communication}"
             VerticalOptions="Center" 
             HorizontalOptions="Center"
             TextColor="Red"/>
-            <Label Text="For which lottery do you want to draw numbers"
+        <Label Text="For which lottery do you want to draw numbers"
                VerticalOptions="Center" 
                HorizontalOptions="Center"/>
-            <HorizontalStackLayout HorizontalOptions="Center" 
+        <HorizontalStackLayout HorizontalOptions="Center" 
                              RadioButtonGroup.GroupName="Numbers" 
                              RadioButtonGroup.SelectedValue="{Binding Choosen}">
-                <RadioButton Content="5" Value="5"/>
-                <RadioButton Content="6" Value="6"/>
-            </HorizontalStackLayout>
-            <Entry Placeholder="How many tickets do you want to draw?" 
+            <RadioButton Content="5" Value="5"/>
+            <RadioButton Content="6" Value="6"/>
+        </HorizontalStackLayout>
+        <Entry Placeholder="How many tickets do you want to draw?" 
                Text="{Binding HowMany}" 
                Keyboard="Numeric"
                HorizontalOptions="Center"
@@ -33,7 +32,7 @@
                TextChanged="Entry_TextChanged"
                ReturnCommand="{Binding drawNumbersCommand}"/>
 
-            <CollectionView ItemsSource="{Binding ShownNumbers}"
+        <CollectionView ItemsSource="{Binding ShownNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
@@ -41,17 +40,17 @@
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection5Visible}"
                             x:Name="MyMainCollection5">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:MyDrawableNumber">
-                        <helper:MyNumber NumberTitle="{Binding Number}"/>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumber">
+                    <helper:MyNumber NumberTitle="{Binding Number}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-            <CollectionView ItemsSource="{Binding ShownNumbers}"
+        <CollectionView ItemsSource="{Binding ShownNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
@@ -59,35 +58,34 @@
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection6Visible}"
                             x:Name="MyMainCollection6">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:MyDrawableNumber">
-                        <helper:MyNumber NumberTitle="{Binding Number}"/>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyDrawableNumber">
+                    <helper:MyNumber NumberTitle="{Binding Number}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-            <Grid ColumnDefinitions="Auto, Auto"
+        <Grid ColumnDefinitions="Auto, Auto"
                   RowDefinitions="Auto" HorizontalOptions="Center" ColumnSpacing="50">
-                <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125"></Button>
-                <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125"></Button>
-            </Grid>
-            
-            <Button Text="Press me to draw" 
+            <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125"></Button>
+            <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125"></Button>
+        </Grid>
+
+        <Button Text="Press me to draw" 
                 Command="{Binding drawNumbersCommand}" 
                 WidthRequest="300"
                 IsEnabled="{Binding IsButtonEnabled}"
                 VerticalOptions="End"/>
-            <Button Text="Save"
+        <Button Text="Save"
                 Command="{Binding saveTheNumbersCommand}"
                 IsEnabled="{Binding IsButtonEnabled}"
                 WidthRequest="300"/>
-            <Button Text="Show" Command="{Binding showCommand}"/>
-        </VerticalStackLayout>
-    </ScrollView>
-    
+        <Button Text="Show" Command="{Binding showCommand}"/>
+    </VerticalStackLayout>
+
 
     <!--PC-->
     <VisualStateManager.VisualStateGroups>

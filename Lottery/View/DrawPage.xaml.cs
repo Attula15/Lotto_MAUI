@@ -19,4 +19,10 @@ public partial class DrawPage : ContentPage
             viewModel.checkEntry(e.NewTextValue);
         }
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        viewModel.Disappear();
+    }
 }

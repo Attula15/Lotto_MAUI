@@ -1,14 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
-using Lottery.Domain.Database.Entity;
 using Lottery.Domain.Entity;
 using Lottery.Model;
-using Lottery.Service;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Lottery.ViewModel;
 
@@ -127,7 +123,7 @@ public partial class MainPageViewModel : ObservableObject
         }
     }*/
 
-    public async void GetWinning5()
+    public async void GetWinningNumbers()
     {
         WinningNumbersEntity winning5 = await restAPI.GetWinningnumbers("5");
         WinningNumbersEntity winning6 = await restAPI.GetWinningnumbers("6");

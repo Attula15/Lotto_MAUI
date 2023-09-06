@@ -198,7 +198,12 @@ public partial class DrawPageViewModel : ObservableObject
         {
             Communication = "Database is empty";
         }
-        
+    }
+
+    public void Disappear()
+    {
+        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
+        Communication = "";
     }
 }
 

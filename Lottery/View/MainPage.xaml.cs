@@ -17,7 +17,7 @@ public partial class MainPage : ContentPage
     {
 		viewmodel.getPrizes();
 		//viewmodel.GetMyNumbers();
-		viewmodel.GetWinning5();
+		viewmodel.GetWinningNumbers();
     }
 }
 
