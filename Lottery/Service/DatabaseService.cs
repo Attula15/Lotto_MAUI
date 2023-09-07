@@ -8,6 +8,8 @@ namespace Lottery.Service;
 public static class DatabaseService
 {
     private static SQLiteAsyncConnection db = null;
+    private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
+    private static int NUMBER_OF_NUMBERS_IN_LOTTERY6 = 18;
 
     private static async Task Init()
     {
@@ -113,16 +115,42 @@ public static class DatabaseService
         var q = db.Table<MyNumbersEntity>();
         return await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
     }
-    /*
+    
+
     public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
     {
-        List<int> extractedNumbers = new List<int>();
         await Init();
+        List<int> extractedNumbers = new List<int>();
+        PageableNumbers returnable = new PageableNumbers(type);
 
         var q = db.Table<MyNumbersEntity>();
         var numbersFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
 
-        numbersFromDB
-    }*/
+        if(numbersFromDB == null)
+        {
+            return null;
+        }
+
+        string[] listOfNumbersInString = numbersFromDB.numbers.Split(";");
+
+        foreach (string number in listOfNumbersInString)
+        {
+            if (number != "")
+            {
+                extractedNumbers.Add(int.Parse(number.Replace(";", "").Trim()));
+            }
+        }
+
+        int numberOfNumbers = type == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
+
+        for (int i = (page - 1) * numberOfNumbers; i < Math.Min(page * numberOfNumbers, extractedNumbers.Count); i++)
+        {
+            returnable.AppendNumber(extractedNumbers[i]);
+        }
+
+        returnable.MaxNumberOfElements = extractedNumbers.Count;
+
+        return returnable;
+    }
 }
 

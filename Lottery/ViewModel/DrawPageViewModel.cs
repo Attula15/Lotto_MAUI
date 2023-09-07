@@ -82,7 +82,14 @@ public partial class DrawPageViewModel : ObservableObject
         numberGenerator.Join();
 
         IsDrawButtonEnabled = true;
-        NextButtonEnabled = true;
+        if(drawnNumbers.Count <= (drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6))
+        {
+            NextButtonEnabled = false;
+        }
+        else
+        {
+            NextButtonEnabled = true;
+        }
         PrevButtonEnabled = false;
     }
 
@@ -116,18 +123,14 @@ public partial class DrawPageViewModel : ObservableObject
             CollectionViewItemsLayout = new GridItemsLayout(6, ItemsLayoutOrientation.Horizontal);
         }
         */
-        Debug.WriteLine("Choosen: " + Choosen);
-        Debug.WriteLine("drawChoosen: " + drawnChoosen);
 
         if (drawnChoosen == 5)
         {
-            Debug.WriteLine("Itt az 5");
             IsCollection5Visible = true;
             IsCollection6Visible = false;
         }
         else
         {
-            Debug.WriteLine("Itt a 6");
             IsCollection6Visible = true;
             IsCollection5Visible = false;
         }
@@ -153,8 +156,6 @@ public partial class DrawPageViewModel : ObservableObject
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
-        Debug.WriteLine("Number of elements: " + ShownNumbers.Count);
-        Debug.WriteLine("Collection 5: " + IsCollection5Visible + " Collection 6: " + IsCollection6Visible);
         maxNumberOfElements = drawnNumbers.Count;
         CurrentPage = 1;
     }

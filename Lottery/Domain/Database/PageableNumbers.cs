@@ -2,10 +2,9 @@
 namespace Lottery.Domain.Database;
 public class PageableNumbers
 {
-    private List<int> Numbers;
-    private int LotteryType;
-    private int MaxPages { get; set; }
-    private int MaxNumberOfElements { get; set; }
+    public List<int> Numbers { get; set; }
+    public int LotteryType { get; set; }
+    public int MaxNumberOfElements { get; set; }
 
     public PageableNumbers(int lotteryType)
     {
@@ -21,10 +20,5 @@ public class PageableNumbers
     public void AppendNumber(int number)
     {
         Numbers.Add(number);
-    }
-
-    public int GetType()
-    {
-        return LotteryType;
     }
 }

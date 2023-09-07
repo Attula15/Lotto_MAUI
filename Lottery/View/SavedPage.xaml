@@ -27,10 +27,11 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Grid ColumnDefinitions="Auto, Auto"
+        <Grid ColumnDefinitions="Auto, Auto, Auto"
                   RowDefinitions="Auto" HorizontalOptions="Center" ColumnSpacing="50">
             <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125" Command="{Binding PrevPage5Command}" IsEnabled="{Binding IsPrev5Enabled}"></Button>
-            <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125" Command="{Binding NextPage5Command}" IsEnabled="{Binding IsNext5Enabled}"></Button>
+            <Label Text="{Binding CurrentPage5}" Grid.Column="1" Margin="0" Padding="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Button Text="Next Page" Grid.Column="2" MinimumWidthRequest="125" Command="{Binding NextPage5Command}" IsEnabled="{Binding IsNext5Enabled}"></Button>
         </Grid>
         <Label Text="Lottery 6" HorizontalOptions="Center"/>
         <CollectionView ItemsSource="{Binding DisplayedLottery6Numbers}"
