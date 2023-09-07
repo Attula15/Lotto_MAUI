@@ -41,14 +41,7 @@ public static class DatabaseService
         //Convert list of numbers to storeable string
         for(int i = 0; i < listOfNumbers.Count; i++)
         {
-            if(listOfNumbers.Count - 1 == i)
-            {
-                numbersInList = numbersInList + listOfNumbers[i] + "#";
-            }
-            else
-            {
-                numbersInList = numbersInList + listOfNumbers[i] + ";";
-            }
+            numbersInList = numbersInList + listOfNumbers[i] + ";";
         }
         Debug.WriteLine(numbersInList);
 

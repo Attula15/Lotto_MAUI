@@ -28,6 +28,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<DrawPage>();
 		builder.Services.AddTransient<DrawPageViewModel>();
 
+		builder.Services.AddTransient<SavedPage>();
+		builder.Services.AddTransient<SavedPageViewModel>();
+
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
