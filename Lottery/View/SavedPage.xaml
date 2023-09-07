@@ -6,8 +6,7 @@
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:SavedPageViewModel"
              xmlns:helper="clr-namespace:Lottery.HelperView"
-             xmlns:model="clr-namespace:Lottery.Model"
-             BackgroundImageSource="layered_waves_haikei.png">
+             xmlns:model="clr-namespace:Lottery.Model">
     <VerticalStackLayout>
         <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
         <Label Text="Lottery 5" HorizontalOptions="Center"/>

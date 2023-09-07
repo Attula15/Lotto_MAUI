@@ -7,7 +7,6 @@
              xmlns:helper="clr-namespace:Lottery.HelperView"
              x:DataType="viewmodel:MainPageViewModel"
              Title="Main menu"
-             BackgroundImageSource="layered_waves_haikei.png"
              NavigatedTo="ContentPage_NavigatedTo">
 
     <VerticalStackLayout HorizontalOptions="Center" 

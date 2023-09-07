@@ -6,8 +6,7 @@
              x:DataType="viewmodel:DrawPageViewModel"
              xmlns:helper="clr-namespace:Lottery.HelperView"
              xmlns:model="clr-namespace:Lottery.Model"
-             Title="DrawPage"
-             BackgroundImageSource="layered_waves_haikei.png">
+             Title="DrawPage">
     <VerticalStackLayout Spacing="15">
         <Label 
             Text="{Binding Communication}"
