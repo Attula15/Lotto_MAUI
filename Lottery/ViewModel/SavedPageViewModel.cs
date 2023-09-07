@@ -30,32 +30,50 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersEntity lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
         MyNumbersEntity lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
 
-        string[] listOf5NumbersInString = lottery5Numbers.numbers.Split(";");
-        string[] listOf6NumbersInString = lottery6Numbers.numbers.Split(";");
+        drawnLottery5Numbers.Clear();
+        drawnLottery6Numbers.Clear();
+        DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumber>();
+        DisplayedLottery6Numbers = new ObservableCollection<MyDrawableNumber>();
 
-        foreach(string number in listOf5NumbersInString)
+        if (lottery5Numbers != null)
         {
-            drawnLottery5Numbers.Add(int.Parse(number.Replace(";", "").Replace("#", "").Trim()));
-        }
-
-        foreach (string number in listOf6NumbersInString)
-        {
-            drawnLottery6Numbers.Add(int.Parse(number.Replace(";", "").Replace("#", "").Trim()));
-        }
-
-        if(drawnLottery5Numbers.Count > 0)
-        {
-            for(int i = 0; i < Math.Min(NUMBER_OF_NUMBERS_IN_LOTTERY5, drawnLottery5Numbers.Count); i++)
+            string[] listOf5NumbersInString = lottery5Numbers.numbers.Split(";");
+            
+            foreach (string number in listOf5NumbersInString)
             {
-                DisplayedLottery5Numbers.Add(new MyDrawableNumber(drawnLottery5Numbers[i], false));
+                if(number != "")
+                {
+                    drawnLottery5Numbers.Add(int.Parse(number.Replace(";", "").Trim()));
+                }
+            }
+            
+            if (drawnLottery5Numbers.Count > 0)
+            {
+                for (int i = 0; i < Math.Min(NUMBER_OF_NUMBERS_IN_LOTTERY5, drawnLottery5Numbers.Count); i++)
+                {
+                    DisplayedLottery5Numbers.Add(new MyDrawableNumber(drawnLottery5Numbers[i], false));
+                }
             }
         }
 
-        if(drawnLottery6Numbers.Count > 0)
+        if(lottery6Numbers != null)
         {
-            for (int i = 0; i < Math.Min(NUMBER_OF_NUMBERS_IN_LOTTERY6, drawnLottery6Numbers.Count); i++)
+            string[] listOf6NumbersInString = lottery6Numbers.numbers.Split(";");
+
+            foreach (string number in listOf6NumbersInString)
             {
-                DisplayedLottery6Numbers.Add(new MyDrawableNumber(drawnLottery6Numbers[i], false));
+                if(number != "")
+                {
+                    drawnLottery6Numbers.Add(int.Parse(number.Replace(";", "").Trim()));
+                }
+            }
+
+            if (drawnLottery6Numbers.Count > 0)
+            {
+                for (int i = 0; i < Math.Min(NUMBER_OF_NUMBERS_IN_LOTTERY6, drawnLottery6Numbers.Count); i++)
+                {
+                    DisplayedLottery6Numbers.Add(new MyDrawableNumber(drawnLottery6Numbers[i], false));
+                }
             }
         }
     }

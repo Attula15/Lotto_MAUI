@@ -46,7 +46,8 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private bool nextButtonEnabled = false;
 
-    private int currentPage = 1;
+    [ObservableProperty]
+    private int currentPage = 0;
     private int maxNumberOfElements = 0;
 
     private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
@@ -155,7 +156,7 @@ public partial class DrawPageViewModel : ObservableObject
         Debug.WriteLine("Number of elements: " + ShownNumbers.Count);
         Debug.WriteLine("Collection 5: " + IsCollection5Visible + " Collection 6: " + IsCollection6Visible);
         maxNumberOfElements = drawnNumbers.Count;
-        currentPage = 1;
+        CurrentPage = 1;
     }
 
     public void checkEntry(string newText)
@@ -167,14 +168,7 @@ public partial class DrawPageViewModel : ObservableObject
         {
             if(int.Parse(newText) > 0)
             {
-                if(int.Parse(newText) > 50)
-                {
-                    Communication = "The number you choose is too high! The maximum number is 50";
-                }
-                else
-                {
-                    ok = true;
-                }
+                ok = true;
             }
         }
         catch(Exception ex)
@@ -228,7 +222,7 @@ public partial class DrawPageViewModel : ObservableObject
         if(drawnNumbers.Count != 0)
         {
             int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-            for (int i = (currentPage - 1) * numberOfNumbers; i < Math.Min(currentPage * numberOfNumbers, maxNumberOfElements); i++)
+            for (int i = (CurrentPage - 1) * numberOfNumbers; i < Math.Min(CurrentPage * numberOfNumbers, maxNumberOfElements); i++)
             {
                 ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
             }
@@ -242,15 +236,15 @@ public partial class DrawPageViewModel : ObservableObject
 
         ShownNumbers = new ObservableCollection<MyDrawableNumber>();
 
-        for (int i = currentPage * numberOfNumbers; i < Math.Min((currentPage + 1) * numberOfNumbers, maxNumberOfElements); i++)
+        for (int i = CurrentPage * numberOfNumbers; i < Math.Min((CurrentPage + 1) * numberOfNumbers, maxNumberOfElements); i++)
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
 
         PrevButtonEnabled = true;
-        currentPage++;
+        CurrentPage++;
         
-        if (maxNumberOfElements <= currentPage * numberOfNumbers)
+        if (maxNumberOfElements <= CurrentPage * numberOfNumbers)
         {
             NextButtonEnabled = false;
         }
@@ -263,17 +257,17 @@ public partial class DrawPageViewModel : ObservableObject
         
         ShownNumbers = new ObservableCollection<MyDrawableNumber>();                                            
 
-        for (int i = (currentPage - 2) * numberOfNumbers; i < (currentPage - 1) * numberOfNumbers; i++)
+        for (int i = (CurrentPage - 2) * numberOfNumbers; i < (CurrentPage - 1) * numberOfNumbers; i++)
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
 
-        Debug.WriteLine("Start of i: " + (currentPage - 1) * numberOfNumbers);
-        Debug.WriteLine("End of i: " + currentPage * numberOfNumbers);
+        Debug.WriteLine("Start of i: " + (CurrentPage - 1) * numberOfNumbers);
+        Debug.WriteLine("End of i: " + CurrentPage * numberOfNumbers);
 
         NextButtonEnabled = true;
-        currentPage--;
-        if (currentPage == 1)
+        CurrentPage--;
+        if (CurrentPage == 1)
         {
             PrevButtonEnabled = false;
         }

@@ -68,10 +68,11 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Grid ColumnDefinitions="Auto, Auto"
+        <Grid ColumnDefinitions="Auto, Auto, Auto"
                   RowDefinitions="Auto" HorizontalOptions="Center" ColumnSpacing="50">
             <Button Text="Previous Page" Grid.Column="0" MinimumWidthRequest="125" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding PrevButtonEnabled}"></Button>
-            <Button Text="Next Page" Grid.Column="1" MinimumWidthRequest="125" Command="{Binding NextPageCommand}" IsEnabled="{Binding NextButtonEnabled}"></Button>
+            <Label Text="{Binding CurrentPage}" Grid.Column="1" Margin="0" Padding="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Button Text="Next Page" Grid.Column="2" MinimumWidthRequest="125" Command="{Binding NextPageCommand}" IsEnabled="{Binding NextButtonEnabled}"></Button>
         </Grid>
 
         <Button Text="Press me to draw" 
