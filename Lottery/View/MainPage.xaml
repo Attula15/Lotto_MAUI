@@ -50,12 +50,12 @@
         <CollectionView ItemsSource="{Binding Lottery5WinningNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="325"
+                            MaximumWidthRequest="300"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="5" HorizontalItemSpacing="3"/>
+                <GridItemsLayout Orientation="Vertical" Span="5"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -69,12 +69,12 @@
         <CollectionView ItemsSource="{Binding Lottery6WinningNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="325"
+                            MaximumWidthRequest="300"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6" HorizontalItemSpacing="5"/>
+                <GridItemsLayout Orientation="Vertical" Span="6"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -96,7 +96,7 @@
                     <Setter TargetName="myWButton" Property="MinimumWidthRequest" Value="150"/>
                     <Setter TargetName="myWButton" Property="Padding" Value="10, 0, 0, 0"/>
                     <Setter TargetName="HugeText" Property="MaximumWidthRequest" Value="10000"/>
-                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="500"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="400"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

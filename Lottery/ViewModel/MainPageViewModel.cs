@@ -20,9 +20,6 @@ public partial class MainPageViewModel : ObservableObject
     private string prize6;
 
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumbers> myNumbers;
-
-    [ObservableProperty]
     private ObservableCollection<MyDrawableNumber> lottery5WinningNumbers;
     [ObservableProperty]
     private ObservableCollection<MyDrawableNumber> lottery6WinningNumbers;
