@@ -42,10 +42,6 @@ public partial class DrawPageViewModel : ObservableObject
 
     [ObservableProperty]
     private int currentPage = 0;
-    private int maxNumberOfElements = 0;
-
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY6 = 18;
 
     public DrawPageViewModel() 
     {
@@ -141,7 +137,6 @@ public partial class DrawPageViewModel : ObservableObject
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
-        maxNumberOfElements = drawnNumbers.Count;
         CurrentPage = 1;
     }
 

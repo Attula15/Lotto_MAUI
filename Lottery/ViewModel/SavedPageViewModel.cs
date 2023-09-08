@@ -32,7 +32,7 @@ public partial class SavedPageViewModel : ObservableObject
         {
             for (int i = 0; i < lottery6Numbers.numbers.Count; i++)
             {
-                DisplayedLottery5Numbers.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
+                DisplayedLottery6Numbers.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
             }
         }
     }
