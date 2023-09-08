@@ -4,8 +4,7 @@ using Lottery.Model;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using Lottery.Service;
-using Lottery.Domain.Database.Entity;
-using SQLitePCL;
+using Lottery.POCO;
 
 namespace Lottery.ViewModel;
 
@@ -40,11 +39,6 @@ public partial class DrawPageViewModel : ObservableObject
     private bool isCollection6Visible = false;
 
     private int drawnChoosen = 0;
-
-    [ObservableProperty]
-    private bool prevButtonEnabled = false;
-    [ObservableProperty]
-    private bool nextButtonEnabled = false;
 
     [ObservableProperty]
     private int currentPage = 0;
@@ -82,15 +76,6 @@ public partial class DrawPageViewModel : ObservableObject
         numberGenerator.Join();
 
         IsDrawButtonEnabled = true;
-        if(drawnNumbers.Count <= (drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6))
-        {
-            NextButtonEnabled = false;
-        }
-        else
-        {
-            NextButtonEnabled = true;
-        }
-        PrevButtonEnabled = false;
     }
 
     private void drawNumberThread()
@@ -152,7 +137,7 @@ public partial class DrawPageViewModel : ObservableObject
                 //ShownNumbersTemp.Add(new MyDrawableNumber(number, false));
             }
         }
-        for(int i = 0; i < Math.Min(drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6, howMany*drawnChoosen);i++)
+        for(int i = 0; i < drawnNumbers.Count; i++)
         {
             ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
         }
@@ -201,7 +186,7 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public async Task show()
     {
-        MyNumbersEntity mynumbers = await DatabaseService.GetLatestNumbers(drawnChoosen);
+        MyNumbersPOCO mynumbers = await DatabaseService.GetLatestNumbers(drawnChoosen);
         if(mynumbers != null && mynumbers.numbers != null)
         {
             Communication = mynumbers.numbers.ToString();
@@ -222,55 +207,10 @@ public partial class DrawPageViewModel : ObservableObject
     {
         if(drawnNumbers.Count != 0)
         {
-            int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-            for (int i = (CurrentPage - 1) * numberOfNumbers; i < Math.Min(CurrentPage * numberOfNumbers, maxNumberOfElements); i++)
+            for (int i = 0; i < drawnNumbers.Count; i++)
             {
                 ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
             }
-        }
-    }
-
-    [RelayCommand]
-    private void NextPage()
-    {
-        int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-
-        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
-
-        for (int i = CurrentPage * numberOfNumbers; i < Math.Min((CurrentPage + 1) * numberOfNumbers, maxNumberOfElements); i++)
-        {
-            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
-        }
-
-        PrevButtonEnabled = true;
-        CurrentPage++;
-        
-        if (maxNumberOfElements <= CurrentPage * numberOfNumbers)
-        {
-            NextButtonEnabled = false;
-        }
-    }
-
-    [RelayCommand]
-    private void PreviousPage()
-    {
-        int numberOfNumbers = drawnChoosen == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-        
-        ShownNumbers = new ObservableCollection<MyDrawableNumber>();                                            
-
-        for (int i = (CurrentPage - 2) * numberOfNumbers; i < (CurrentPage - 1) * numberOfNumbers; i++)
-        {
-            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
-        }
-
-        Debug.WriteLine("Start of i: " + (CurrentPage - 1) * numberOfNumbers);
-        Debug.WriteLine("End of i: " + CurrentPage * numberOfNumbers);
-
-        NextButtonEnabled = true;
-        CurrentPage--;
-        if (CurrentPage == 1)
-        {
-            PrevButtonEnabled = false;
         }
     }
 }

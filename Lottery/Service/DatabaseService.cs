@@ -1,6 +1,7 @@
 ﻿
 using Lottery.Domain.Database;
 using Lottery.Domain.Database.Entity;
+using Lottery.POCO;
 using SQLite;
 using System.Diagnostics;
 
@@ -108,19 +109,25 @@ public static class DatabaseService
         return numbers;
     }
 
-    public static async Task<MyNumbersEntity> GetLatestNumbers(int type)
+    public static async Task<MyNumbersPOCO> GetLatestNumbers(int type)
     {
         await Init();
 
         var q = db.Table<MyNumbersEntity>();
-        return await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+        var dataFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+
+        if(dataFromDB == null)
+        {
+            return null;
+        }
+
+        return MyNumberMapper.toPOCO(dataFromDB);
     }
     
 
     public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
     {
         await Init();
-        List<int> extractedNumbers = new List<int>();
         PageableNumbers returnable = new PageableNumbers(type);
 
         var q = db.Table<MyNumbersEntity>();
@@ -131,24 +138,16 @@ public static class DatabaseService
             return null;
         }
 
-        string[] listOfNumbersInString = numbersFromDB.numbers.Split(";");
-
-        foreach (string number in listOfNumbersInString)
-        {
-            if (number != "")
-            {
-                extractedNumbers.Add(int.Parse(number.Replace(";", "").Trim()));
-            }
-        }
+        MyNumbersPOCO numbersPOCO = MyNumberMapper.toPOCO(numbersFromDB);
 
         int numberOfNumbers = type == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
 
-        for (int i = (page - 1) * numberOfNumbers; i < Math.Min(page * numberOfNumbers, extractedNumbers.Count); i++)
+        for (int i = (page - 1) * numberOfNumbers; i < Math.Min(page * numberOfNumbers, numbersPOCO.numbers.Count); i++)
         {
-            returnable.AppendNumber(extractedNumbers[i]);
+            returnable.AppendNumber(numbersPOCO.numbers[i]);
         }
 
-        returnable.MaxNumberOfElements = extractedNumbers.Count;
+        returnable.MaxNumberOfElements = numbersPOCO.numbers.Count;
 
         return returnable;
     }
