@@ -12,6 +12,7 @@
 
     <VerticalStackLayout HorizontalOptions="Center" 
                          Margin="10">
+        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
         <VerticalStackLayout HorizontalOptions="Center"
                              Margin="10">
             <Label Text="Get to the webpage" FontSize="Large"/>

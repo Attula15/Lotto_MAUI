@@ -43,6 +43,9 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private int currentPage = 0;
 
+    [ObservableProperty]
+    private bool isLoading = false;
+
     public DrawPageViewModel() 
     {
         drawnNumbers = new List<int>();
@@ -52,6 +55,8 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public void drawNumbers()
     {
+        IsLoading = true;
+        
         Communication = "";
         if (Choosen == 0)
         {
@@ -72,6 +77,8 @@ public partial class DrawPageViewModel : ObservableObject
         numberGenerator.Join();
 
         IsDrawButtonEnabled = true;
+        
+        IsLoading = false;
     }
 
     private void drawNumberThread()
@@ -166,6 +173,9 @@ public partial class DrawPageViewModel : ObservableObject
     [RelayCommand]
     public async Task saveTheNumbers()
     {
+        IsLoading = true;
+        IsDrawButtonEnabled = false;
+
         Communication = "";
         if (drawnNumbers.Count == 0)
         {
@@ -176,6 +186,9 @@ public partial class DrawPageViewModel : ObservableObject
         await DatabaseService.AddNumber(drawnNumbers, IsCollection5Visible ? 5 : 6);
 
         Communication = "Save completed";
+
+        IsLoading = false;
+        IsDrawButtonEnabled = true;
     }
     public void Disappear()
     {

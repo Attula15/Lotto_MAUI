@@ -15,9 +15,7 @@ public partial class MainPage : ContentPage
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-		viewmodel.getPrizes();
-		//viewmodel.GetMyNumbers();
-		viewmodel.GetWinningNumbers();
+		viewmodel.Init();
     }
 }
 

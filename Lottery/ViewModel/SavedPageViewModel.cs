@@ -12,13 +12,18 @@ public partial class SavedPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<MyDrawableNumber> displayedLottery6Numbers = new ObservableCollection<MyDrawableNumber>();
 
+    [ObservableProperty]
+    private bool isLoading = false;
+
     public async void LoadNumbersIntoDrawnList()
     {
-        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
-        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
+        IsLoading = true;
 
         DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumber>();
         DisplayedLottery6Numbers = new ObservableCollection<MyDrawableNumber>();
+
+        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
+        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
 
         if (lottery5Numbers != null)
         {
@@ -35,5 +40,7 @@ public partial class SavedPageViewModel : ObservableObject
                 DisplayedLottery6Numbers.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
             }
         }
+
+        IsLoading = false;
     }
 }

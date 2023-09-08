@@ -9,17 +9,18 @@
              xmlns:model="clr-namespace:Lottery.Model"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <VerticalStackLayout>
+        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
         <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
         <Label Text="Lottery 5" HorizontalOptions="Center"/>
         <CollectionView ItemsSource="{Binding DisplayedLottery5Numbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="300"
+                            MaximumWidthRequest="225"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="4"/>
+                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -31,12 +32,12 @@
         <CollectionView ItemsSource="{Binding DisplayedLottery6Numbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="300"
+                            MaximumWidthRequest="275"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4"/>
+                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -55,6 +56,7 @@
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="275"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

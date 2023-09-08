@@ -24,6 +24,9 @@ public partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<MyDrawableNumber> lottery6WinningNumbers;
 
+    [ObservableProperty]
+    private bool isLoading = false;
+
     private readonly IRestAPI restAPI;
 
     public MainPageViewModel(IRestAPI rest)
@@ -31,7 +34,15 @@ public partial class MainPageViewModel : ObservableObject
         restAPI = rest;
     }
 
-    public async void getPrizes()
+    public async void Init()
+    {
+        IsLoading = true;
+        await getPrizes();
+        await GetWinningNumbers();
+        IsLoading = false;
+    }
+
+    private async Task getPrizes()
     {
         PrizesHolderEntity result = null;
         try
@@ -61,7 +72,6 @@ public partial class MainPageViewModel : ObservableObject
             Prize5 = "Could not connect to the server";
             Prize6 = "Could not connect to the server";
         }
-        
     }
 
     [RelayCommand]
@@ -120,12 +130,12 @@ public partial class MainPageViewModel : ObservableObject
         }
     }*/
 
-    public async void GetWinningNumbers()
+    private async Task GetWinningNumbers()
     {
         WinningNumbersEntity winning5 = await restAPI.GetWinningnumbers("5");
         WinningNumbersEntity winning6 = await restAPI.GetWinningnumbers("6");
         string[] listOfNumbers;
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
             if (i % 2 == 0)
             {
@@ -156,8 +166,7 @@ public partial class MainPageViewModel : ObservableObject
             {
                 Lottery6WinningNumbers = temp;
             }
-            Debug.WriteLine("The listOfNumbers: " + listOfNumbers);
-        }        
+        }
     }
 }
 
