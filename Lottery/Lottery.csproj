@@ -53,6 +53,7 @@
 	  <None Remove="Resources\Images\green_circle.png" />
 	  <None Remove="Resources\Images\home.svg" />
 	  <None Remove="Resources\Images\layered_waves_haikei.svg" />
+	  <None Remove="Resources\Images\layered_waves_haikei_1080x2340.png" />
 	  <None Remove="Resources\Images\layered_waves_haikei_desktop.svg" />
 	  <None Remove="Resources\Images\ticket.svg" />
 	</ItemGroup>

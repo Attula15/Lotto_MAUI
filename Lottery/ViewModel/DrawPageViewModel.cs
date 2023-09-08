@@ -177,21 +177,6 @@ public partial class DrawPageViewModel : ObservableObject
 
         Communication = "Save completed";
     }
-
-    [RelayCommand]
-    public async Task show()
-    {
-        MyNumbersPOCO mynumbers = await DatabaseService.GetLatestNumbers(drawnChoosen);
-        if(mynumbers != null && mynumbers.numbers != null)
-        {
-            Communication = mynumbers.numbers.ToString();
-        }
-        else
-        {
-            Communication = "Database is empty";
-        }
-    }
-
     public void Disappear()
     {
         ShownNumbers = new ObservableCollection<MyDrawableNumber>();

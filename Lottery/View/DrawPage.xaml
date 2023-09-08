@@ -6,7 +6,8 @@
              x:DataType="viewmodel:DrawPageViewModel"
              xmlns:helper="clr-namespace:Lottery.HelperView"
              xmlns:model="clr-namespace:Lottery.Model"
-             Title="DrawPage">
+             Title="DrawPage"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <VerticalStackLayout Spacing="15">
         <Label 
             Text="{Binding Communication}"
@@ -35,7 +36,6 @@
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="225"
-                            VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection5Visible}"
                             x:Name="MyMainCollection5">
@@ -53,7 +53,6 @@
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="275"
-                            VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection6Visible}"
                             x:Name="MyMainCollection6">
@@ -76,7 +75,6 @@
                 Command="{Binding saveTheNumbersCommand}"
                 IsEnabled="{Binding IsDrawButtonEnabled}"
                 WidthRequest="300"/>
-        <Button Text="Show" Command="{Binding showCommand}"/>
     </VerticalStackLayout>
 
 
