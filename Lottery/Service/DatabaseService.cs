@@ -37,7 +37,6 @@ public static class DatabaseService
     {
         await Init();
 
-        Debug.WriteLine("Saving started");
         DateTime currentDate = DateTime.Now;
         string numbersInList = "";
 
@@ -46,7 +45,6 @@ public static class DatabaseService
         {
             numbersInList = numbersInList + listOfNumbers[i] + ";";
         }
-        Debug.WriteLine(numbersInList);
 
         try
         {
@@ -55,10 +53,6 @@ public static class DatabaseService
             insertable.numbers = numbersInList;
             insertable.date = currentDate;
             insertable.numberType = type;
-            Debug.WriteLine("Database-ből: " + insertable.numbers.ToString());
-            Debug.WriteLine("Database-ből: " + insertable.date);
-            Debug.WriteLine("Database-ből: " + insertable.id);
-            Debug.WriteLine("Database-ből: " + insertable.numberType);
 
             await db.InsertAsync(insertable);
         }

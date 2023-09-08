@@ -34,13 +34,13 @@
         <CollectionView ItemsSource="{Binding ShownNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="275"
+                            MaximumWidthRequest="225"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection5Visible}"
                             x:Name="MyMainCollection5">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="4" HorizontalItemSpacing="2"/>
+                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">
@@ -52,13 +52,13 @@
         <CollectionView ItemsSource="{Binding ShownNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
-                            MaximumWidthRequest="300"
+                            MaximumWidthRequest="275"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             IsVisible="{Binding IsCollection6Visible}"
                             x:Name="MyMainCollection6">
             <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="4"/>
+                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyDrawableNumber">

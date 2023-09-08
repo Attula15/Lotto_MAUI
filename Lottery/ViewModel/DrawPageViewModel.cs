@@ -178,7 +178,7 @@ public partial class DrawPageViewModel : ObservableObject
             return;
         }
 
-        await DatabaseService.AddNumber(drawnNumbers, drawnChoosen);
+        await DatabaseService.AddNumber(drawnNumbers, IsCollection5Visible ? 5 : 6);
 
         Communication = "Save completed";
     }
