@@ -32,10 +32,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\play_store_512.png" Color="#512BD4" BaseSize="512,512"/>
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\clover2.png" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\maui_logo.png" Color="#001220" BaseSize="512,512" />
    
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
