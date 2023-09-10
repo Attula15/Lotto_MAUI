@@ -25,21 +25,28 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
         MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
 
+        ObservableCollection<MyDrawableNumber> temp5 = new ObservableCollection<MyDrawableNumber>();
+        ObservableCollection<MyDrawableNumber> temp6 = new ObservableCollection<MyDrawableNumber>();
+
         if (lottery5Numbers != null)
         {
             for (int i = 0; i < lottery5Numbers.numbers.Count; i++)
             {
-                DisplayedLottery5Numbers.Add(new MyDrawableNumber(lottery5Numbers.numbers[i], false));
+                temp5.Add(new MyDrawableNumber(lottery5Numbers.numbers[i], false));
             }
         }
+
+        DisplayedLottery5Numbers = temp5;
 
         if (lottery6Numbers != null)
         {
             for (int i = 0; i < lottery6Numbers.numbers.Count; i++)
             {
-                DisplayedLottery6Numbers.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
+                temp6.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
             }
         }
+
+        DisplayedLottery6Numbers = temp6;
 
         IsLoading = false;
     }

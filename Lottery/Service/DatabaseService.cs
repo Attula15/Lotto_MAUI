@@ -25,6 +25,7 @@ public static class DatabaseService
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
+            await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
             await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
