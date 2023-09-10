@@ -115,7 +115,7 @@ public static class DatabaseService
             return null;
         }
 
-        return MyNumberMapper.toPOCO(dataFromDB);
+        return MyNumberMapper.toPOCOFromDBEntity(dataFromDB);
     }
     
 
@@ -132,7 +132,7 @@ public static class DatabaseService
             return null;
         }
 
-        MyNumbersPOCO numbersPOCO = MyNumberMapper.toPOCO(numbersFromDB);
+        MyNumbersPOCO numbersPOCO = MyNumberMapper.toPOCOFromDBEntity(numbersFromDB);
 
         int numberOfNumbers = type == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
 

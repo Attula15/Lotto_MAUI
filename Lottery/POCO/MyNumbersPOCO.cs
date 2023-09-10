@@ -3,10 +3,10 @@ namespace Lottery.POCO;
 
 public class MyNumbersPOCO
 {
-    public int id { get; set; }
-    public DateTime date { get; set; }
+    public int? id { get; set; }
+    public DateTime? date { get; set; }
 
-    public int numberType { get; set; }
+    public int? numberType { get; set; }
 
     public List<int> numbers { get; set; }
 
@@ -16,6 +16,14 @@ public class MyNumbersPOCO
         this.date = date;
         this.numberType = numberType;
         this.numbers = numbers;
+    }
+
+    public MyNumbersPOCO()
+    {
+        this.id = null;
+        this.date = null;
+        this.numberType = null;
+        this.numbers = new List<int>();
     }
 }
 

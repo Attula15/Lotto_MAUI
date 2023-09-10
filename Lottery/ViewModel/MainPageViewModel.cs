@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
 using Lottery.Model;
+using Lottery.POCO;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -45,14 +46,10 @@ public partial class MainPageViewModel : ObservableObject
     private async Task getPrizes()
     {
         PrizesHolderEntity result = null;
-        try
-        {
-            result = await restAPI.GetPrizes();
-        }
-        catch (Exception ex){
-            Debug.WriteLine(ex);
-        }
-        if(result != null)
+
+        result = await restAPI.GetPrizes();
+        
+        if(result.prizes.Count != 0)
         {
             List<PrizesEntity> prizes = result.prizes;
             for (int i = 0; i < prizes.Count; i++)
@@ -88,74 +85,27 @@ public partial class MainPageViewModel : ObservableObject
         }
     }
 
-    /*
-    [RelayCommand]
-    public async void GetMyNumbers()
-    {
-        MyNumbers MyNumbers = await DatabaseService.GetLatestNumbers();
-        if(MyNumbers == null)
-        {
-            return;
-        }
-        string NumbersInString = MyNumbers.numbers;
-        Debug.WriteLine("MyNumberType: " + MyNumbers.numberType);
-        if (MyNumbers.numberType == 5)
-        {
-            string[] listOfNumbers = NumbersInString.Split(';');
-            List<int> ints = new List<int>();
-            
-            foreach(string number in listOfNumbers){
-                string cleanNumber = number.Replace(";", "");
-                Debug.WriteLine(cleanNumber);
-                if(cleanNumber != "")
-                {
-                    ints.Add(int.Parse(cleanNumber));
-                }
-            }
-
-            ObservableCollection<MyDrawableNumbers> temp = new ObservableCollection<MyDrawableNumbers>();
-            MyDrawableNumbers rowOfNumbers = new MyDrawableNumbers();
-            for(int i = 0; i < ints.Count; i++)
-            {
-                rowOfNumbers.Append(new MyDrawableNumber(ints[i], false));
-                if(rowOfNumbers.Size() % 5 == 0)
-                {
-                    temp.Add(rowOfNumbers);
-                    rowOfNumbers = new MyDrawableNumbers();
-                }
-            }
-            
-            this.MyNumbers = temp;
-            Debug.WriteLine("The listOfNumbers: " + listOfNumbers);
-        }
-    }*/
-
     private async Task GetWinningNumbers()
     {
-        WinningNumbersEntity winning5 = await restAPI.GetWinningnumbers("5");
-        WinningNumbersEntity winning6 = await restAPI.GetWinningnumbers("6");
-        string[] listOfNumbers;
+        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers("5");
+        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers("6");
+        List<int> listOfNumbers;
         for (int i = 0; i < 2; i++)
         {
             if (i % 2 == 0)
             {
-                listOfNumbers = winning5.numbers.Split(';');
+                listOfNumbers = winning5.numbers;
             }
             else
             {
-                listOfNumbers = winning6.numbers.Split(';');
+                listOfNumbers = winning6.numbers;
             }
 
             ObservableCollection<MyDrawableNumber> temp = new ObservableCollection<MyDrawableNumber>();
 
-            foreach (string number in listOfNumbers)
+            foreach (int number in listOfNumbers)
             {
-                string cleanNumber = number.Replace(";", "");
-                cleanNumber = cleanNumber.Trim();
-                if (cleanNumber != string.Empty)
-                {
-                    temp.Add(new MyDrawableNumber(int.Parse(cleanNumber), false));
-                }
+                temp.Add(new MyDrawableNumber(number, false));
             }
 
             if (i % 2 == 0)

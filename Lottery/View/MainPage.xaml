@@ -52,9 +52,13 @@
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
+                            MinimumWidthRequest="250"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
+            <CollectionView.EmptyView>
+                <Label Text="There is nothing to show"/>
+            </CollectionView.EmptyView>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="5"/>
             </CollectionView.ItemsLayout>
@@ -71,9 +75,13 @@
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
+                            MinimumWidthRequest="250"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
+            <CollectionView.EmptyView>
+                <Label Text="There is nothing to show"/>
+            </CollectionView.EmptyView>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="6"/>
             </CollectionView.ItemsLayout>
