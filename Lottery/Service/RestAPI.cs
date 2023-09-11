@@ -10,10 +10,6 @@ namespace Lottery.Service;
 public class RestAPI : IRestAPI
 {
     private const string baseURL = "http://osiris.myddns.me:8080/api";
-    private const string user = "nepthys";
-    private const string passwd = "Hernita5";
-    private const string authenticationString = $"{user}:{passwd}";
-    private string base64String = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(authenticationString));
     
     public RestAPI() 
     {}
@@ -22,7 +18,9 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64String);
+        string token = await DatabaseService.GetLatestToken();
+        Debug.WriteLine("Used token: " + token);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
 
         try
@@ -53,7 +51,8 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", base64String);
+        string token = await DatabaseService.GetLatestToken();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         PrizesEntity prize5;
         PrizesEntity prize6;

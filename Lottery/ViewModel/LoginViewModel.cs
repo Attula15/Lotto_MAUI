@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Lottery.Service;
 using System.Diagnostics;
 using System.Net.Http.Json;
-using Windows.Security.Authentication.Web.Core;
-using Windows.System.UserProfile;
-using static System.Net.WebRequestMethods;
 
 namespace Lottery.ViewModel;
 public partial class LoginViewModel : ObservableObject
@@ -35,14 +33,17 @@ public partial class LoginViewModel : ObservableObject
 
         HttpContent content = new FormUrlEncodedContent(bodyData);
         HttpResponseMessage response = await client.PostAsync("", content);
-        if(response.IsSuccessStatusCode)
+        Debug.WriteLine("Username: " + Username + " Password: " + Password);
+        Debug.WriteLine(response.Content);
+        if (response.IsSuccessStatusCode)
         {
             responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
-            KeyCloakResponsePOCO KeyCloakResponseGLOBAL = responseJson;
+            await DatabaseService.AddToken(responseJson.access_token);
             App.Current.MainPage = new AppShell();
         }
         else
         {
+            Debug.WriteLine("Status code: " + response.StatusCode);
             Communication = "Wrong username or password!";
         }
     }
