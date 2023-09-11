@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Lottery.View.MainPage"
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
-             xmlns:model="clr-namespace:Lottery.Model"
+             xmlns:model="clr-namespace:Lottery.POCO"
              xmlns:helper="clr-namespace:Lottery.HelperView"
              x:DataType="viewmodel:MainPageViewModel"
              Title="Main menu"
@@ -63,7 +63,7 @@
                 <GridItemsLayout Orientation="Vertical" Span="5"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumber">
+                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
                     <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -86,7 +86,7 @@
                 <GridItemsLayout Orientation="Vertical" Span="6"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumber">
+                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
                     <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

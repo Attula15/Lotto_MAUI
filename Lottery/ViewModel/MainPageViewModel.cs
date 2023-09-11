@@ -2,10 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
-using Lottery.Model;
 using Lottery.POCO;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace Lottery.ViewModel;
 
@@ -21,9 +19,9 @@ public partial class MainPageViewModel : ObservableObject
     private string prize6;
 
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumber> lottery5WinningNumbers;
+    private ObservableCollection<MyDrawableNumberPOCO> lottery5WinningNumbers;
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumber> lottery6WinningNumbers;
+    private ObservableCollection<MyDrawableNumberPOCO> lottery6WinningNumbers;
 
     [ObservableProperty]
     private bool isLoading = false;
@@ -45,7 +43,7 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task getPrizes()
     {
-        PrizesHolderEntity result = null;
+        PrizesHolderPOCO result = null;
 
         result = await restAPI.GetPrizes();
         
@@ -101,11 +99,11 @@ public partial class MainPageViewModel : ObservableObject
                 listOfNumbers = winning6.numbers;
             }
 
-            ObservableCollection<MyDrawableNumber> temp = new ObservableCollection<MyDrawableNumber>();
+            ObservableCollection<MyDrawableNumberPOCO> temp = new ObservableCollection<MyDrawableNumberPOCO>();
 
             foreach (int number in listOfNumbers)
             {
-                temp.Add(new MyDrawableNumber(number, false));
+                temp.Add(new MyDrawableNumberPOCO(number, false));
             }
 
             if (i % 2 == 0)

@@ -6,7 +6,7 @@
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:SavedPageViewModel"
              xmlns:helper="clr-namespace:Lottery.HelperView"
-             xmlns:model="clr-namespace:Lottery.Model"
+             xmlns:model="clr-namespace:Lottery.POCO"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <VerticalStackLayout>
         <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
@@ -23,7 +23,7 @@
                 <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumber">
+                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
                     <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -40,7 +40,7 @@
                 <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumber">
+                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
                     <helper:MyNumber NumberTitle="{Binding Number}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

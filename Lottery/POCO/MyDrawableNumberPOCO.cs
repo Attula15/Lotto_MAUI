@@ -1,11 +1,11 @@
 ﻿
-namespace Lottery.Model;
-public class MyDrawableNumber
+namespace Lottery.POCO;
+public class MyDrawableNumberPOCO
 {
     public int Number { get; set; }
     public bool IsDrawn { get; set; }
 
-    public MyDrawableNumber(int number, bool isDrawn)
+    public MyDrawableNumberPOCO(int number, bool isDrawn)
     {
         Number = number;
         IsDrawn = isDrawn;

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using Lottery.Model;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using Lottery.Service;
@@ -14,7 +13,7 @@ public partial class DrawPageViewModel : ObservableObject
     private int choosen = 0;
 
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumber> shownNumbers;
+    private ObservableCollection<MyDrawableNumberPOCO> shownNumbers;
 
     //[ObservableProperty]
     //private GridItemsLayout collectionViewItemsLayout;
@@ -97,7 +96,7 @@ public partial class DrawPageViewModel : ObservableObject
 
         int number;
 
-        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
+        ShownNumbers = new ObservableCollection<MyDrawableNumberPOCO>();
         drawnChoosen = Choosen;
         /*
         if(drawnChoosen == 5)
@@ -142,7 +141,7 @@ public partial class DrawPageViewModel : ObservableObject
         }
         for(int i = 0; i < drawnNumbers.Count; i++)
         {
-            ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+            ShownNumbers.Add(new MyDrawableNumberPOCO(drawnNumbers[i], false));
         }
         CurrentPage = 1;
     }
@@ -192,7 +191,7 @@ public partial class DrawPageViewModel : ObservableObject
     }
     public void Disappear()
     {
-        ShownNumbers = new ObservableCollection<MyDrawableNumber>();
+        ShownNumbers = new ObservableCollection<MyDrawableNumberPOCO>();
         Communication = "";
     }
 
@@ -202,7 +201,7 @@ public partial class DrawPageViewModel : ObservableObject
         {
             for (int i = 0; i < drawnNumbers.Count; i++)
             {
-                ShownNumbers.Add(new MyDrawableNumber(drawnNumbers[i], false));
+                ShownNumbers.Add(new MyDrawableNumberPOCO(drawnNumbers[i], false));
             }
         }
     }

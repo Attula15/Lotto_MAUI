@@ -49,7 +49,7 @@ public class RestAPI : IRestAPI
         }
     }
 
-    public async Task<PrizesHolderEntity> GetPrizes()
+    public async Task<PrizesHolderPOCO> GetPrizes()
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
@@ -57,7 +57,7 @@ public class RestAPI : IRestAPI
 
         PrizesEntity prize5;
         PrizesEntity prize6;
-        PrizesHolderEntity returnable = new PrizesHolderEntity();
+        PrizesHolderPOCO returnable = new PrizesHolderPOCO();
 
         try
         {

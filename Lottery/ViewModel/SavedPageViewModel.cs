@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Lottery.Model;
 using Lottery.POCO;
 using Lottery.Service;
 using System.Collections.ObjectModel;
@@ -8,9 +7,9 @@ namespace Lottery.ViewModel;
 public partial class SavedPageViewModel : ObservableObject
 {
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumber> displayedLottery5Numbers = new ObservableCollection<MyDrawableNumber>();
+    private ObservableCollection<MyDrawableNumberPOCO> displayedLottery5Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
     [ObservableProperty]
-    private ObservableCollection<MyDrawableNumber> displayedLottery6Numbers = new ObservableCollection<MyDrawableNumber>();
+    private ObservableCollection<MyDrawableNumberPOCO> displayedLottery6Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
 
     [ObservableProperty]
     private bool isLoading = false;
@@ -19,20 +18,20 @@ public partial class SavedPageViewModel : ObservableObject
     {
         IsLoading = true;
 
-        DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumber>();
-        DisplayedLottery6Numbers = new ObservableCollection<MyDrawableNumber>();
+        DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
+        DisplayedLottery6Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
 
         MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
         MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
 
-        ObservableCollection<MyDrawableNumber> temp5 = new ObservableCollection<MyDrawableNumber>();
-        ObservableCollection<MyDrawableNumber> temp6 = new ObservableCollection<MyDrawableNumber>();
+        ObservableCollection<MyDrawableNumberPOCO> temp5 = new ObservableCollection<MyDrawableNumberPOCO>();
+        ObservableCollection<MyDrawableNumberPOCO> temp6 = new ObservableCollection<MyDrawableNumberPOCO>();
 
         if (lottery5Numbers != null)
         {
             for (int i = 0; i < lottery5Numbers.numbers.Count; i++)
             {
-                temp5.Add(new MyDrawableNumber(lottery5Numbers.numbers[i], false));
+                temp5.Add(new MyDrawableNumberPOCO(lottery5Numbers.numbers[i], false));
             }
         }
 
@@ -42,7 +41,7 @@ public partial class SavedPageViewModel : ObservableObject
         {
             for (int i = 0; i < lottery6Numbers.numbers.Count; i++)
             {
-                temp6.Add(new MyDrawableNumber(lottery6Numbers.numbers[i], false));
+                temp6.Add(new MyDrawableNumberPOCO(lottery6Numbers.numbers[i], false));
             }
         }
 

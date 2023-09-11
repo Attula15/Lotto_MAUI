@@ -32,7 +32,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\play_store_512.png" Color="#512BD4" BaseSize="512,512"/>
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\play_store_512.png" Color="#512BD4" BaseSize="512,512" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\maui_logo.png" Color="#001220" BaseSize="512,512" />
@@ -82,6 +82,10 @@
 	  <MauiXaml Update="View\SavedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Model\" />
 	</ItemGroup>
 
 </Project>
