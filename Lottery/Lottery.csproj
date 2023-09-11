@@ -56,6 +56,7 @@
 	  <None Remove="Resources\Images\layered_waves_haikei_1080x2340.png" />
 	  <None Remove="Resources\Images\layered_waves_haikei_desktop.svg" />
 	  <None Remove="Resources\Images\ticket.svg" />
+	  <None Remove="Resources\Images\white_person.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -79,13 +80,12 @@
 	  <MauiXaml Update="View\DrawPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\SavedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Model\" />
 	</ItemGroup>
 
 </Project>

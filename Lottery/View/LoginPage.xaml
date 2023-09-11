@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.LoginPage"
+             Title="LoginPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:LoginViewModel"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png">
+    <VerticalStackLayout Spacing="10" VerticalOptions="Center">
+        <Grid>
+            <Image Source="white_person.png" MaximumHeightRequest="100" MaximumWidthRequest="100"/>
+
+            <Ellipse Stroke="{StaticResource LotteryLightGreen}"
+                 StrokeThickness="4"
+                 WidthRequest="100" 
+                 HeightRequest="100"/>
+        </Grid>
+        
+        <Entry Placeholder="Username" PlaceholderColor="Gray" MaximumWidthRequest="300" Text="{Binding Username}"/>
+        <Entry Placeholder="Password" PlaceholderColor="Gray" IsPassword="True" MaximumWidthRequest="300" Text="{Binding Password}"/>
+        <Button Text="Login" Command="{Binding LoginCommand}" MaximumWidthRequest="300"/>
+        <Label Text="{Binding Communication}" FontSize="Medium" HorizontalTextAlignment="Center"/>
+    </VerticalStackLayout>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>
