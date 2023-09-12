@@ -55,6 +55,7 @@
 	  <None Remove="Resources\Images\layered_waves_haikei.svg" />
 	  <None Remove="Resources\Images\layered_waves_haikei_1080x2340.png" />
 	  <None Remove="Resources\Images\layered_waves_haikei_desktop.svg" />
+	  <None Remove="Resources\Images\logout.svg" />
 	  <None Remove="Resources\Images\ticket.svg" />
 	  <None Remove="Resources\Images\white_person.png" />
 	</ItemGroup>

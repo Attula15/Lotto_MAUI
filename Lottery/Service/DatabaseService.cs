@@ -36,12 +36,13 @@ public static class DatabaseService
         }
     }
 
-    public static async Task AddToken(string token)
+    public static async Task AddToken(string token, string refreshtoken)
     {
         await Init();
 
         TokenEntity tokenEntity = new TokenEntity();
         tokenEntity.Token = token;
+        tokenEntity.RefreshToken = refreshtoken;
         await db.InsertAsync(tokenEntity);
     }
 
@@ -50,6 +51,13 @@ public static class DatabaseService
         var q = await db.Table<TokenEntity>().OrderByDescending(x => x.Id).FirstOrDefaultAsync();
 
         return q.Token;
+    }
+
+    public static async Task<string> GetLatestRefreshToken()
+    {
+        var q = await db.Table<TokenEntity>().OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+
+        return q.RefreshToken;
     }
 
     public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)

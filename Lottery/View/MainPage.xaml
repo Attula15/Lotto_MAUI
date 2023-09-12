@@ -9,14 +9,16 @@
              Title="Main menu"
              NavigatedTo="ContentPage_NavigatedTo"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
-
-    <VerticalStackLayout HorizontalOptions="Center" 
-                         Margin="10">
-        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
-        <VerticalStackLayout HorizontalOptions="Center"
+    <Grid ColumnDefinitions="15*, 70*, 15*">
+        <VerticalStackLayout 
+                            HorizontalOptions="Center" 
+                            Margin="10"
+                            Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <VerticalStackLayout HorizontalOptions="Center"
                              Margin="10">
-            <Label Text="Get to the webpage" FontSize="Large"/>
-            <Button 
+                <Label Text="Get to the webpage" FontSize="Large"/>
+                <Button 
                 x:Name="myWButton"
                 ImageSource="globe.png" 
                     MinimumWidthRequest="100"
@@ -26,29 +28,29 @@
                     Padding="0"
                     HorizontalOptions="Center"
                     Command="{Binding OpenBrowserCommand}"/>
-        </VerticalStackLayout>
-        <VerticalStackLayout HorizontalOptions="Center" Margin="10">
-            <Label Text="Usefull informations" HorizontalTextAlignment="Center" FontSize="Large"/>
-            <Label x:Name="HugeText" Text="If the circle is blue, then it means, that your number has been choosen" HorizontalTextAlignment="Center" MaximumWidthRequest="200"/>
-        </VerticalStackLayout>
-        <VerticalStackLayout HorizontalOptions="Center" Margin="10">
-            <Label Text="Current prizes" 
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+                <Label Text="Usefull informations" HorizontalTextAlignment="Center" FontSize="Large"/>
+                <Label x:Name="HugeText" Text="If the circle is blue, then it means, that your number has been choosen" HorizontalTextAlignment="Center" MaximumWidthRequest="200"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+                <Label Text="Current prizes" 
                    FontSize="Large" 
                    HorizontalTextAlignment="Center"/>
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Lottery 5: " HorizontalTextAlignment="Start"/>
-                <Label Text="{Binding Prize5}" HorizontalTextAlignment="End"/>
-            </HorizontalStackLayout>
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Lottery 6: " HorizontalTextAlignment="Start"/>
-                <Label Text="{Binding Prize6}" HorizontalTextAlignment="End"/>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Lottery 5: " HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding Prize5}" HorizontalTextAlignment="End"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Lottery 6: " HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding Prize6}" HorizontalTextAlignment="End"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
 
-        <Label Text="Currently winning numbers: " HorizontalOptions="Center"/>
-        <Label Text="Lottery 5" HorizontalOptions="Center"/>
+            <Label Text="Currently winning numbers: " HorizontalOptions="Center"/>
+            <Label Text="Lottery 5" HorizontalOptions="Center"/>
 
-        <CollectionView ItemsSource="{Binding Lottery5WinningNumbers}"
+            <CollectionView ItemsSource="{Binding Lottery5WinningNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
@@ -56,22 +58,22 @@
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
-            <CollectionView.EmptyView>
-                <Label Text="There is nothing to show"/>
-            </CollectionView.EmptyView>
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="5"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                    <helper:MyNumber NumberTitle="{Binding Number}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                <CollectionView.EmptyView>
+                    <Label Text="There is nothing to show"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="5"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <Label Text="Lottery 6" HorizontalOptions="Center"/>
+            <Label Text="Lottery 6" HorizontalOptions="Center"/>
 
-        <CollectionView ItemsSource="{Binding Lottery6WinningNumbers}"
+            <CollectionView ItemsSource="{Binding Lottery6WinningNumbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="300"
@@ -79,19 +81,23 @@
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
-            <CollectionView.EmptyView>
-                <Label Text="There is nothing to show"/>
-            </CollectionView.EmptyView>
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                    <helper:MyNumber NumberTitle="{Binding Number}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                <CollectionView.EmptyView>
+                    <Label Text="There is nothing to show"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="6"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
+        </VerticalStackLayout>
+    </Grid>
 
     <!--PC-->
     <VisualStateManager.VisualStateGroups>

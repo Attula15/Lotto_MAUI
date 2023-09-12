@@ -9,7 +9,7 @@
              xmlns:model="clr-namespace:Lottery.POCO"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <VerticalStackLayout>
-        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
         <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
         <Label Text="Lottery 5" HorizontalOptions="Center"/>
         <CollectionView ItemsSource="{Binding DisplayedLottery5Numbers}"

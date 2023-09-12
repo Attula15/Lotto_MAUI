@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
 using Lottery.Service;
 using Lottery.POCO;
+using Lottery.Domain;
 
 namespace Lottery.ViewModel;
 
@@ -45,9 +46,12 @@ public partial class DrawPageViewModel : ObservableObject
     [ObservableProperty]
     private bool isLoading = false;
 
-    public DrawPageViewModel() 
+    private readonly IRestAPI restAPI;
+
+    public DrawPageViewModel(IRestAPI restAPI) 
     {
         drawnNumbers = new List<int>();
+        this.restAPI = restAPI;
         //CollectionViewItemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
     }
 
@@ -183,27 +187,19 @@ public partial class DrawPageViewModel : ObservableObject
         }
 
         await DatabaseService.AddNumber(drawnNumbers, IsCollection5Visible ? 5 : 6);
+        bool success = await restAPI.uploadNumbers(drawnNumbers, IsCollection5Visible ? 5 : 6);
 
-        Communication = "Save completed";
+        if(success)
+        {
+            Communication = "Save completed";
+        }
+        else
+        {
+            Communication = "The server could not save the numbers";
+        }
 
         IsLoading = false;
         IsDrawButtonEnabled = true;
-    }
-    public void Disappear()
-    {
-        ShownNumbers = new ObservableCollection<MyDrawableNumberPOCO>();
-        Communication = "";
-    }
-
-    public void Appear()
-    {
-        if(drawnNumbers.Count != 0)
-        {
-            for (int i = 0; i < drawnNumbers.Count; i++)
-            {
-                ShownNumbers.Add(new MyDrawableNumberPOCO(drawnNumbers[i], false));
-            }
-        }
     }
 }
 

@@ -43,5 +43,6 @@
 
     <Color x:Key="LotteryDarkGreen">#1E7836</Color>
     <Color x:Key="LotteryLightGreen">#35DF59</Color>
+    <Color x:Key="LotteryBackground">#001220</Color>
 
 </ResourceDictionary>

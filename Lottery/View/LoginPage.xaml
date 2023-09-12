@@ -6,21 +6,25 @@
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:LoginViewModel"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
-    <VerticalStackLayout Spacing="10" VerticalOptions="Center">
-        <Grid>
-            <Image Source="white_person.png" MaximumHeightRequest="100" MaximumWidthRequest="100"/>
+    <Grid ColumnDefinitions="10*, 80*, 10*">
+        <VerticalStackLayout Spacing="10" VerticalOptions="Center" Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <Grid>
+                <Image Source="white_person.png" MaximumHeightRequest="100" MaximumWidthRequest="100"/>
 
-            <Ellipse Stroke="{StaticResource LotteryLightGreen}"
+                <Ellipse Stroke="{StaticResource LotteryLightGreen}"
                  StrokeThickness="4"
                  WidthRequest="100" 
                  HeightRequest="100"/>
-        </Grid>
-        
-        <Entry Placeholder="Username" PlaceholderColor="Gray" MaximumWidthRequest="300" Text="{Binding Username}"/>
-        <Entry Placeholder="Password" PlaceholderColor="Gray" IsPassword="True" MaximumWidthRequest="300" Text="{Binding Password}"/>
-        <Button Text="Login" Command="{Binding LoginCommand}" MaximumWidthRequest="300"/>
-        <Label Text="{Binding Communication}" FontSize="Medium" HorizontalTextAlignment="Center"/>
-    </VerticalStackLayout>
+            </Grid>
+
+            <Entry x:Name="username" Placeholder="Username" PlaceholderColor="Gray" MaximumWidthRequest="200" Text="{Binding Username}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
+            <Entry x:Name="passord" Placeholder="Password" PlaceholderColor="Gray" IsPassword="True" MaximumWidthRequest="200" Text="{Binding Password}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
+            <Button x:Name="login_button" Text="Login" Command="{Binding LoginCommand}" MaximumWidthRequest="200" IsEnabled="{Binding IsEnabled}"/>
+            <Label Text="{Binding Communication}" FontSize="Medium" MaximumWidthRequest="200" HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Grid>
+    
 
     <!--PC-->
     <VisualStateManager.VisualStateGroups>
@@ -31,6 +35,9 @@
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="username" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="passord" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="login_button" Property="MaximumWidthRequest" Value="300"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

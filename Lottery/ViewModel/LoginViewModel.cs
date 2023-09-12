@@ -15,11 +15,19 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private string communication = "";
 
+    [ObservableProperty]
+    private bool isLoading = false;
+
+    [ObservableProperty]
+    private bool isEnabled = true;
+
     private static string url = "http://osiris.myddns.me:8015/realms/LotteryKeycloak/protocol/openid-connect/token";
 
     [RelayCommand]
     private async void Login()
     {
+        IsLoading = true;
+        IsEnabled = false;
         Communication = "";
         KeyCloakResponsePOCO responseJson;
         using HttpClient client = new HttpClient();
@@ -38,7 +46,7 @@ public partial class LoginViewModel : ObservableObject
         if (response.IsSuccessStatusCode)
         {
             responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
-            await DatabaseService.AddToken(responseJson.access_token);
+            await DatabaseService.AddToken(responseJson.access_token, responseJson.refresh_token);
             App.Current.MainPage = new AppShell();
         }
         else
@@ -46,6 +54,8 @@ public partial class LoginViewModel : ObservableObject
             Debug.WriteLine("Status code: " + response.StatusCode);
             Communication = "Wrong username or password!";
         }
+        IsEnabled = true;
+        IsLoading = false;
     }
 }
 

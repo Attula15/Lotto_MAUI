@@ -9,7 +9,7 @@
              Title="DrawPage"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <VerticalStackLayout Spacing="15">
-        <ActivityIndicator IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
         <Label 
             Text="{Binding Communication}"
             VerticalOptions="Center" 

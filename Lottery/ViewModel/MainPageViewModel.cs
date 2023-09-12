@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
 using Lottery.POCO;
+using Lottery.View;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Lottery.ViewModel;
 
@@ -114,6 +116,18 @@ public partial class MainPageViewModel : ObservableObject
             {
                 Lottery6WinningNumbers = temp;
             }
+        }
+    }
+
+    [RelayCommand]
+    public async void Logout()
+    {
+        bool success = await restAPI.logOut();
+
+        if(success)
+        {
+            Debug.WriteLine("Logged out");
+            App.Current.MainPage = new LoginPage();
         }
     }
 }
