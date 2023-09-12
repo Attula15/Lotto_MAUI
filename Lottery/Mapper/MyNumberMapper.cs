@@ -1,5 +1,6 @@
 ﻿using Lottery.Domain.Database.Entity;
 using Lottery.Domain.Entity;
+using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
 using System.Diagnostics;
 
@@ -34,7 +35,6 @@ public static class MyNumberMapper
 
         foreach (string number in listOfNumbersInString)
         {
-            Debug.WriteLine("Number: " + number);
             bool transformable = true;
 
             try
@@ -48,11 +48,10 @@ public static class MyNumberMapper
 
             if (transformable)
             {
-                Debug.WriteLine("Parseable: " + number.Replace(";", "").Trim());
                 extractedNumbers.Add(int.Parse(number.Replace(";", "").Trim()));
             }
         }
-        Debug.WriteLine("Extracted Numbers: " + extractedNumbers);
+
         return new MyNumbersPOCO
             (
                 entity.id,
@@ -60,6 +59,42 @@ public static class MyNumberMapper
                 entity.whichOne,
                 extractedNumbers
             );
+    }
+
+    public static MyNumbersPOCO toPOCOFromSavedNumbersPOCO(SavedNumbersPOCO saved, int whichOne)
+    {
+        if(saved == null)
+        {
+            return null;
+        }
+
+        MyNumbersPOCO returnable = new MyNumbersPOCO();
+        string[] listOfNumbersInString = saved.numbers.Split(";");
+        List<int> extractedNumbers = new List<int>();
+
+        foreach (string number in listOfNumbersInString)
+        {
+            bool transformable = true;
+
+            try
+            {
+                int.Parse(number.Replace(";", "").Trim());
+            }
+            catch (FormatException ex)
+            {
+                transformable = false;
+            }
+
+            if (transformable)
+            {
+                extractedNumbers.Add(int.Parse(number.Replace(";", "").Trim()));
+            }
+        }
+        returnable.numbers = extractedNumbers;
+        returnable.date = saved.date;
+        returnable.numberType = whichOne;
+
+        return returnable;
     }
 }
 

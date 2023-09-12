@@ -41,8 +41,6 @@ public partial class LoginViewModel : ObservableObject
 
         HttpContent content = new FormUrlEncodedContent(bodyData);
         HttpResponseMessage response = await client.PostAsync("", content);
-        Debug.WriteLine("Username: " + Username + " Password: " + Password);
-        Debug.WriteLine(response.Content);
         if (response.IsSuccessStatusCode)
         {
             responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();

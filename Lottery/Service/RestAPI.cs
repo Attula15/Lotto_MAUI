@@ -2,6 +2,7 @@
 using Lottery.Domain;
 using Lottery.Domain.Entity;
 using Lottery.Domain.RequestBody;
+using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
 using System;
 using System.Diagnostics;
@@ -24,7 +25,6 @@ public class RestAPI : IRestAPI
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
         string token = await DatabaseService.GetLatestToken();
-        Debug.WriteLine("Used token: " + token);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
 
@@ -48,6 +48,7 @@ public class RestAPI : IRestAPI
         }
         catch(Exception ex)
         {
+            Debug.WriteLine("\nException: " + ex.Message);
             return new MyNumbersPOCO();
         }
     }
@@ -70,6 +71,7 @@ public class RestAPI : IRestAPI
         }
         catch(Exception ex)
         {
+            Debug.WriteLine("\nException: " + ex.Message);
             return returnable;
         }
 
@@ -112,6 +114,7 @@ public class RestAPI : IRestAPI
         }
         catch (Exception ex)
         {
+            Debug.WriteLine("\nException: " + ex.Message);
             return false;
         }
     }
@@ -120,8 +123,6 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        //string token = await DatabaseService.GetLatestToken();
-        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         try
         {
             string refreshToken = await DatabaseService.GetLatestRefreshToken();
@@ -139,9 +140,28 @@ public class RestAPI : IRestAPI
         }
         catch(Exception ex)
         {
+            Debug.WriteLine("\nException: " + ex.Message);
             return false;
         }
 
         return true;
+    }
+
+    public async Task<SavedNumbersPOCO> getSavedNumbersFromAPI(int whichOne)
+    {
+        using HttpClient client = new HttpClient();
+        client.Timeout = TimeSpan.FromSeconds(5);
+        try
+        {
+            string token = await DatabaseService.GetLatestToken();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await client.GetFromJsonAsync<SavedNumbersPOCO>(baseURL + "/downloadNumbers/" + whichOne.ToString());
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("\nException: " + ex.Message);
+            return null;
+        }
     }
 }
