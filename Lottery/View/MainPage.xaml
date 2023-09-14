@@ -9,7 +9,7 @@
              Title="Main menu"
              NavigatedTo="ContentPage_NavigatedTo"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
-    <Grid ColumnDefinitions="15*, 70*, 15*">
+    <Grid ColumnDefinitions="10*, 80*, 10*">
         <VerticalStackLayout 
                             HorizontalOptions="Center" 
                             Margin="10"
