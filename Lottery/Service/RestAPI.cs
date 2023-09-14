@@ -27,7 +27,6 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        //string token = await DatabaseService.GetLatestToken();
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
@@ -61,7 +60,6 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        //string token = await DatabaseService.GetLatestToken();
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -73,7 +71,7 @@ public class RestAPI : IRestAPI
         {
             prize5 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize5");
             prize6 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize6");
-            Debug.WriteLine("Prize5 that is from the API: "+prize5.prize+";"+prize5.whichOne);
+            Debug.WriteLine("Prize5 that is from the API: " + prize5.prize + ";" + prize5.whichOne);
         }
         catch(Exception ex)
         {
@@ -93,7 +91,6 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        //string token = await DatabaseService.GetLatestToken();
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -132,7 +129,6 @@ public class RestAPI : IRestAPI
         client.Timeout = TimeSpan.FromSeconds(5);
         try
         {
-            //string token = await DatabaseService.GetLatestToken();
             string token = keyCloakService.GetSessionToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -151,11 +147,28 @@ public class RestAPI : IRestAPI
         client.Timeout = TimeSpan.FromSeconds(5);
         try
         {
-            //string token = await DatabaseService.GetLatestToken();
             string token = keyCloakService.GetSessionToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return await client.GetFromJsonAsync<List<PrizesEntity>>(baseURL + "/getLastYearPrize?whichOne=" + whichOne);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("\nException: " + ex.Message);
+            return null;
+        }
+    }
+
+    public async Task<List<LotteryWinnersDataPOCO>> getLatestWinnersData(int whichOne)
+    {
+        using HttpClient client = new HttpClient();
+        client.Timeout = TimeSpan.FromSeconds(5);
+        try
+        {
+            string token = keyCloakService.GetSessionToken();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await client.GetFromJsonAsync<List<LotteryWinnersDataPOCO>>(baseURL + "/getLatestWinnersData?whichOne=" + whichOne);
         }
         catch (Exception ex)
         {

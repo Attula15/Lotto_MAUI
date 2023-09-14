@@ -6,7 +6,9 @@
              xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
              x:DataType="viewmodel:DataPageViewModel"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png"
-             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui">
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             xmlns:datagridmodel="clr-namespace:Lottery.Domain.ResponseBody">
 
     <Grid ColumnDefinitions="15*, 70*, 15*">
         <ScrollView Grid.Column="1">
@@ -16,6 +18,35 @@
                 <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="200" MinimumWidthRequest="200" MaximumHeightRequest="500"/>
                 <Label Text="Lottery 6 Prizes in the last 365 days:"/>
                 <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="200" MinimumWidthRequest="200" MaximumHeightRequest="500"/>
+                <Label Text="Latest winners table:"/>
+                <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}">
+                    <dg:DataGrid.NoDataView>
+                        <Label Text="Nothing to see here"/>
+                    </dg:DataGrid.NoDataView>
+                    <dg:DataGrid.Columns>
+                        <dg:DataGridColumn Title="Number of hit numbers">
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                    <Label Text="{Binding winnerType}"/>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                        <dg:DataGridColumn Title="Number of winners">
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                    <Label Text="{Binding numberOfWinners}"/>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                        <dg:DataGridColumn Title="Prize">
+                            <dg:DataGridColumn.CellTemplate>
+                                <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                    <Label Text="{Binding prize}"/>
+                                </DataTemplate>
+                            </dg:DataGridColumn.CellTemplate>
+                        </dg:DataGridColumn>
+                    </dg:DataGrid.Columns>
+                </dg:DataGrid>
             </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">

@@ -2,9 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
+using Lottery.Domain.ResponseBody;
 using Lottery.View;
 using Microcharts;
 using SkiaSharp;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace Lottery.ViewModel;
@@ -22,6 +24,10 @@ public partial class DataPageViewModel : ObservableObject
 
     [ObservableProperty]
     private bool isLoading = false;
+    [ObservableProperty]
+    private ObservableCollection<LotteryWinnersDataPOCO> latestWinnersData5Collection = new ObservableCollection<LotteryWinnersDataPOCO>();
+    [ObservableProperty]
+    private ObservableCollection<LotteryWinnersDataPOCO> latestWinnersData6Collection = new ObservableCollection<LotteryWinnersDataPOCO>();
 
     public DataPageViewModel(IRestAPI restApi, IKeyCloakService keyCloakService)
     {
@@ -38,6 +44,21 @@ public partial class DataPageViewModel : ObservableObject
         List<PrizesEntity> lastYearsPrizes5 = await restApi.getLastYearPrizes("5");
         List<PrizesEntity> lastYearsPrizes6 = await restApi.getLastYearPrizes("6");
 
+        List<LotteryWinnersDataPOCO> latestWinnersData5 = await restApi.getLatestWinnersData(5);
+        List<LotteryWinnersDataPOCO> latestWinnersData6 = await restApi.getLatestWinnersData(6);
+
+        ObservableCollection<LotteryWinnersDataPOCO> temp5 = new ObservableCollection<LotteryWinnersDataPOCO>();
+        ObservableCollection<LotteryWinnersDataPOCO> temp6 = new ObservableCollection<LotteryWinnersDataPOCO>();
+
+        for (int i = 0; i < latestWinnersData5.Count; i++) { 
+            temp5.Add(latestWinnersData5[i]);
+            temp6.Add(latestWinnersData6[i]);
+        }
+        
+        LatestWinnersData5Collection = temp5;
+        LatestWinnersData6Collection = temp6;
+
+
         List<ChartEntry> chartEntries5 = new List<ChartEntry>();
         List<ChartEntry> chartEntries6 = new List<ChartEntry>();
 
@@ -46,8 +67,8 @@ public partial class DataPageViewModel : ObservableObject
             ChartEntry newChartEntry = new ChartEntry(lastYearsPrizes5[i].prize);
             newChartEntry.Color = SKColor.Parse("#35DF59");
             newChartEntry.ValueLabelColor = SKColor.Parse("#35DF59");
-            //Debug.WriteLine(lastYearsPrizes5[i].date);
-            //newChartEntry.Label = lastYearsPrizes5[i].date.ToShortDateString();
+            Debug.WriteLine("Date: " + lastYearsPrizes5[i].date);
+            newChartEntry.Label = lastYearsPrizes5[i].date.ToShortDateString();
             newChartEntry.ValueLabel = lastYearsPrizes5[i].prize.ToString();
             chartEntries5.Add(newChartEntry);
         }
@@ -57,6 +78,7 @@ public partial class DataPageViewModel : ObservableObject
             ChartEntry newChartEntry = new ChartEntry(lastYearsPrizes6[i].prize);
             newChartEntry.Color = SKColor.Parse("#35DF59");
             newChartEntry.ValueLabelColor = SKColor.Parse("#35DF59");
+            newChartEntry.Label = lastYearsPrizes6[i].date.ToShortDateString();
             newChartEntry.ValueLabel = lastYearsPrizes6[i].prize.ToString();
             chartEntries6.Add(newChartEntry);
         }
@@ -71,7 +93,9 @@ public partial class DataPageViewModel : ObservableObject
             LabelColor = SKColor.Parse("#ffffff"),
             ValueLabelOption = ValueLabelOption.TopOfElement,
             Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
-            YAxisLinesPaint = paint
+            YAxisLinesPaint = paint,
+            LabelOrientation = Orientation.Horizontal,
+            LabelTextSize = 12,
         };
 
         Chart6 = new LineChart
@@ -84,7 +108,9 @@ public partial class DataPageViewModel : ObservableObject
             LabelColor = SKColor.Parse("#ffffff"),
             ValueLabelOption = ValueLabelOption.TopOfElement,
             Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
-            YAxisLinesPaint = paint
+            YAxisLinesPaint = paint,
+            LabelOrientation = Orientation.Horizontal,
+            LabelTextSize = 12,
         };
 
         IsLoading = false;
