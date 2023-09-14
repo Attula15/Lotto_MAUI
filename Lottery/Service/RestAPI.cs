@@ -164,4 +164,22 @@ public class RestAPI : IRestAPI
             return null;
         }
     }
+
+    public async Task<List<PrizesEntity>> getLastYearPrizes(string whichOne)
+    {
+        using HttpClient client = new HttpClient();
+        client.Timeout = TimeSpan.FromSeconds(5);
+        try
+        {
+            string token = await DatabaseService.GetLatestToken();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return await client.GetFromJsonAsync<List<PrizesEntity>>(baseURL + "/getLastYearPrize?whichOne=" + whichOne);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("\nException: " + ex.Message);
+            return null;
+        }
+    }
 }

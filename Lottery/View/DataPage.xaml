@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.DataPage"
+             Title="DataPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:DataPageViewModel"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui">
+
+    <Grid ColumnDefinitions="15*, 70*, 15*">
+        <VerticalStackLayout Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="100" MinimumWidthRequest="200" MaximumHeightRequest="200"/>
+            <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="100" MinimumWidthRequest="200" MaximumHeightRequest="200"/>
+        </VerticalStackLayout>
+    </Grid>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="charView5" Property="MaximumHeightRequest" Value="300"/>
+                    <Setter TargetName="charView6" Property="MaximumHeightRequest" Value="300"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>

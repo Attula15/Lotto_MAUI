@@ -2,7 +2,6 @@
 using Lottery.Domain.Entity;
 using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
-using System.Diagnostics;
 
 public static class MyNumberMapper
 {

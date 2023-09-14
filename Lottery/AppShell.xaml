@@ -21,6 +21,10 @@
             Icon="ticket.png">
             <ShellContent ContentTemplate="{DataTemplate views:SavedPage}" Route="SavedPage"/>
         </Tab>
+        <Tab Title="Data"
+            Icon="ticket.png">
+            <ShellContent ContentTemplate="{DataTemplate views:DataPage}" Route="DataPage"/>
+        </Tab>
     </TabBar>
 
 </Shell>

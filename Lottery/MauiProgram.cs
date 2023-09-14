@@ -1,9 +1,9 @@
 ﻿using Lottery.Domain;
-using Lottery.Domain.Database.Entity;
 using Lottery.Service;
 using Lottery.View;
 using Lottery.ViewModel;
 using Microsoft.Extensions.Logging;
+using Microcharts.Maui;
 
 namespace Lottery;
 
@@ -14,6 +14,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMicrocharts()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -33,6 +34,9 @@ public static class MauiProgram
 
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<LoginViewModel>();
+
+		builder.Services.AddTransient<DataPage>();
+		builder.Services.AddTransient<DataPageViewModel>();
 
 #if DEBUG
         builder.Logging.AddDebug();
