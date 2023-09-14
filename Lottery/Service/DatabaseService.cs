@@ -25,39 +25,13 @@ public static class DatabaseService
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
-            await db.CreateTableAsync<TokenEntity>();
             await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
             await db.DeleteAllAsync<MyNumbersEntity>();
-            await db.DeleteAllAsync<TokenEntity>();
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex + "\n\n");
         }
-    }
-
-    public static async Task AddToken(string token, string refreshtoken)
-    {
-        await Init();
-
-        TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.Token = token;
-        tokenEntity.RefreshToken = refreshtoken;
-        await db.InsertAsync(tokenEntity);
-    }
-
-    public static async Task<string> GetLatestToken()
-    {
-        var q = await db.Table<TokenEntity>().OrderByDescending(x => x.Id).FirstOrDefaultAsync();
-
-        return q.Token;
-    }
-
-    public static async Task<string> GetLatestRefreshToken()
-    {
-        var q = await db.Table<TokenEntity>().OrderByDescending(x => x.Id).FirstOrDefaultAsync();
-
-        return q.RefreshToken;
     }
 
     public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)

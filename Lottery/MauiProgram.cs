@@ -22,6 +22,7 @@ public static class MauiProgram
 			});
 
 		builder.Services.AddSingleton<IRestAPI, RestAPI>();
+		builder.Services.AddSingleton<IKeyCloakService, KeyCloakService>();
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();

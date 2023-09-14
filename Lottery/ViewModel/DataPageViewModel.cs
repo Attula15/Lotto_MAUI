@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.Entity;
+using Lottery.View;
 using Microcharts;
 using SkiaSharp;
 using System.Diagnostics;
@@ -9,6 +11,8 @@ namespace Lottery.ViewModel;
 public partial class DataPageViewModel : ObservableObject
 {
     private readonly IRestAPI restApi;
+
+    private readonly IKeyCloakService keyCloakService;
 
     [ObservableProperty]
     private Chart chart5 = new BarChart();
@@ -19,9 +23,10 @@ public partial class DataPageViewModel : ObservableObject
     [ObservableProperty]
     private bool isLoading = false;
 
-    public DataPageViewModel(IRestAPI restApi)
+    public DataPageViewModel(IRestAPI restApi, IKeyCloakService keyCloakService)
     {
         this.restApi = restApi;
+        this.keyCloakService = keyCloakService;
     }
 
     public async void LoadData()
@@ -83,5 +88,17 @@ public partial class DataPageViewModel : ObservableObject
         };
 
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    private async void Logout()
+    {
+        bool success = await keyCloakService.Logout();
+
+        if (success)
+        {
+            Debug.WriteLine("Logged out");
+            App.Current.MainPage = new LoginPage(new LoginViewModel(keyCloakService));
+        }
     }
 }

@@ -9,10 +9,17 @@
              xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui">
 
     <Grid ColumnDefinitions="15*, 70*, 15*">
-        <VerticalStackLayout Grid.Column="1">
-            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
-            <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="100" MinimumWidthRequest="200" MaximumHeightRequest="200"/>
-            <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="100" MinimumWidthRequest="200" MaximumHeightRequest="200"/>
+        <ScrollView Grid.Column="1">
+            <VerticalStackLayout>
+                <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+                <Label Text="Lottery 5 Prizes in the last 365 days:"/>
+                <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="200" MinimumWidthRequest="200" MaximumHeightRequest="500"/>
+                <Label Text="Lottery 6 Prizes in the last 365 days:"/>
+                <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="200" MinimumWidthRequest="200" MaximumHeightRequest="500"/>
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
         </VerticalStackLayout>
     </Grid>
 

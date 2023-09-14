@@ -15,16 +15,21 @@ namespace Lottery.Service;
 public class RestAPI : IRestAPI
 {
     private const string baseURL = "http://osiris.myddns.me:8080/api";
-    private const string logoutURL = "http://osiris.myddns.me:8015/realms/LotteryKeycloak/protocol/openid-connect/logout";
 
-    public RestAPI() 
-    {}
+    private IKeyCloakService keyCloakService;
+
+    public RestAPI(IKeyCloakService keyCloak)  
+    {
+        keyCloakService = keyCloak;
+    }
 
     public async Task<MyNumbersPOCO> GetWinningnumbers(string whichOne)
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        string token = await DatabaseService.GetLatestToken();
+        //string token = await DatabaseService.GetLatestToken();
+        Debug.WriteLine("Token: " + keyCloakService.GetSessionToken());
+        string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
 
@@ -57,7 +62,8 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        string token = await DatabaseService.GetLatestToken();
+        //string token = await DatabaseService.GetLatestToken();
+        string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         PrizesEntity prize5;
@@ -87,7 +93,8 @@ public class RestAPI : IRestAPI
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
-        string token = await DatabaseService.GetLatestToken();
+        //string token = await DatabaseService.GetLatestToken();
+        string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         try
@@ -119,41 +126,14 @@ public class RestAPI : IRestAPI
         }
     }
 
-    public async Task<bool> logOut()
-    {
-        using HttpClient client = new HttpClient();
-        client.Timeout = TimeSpan.FromSeconds(5);
-        try
-        {
-            string refreshToken = await DatabaseService.GetLatestRefreshToken();
-            List<KeyValuePair<string, string>> bodyData = new List<KeyValuePair<string, string>>();
-
-            bodyData.Add(new KeyValuePair<string, string>("client_id", "login-app"));
-            bodyData.Add(new KeyValuePair<string, string>("refresh_token", refreshToken));
-
-            HttpContent content = new FormUrlEncodedContent(bodyData);
-            HttpResponseMessage response = await client.PostAsync(logoutURL, content);
-            if(!response.IsSuccessStatusCode)
-            {
-                return false;
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.WriteLine("\nException: " + ex.Message);
-            return false;
-        }
-
-        return true;
-    }
-
     public async Task<SavedNumbersPOCO> getSavedNumbersFromAPI(int whichOne)
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
         try
         {
-            string token = await DatabaseService.GetLatestToken();
+            //string token = await DatabaseService.GetLatestToken();
+            string token = keyCloakService.GetSessionToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return await client.GetFromJsonAsync<SavedNumbersPOCO>(baseURL + "/downloadNumbers/" + whichOne.ToString());
@@ -171,7 +151,8 @@ public class RestAPI : IRestAPI
         client.Timeout = TimeSpan.FromSeconds(5);
         try
         {
-            string token = await DatabaseService.GetLatestToken();
+            //string token = await DatabaseService.GetLatestToken();
+            string token = keyCloakService.GetSessionToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return await client.GetFromJsonAsync<List<PrizesEntity>>(baseURL + "/getLastYearPrize?whichOne=" + whichOne);

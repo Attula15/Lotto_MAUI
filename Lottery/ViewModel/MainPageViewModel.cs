@@ -30,9 +30,12 @@ public partial class MainPageViewModel : ObservableObject
 
     private readonly IRestAPI restAPI;
 
-    public MainPageViewModel(IRestAPI rest)
+    private readonly IKeyCloakService keyCloak;
+
+    public MainPageViewModel(IRestAPI rest, IKeyCloakService keyCloak)
     {
         restAPI = rest;
+        this.keyCloak = keyCloak;
     }
 
     public async void Init()
@@ -122,12 +125,12 @@ public partial class MainPageViewModel : ObservableObject
     [RelayCommand]
     public async void Logout()
     {
-        bool success = await restAPI.logOut();
+        bool success = await keyCloak.Logout();
 
         if(success)
         {
             Debug.WriteLine("Logged out");
-            App.Current.MainPage = new LoginPage();
+            App.Current.MainPage = new LoginPage(new LoginViewModel(keyCloak));
         }
     }
 }
