@@ -170,7 +170,7 @@ public partial class DataPageViewModel : ObservableObject
             chartEntries5.Add(newChartEntry);
         }
 
-        ChartWinners5 = new DonutChart
+        ChartWinners5 = new BarChart
         {
             Entries = chartEntries5,
             BackgroundColor = SKColor.Parse("#001220"),
@@ -207,7 +207,7 @@ public partial class DataPageViewModel : ObservableObject
             chartEntries6.Add(newChartEntry);
         }
 
-        ChartWinners6 = new DonutChart
+        ChartWinners6 = new BarChart
         {
             Entries = chartEntries6,
             BackgroundColor = SKColor.Parse("#001220"),

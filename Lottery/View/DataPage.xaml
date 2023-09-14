@@ -18,85 +18,96 @@
                 <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
                 <Label Text="Lottery 6 Prizes in the last 365 days:" HorizontalOptions="Center"/>
                 <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
-                <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center"/>
-                <micro:ChartView Chart="{Binding ChartWinners5}" x:Name="chartViewWinners5" HeightRequest="150" WidthRequest="200" IsVisible="True"/>
-                
-                <Frame x:Name="dataGridFrame5" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
-                    <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
-                        <dg:DataGrid.NoDataView>
-                            <Label Text="Nothing to see here"/>
-                        </dg:DataGrid.NoDataView>
-                        <dg:DataGrid.Columns>
-                            <dg:DataGridColumn Title="Number of hit numbers">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                            <dg:DataGridColumn Title="Number of winners">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                            <dg:DataGridColumn Title="Prize">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding prize}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                        </dg:DataGrid.Columns>
-                        <dg:DataGrid.RowsBackgroundColorPalette>
-                            <dg:PaletteCollection>
-                                <Color>#1E7836</Color>
-                                <Color>#001220</Color>
-                            </dg:PaletteCollection>
-                        </dg:DataGrid.RowsBackgroundColorPalette>
-                    </dg:DataGrid>
-                </Frame>
-                
-                <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center"/>
-                <micro:ChartView Chart="{Binding ChartWinners6}" x:Name="chartViewWinners6" HeightRequest="150" WidthRequest="200" IsVisible="True"/>
-                
-                <Frame x:Name="dataGridFrame6" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
-                    <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
-                        <dg:DataGrid.NoDataView>
-                            <Label Text="Nothing to see here"/>
-                        </dg:DataGrid.NoDataView>
-                        <dg:DataGrid.Columns>
-                            <dg:DataGridColumn Title="Number of hit numbers">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                            <dg:DataGridColumn Title="Number of winners">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                            <dg:DataGridColumn Title="Prize">
-                                <dg:DataGridColumn.CellTemplate>
-                                    <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                        <Label Text="{Binding prize}" HorizontalOptions="Center"/>
-                                    </DataTemplate>
-                                </dg:DataGridColumn.CellTemplate>
-                            </dg:DataGridColumn>
-                        </dg:DataGrid.Columns>
-                        <dg:DataGrid.RowsBackgroundColorPalette>
-                            <dg:PaletteCollection>
-                                <Color>#1E7836</Color>
-                                <Color>#001220</Color>
-                            </dg:PaletteCollection>
-                        </dg:DataGrid.RowsBackgroundColorPalette>
-                    </dg:DataGrid>
-                </Frame>
+
+                <Label x:Name="chartViewWinners5Label" Text="Latest winners for Lottery 5:" HorizontalOptions="Center" IsVisible="True"/>
+                <micro:ChartView Chart="{Binding ChartWinners5}" x:Name="chartViewWinners5" MinimumHeightRequest="200" MinimumWidthRequest="200" IsVisible="True"/>
+
+                <Label x:Name="chartViewWinners6Label" Text="Latest winners for Lottery 6:" HorizontalOptions="Center" IsVisible="True"/>
+                <micro:ChartView Chart="{Binding ChartWinners6}" x:Name="chartViewWinners6" MinimumHeightRequest="200" MinimumWidthRequest="200" IsVisible="True"/>
+
+
+                <HorizontalStackLayout x:Name="PCDataGrid" IsVisible="False" HorizontalOptions="Center" Spacing="10">
+                    <VerticalStackLayout MinimumHeightRequest="210">
+                        <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center"/>
+                        
+                        <Frame x:Name="dataGridFrame5" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                            <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
+                                <dg:DataGrid.NoDataView>
+                                    <Label Text="Nothing to see here"/>
+                                </dg:DataGrid.NoDataView>
+                                <dg:DataGrid.Columns>
+                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Number of winners">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Prize">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                </dg:DataGrid.Columns>
+                                <dg:DataGrid.RowsBackgroundColorPalette>
+                                    <dg:PaletteCollection>
+                                        <Color>#1E7836</Color>
+                                        <Color>#001220</Color>
+                                    </dg:PaletteCollection>
+                                </dg:DataGrid.RowsBackgroundColorPalette>
+                            </dg:DataGrid>
+                        </Frame>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout MinimumHeightRequest="210">
+                        <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center"/>
+
+                        <Frame x:Name="dataGridFrame6" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                            <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
+                                <dg:DataGrid.NoDataView>
+                                    <Label Text="Nothing to see here"/>
+                                </dg:DataGrid.NoDataView>
+                                <dg:DataGrid.Columns>
+                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Number of winners">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Prize">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                </dg:DataGrid.Columns>
+                                <dg:DataGrid.RowsBackgroundColorPalette>
+                                    <dg:PaletteCollection>
+                                        <Color>#1E7836</Color>
+                                        <Color>#001220</Color>
+                                    </dg:PaletteCollection>
+                                </dg:DataGrid.RowsBackgroundColorPalette>
+                            </dg:DataGrid>
+                        </Frame>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
@@ -115,10 +126,13 @@
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
                     <Setter TargetName="charView5" Property="MinimumHeightRequest" Value="300"/>
                     <Setter TargetName="charView6" Property="MinimumHeightRequest" Value="300"/>
-                    <Setter TargetName="dataGridFrame5" Property="IsVisible" Value="True"/>
-                    <Setter TargetName="dataGridFrame6" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="PCDataGrid" Property="IsVisible" Value="True"/>
                     <Setter TargetName="chartViewWinners5" Property="IsVisible" Value="False"/>
                     <Setter TargetName="chartViewWinners6" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="chartViewWinners5Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="chartViewWinners6Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="dataGridFrame5" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="dataGridFrame6" Property="IsVisible" Value="True"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>

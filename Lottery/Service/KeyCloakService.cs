@@ -9,7 +9,7 @@ public class KeyCloakService : IKeyCloakService
     private static string logoutURL = "http://osiris.myddns.me:8015/realms/LotteryKeycloak/protocol/openid-connect/logout";
     private static string sessionToken { get; set; }
     private static string refreshToken { get; set; }
-    private static DateTime expireDate { get; set; }
+    private static DateTime? expireDate { get; set; }
 
     public string GetRefreshToken()
     {
@@ -69,6 +69,9 @@ public class KeyCloakService : IKeyCloakService
             {
                 return false;
             }
+            sessionToken = "";
+            refreshToken = "";
+            expireDate = null;
         }
         catch (Exception ex)
         {
