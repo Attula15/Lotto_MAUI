@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Lottery.Service;
 using Lottery.POCO;
 using Lottery.Domain;
+using Lottery.View;
 
 namespace Lottery.ViewModel;
 
@@ -48,10 +49,13 @@ public partial class DrawPageViewModel : ObservableObject
 
     private readonly IRestAPI restAPI;
 
-    public DrawPageViewModel(IRestAPI restAPI) 
+    private readonly IKeyCloakService keyCloakService;
+
+    public DrawPageViewModel(IRestAPI restAPI, IKeyCloakService keyCloack) 
     {
         drawnNumbers = new List<int>();
         this.restAPI = restAPI;
+        this.keyCloakService = keyCloack;
         //CollectionViewItemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
     }
 
@@ -200,6 +204,18 @@ public partial class DrawPageViewModel : ObservableObject
 
         IsLoading = false;
         IsDrawButtonEnabled = true;
+    }
+
+    [RelayCommand]
+    private async void Logout()
+    {
+        bool success = await keyCloakService.Logout();
+
+        if (success)
+        {
+            Debug.WriteLine("Logged out");
+            App.Current.MainPage = new LoginPage(new LoginViewModel(keyCloakService));
+        }
     }
 }
 

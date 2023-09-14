@@ -8,44 +8,49 @@
              xmlns:helper="clr-namespace:Lottery.HelperView"
              xmlns:model="clr-namespace:Lottery.POCO"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
-    <VerticalStackLayout>
-        <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
-        <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
-        <Label Text="Lottery 5" HorizontalOptions="Center"/>
-        <CollectionView ItemsSource="{Binding DisplayedLottery5Numbers}"
+    <Grid ColumnDefinitions="15*, 70*, 15*">
+        <VerticalStackLayout Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
+            <Label Text="Lottery 5" HorizontalOptions="Center"/>
+            <CollectionView ItemsSource="{Binding DisplayedLottery5Numbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="225"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                    <helper:MyNumber NumberTitle="{Binding Number}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Label Text="Lottery 6" HorizontalOptions="Center"/>
-        <CollectionView ItemsSource="{Binding DisplayedLottery6Numbers}"
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Text="Lottery 6" HorizontalOptions="Center"/>
+            <CollectionView ItemsSource="{Binding DisplayedLottery6Numbers}"
                             MaximumHeightRequest="250"
                             HorizontalOptions="Center"
                             MaximumWidthRequest="275"
                             VerticalScrollBarVisibility="Never"
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                    <helper:MyNumber NumberTitle="{Binding Number}"/>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
+        </VerticalStackLayout>
+    </Grid>
 
     <!--PC-->
     <VisualStateManager.VisualStateGroups>

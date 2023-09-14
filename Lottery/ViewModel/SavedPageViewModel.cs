@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
 using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
 using Lottery.Service;
+using Lottery.View;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -18,9 +20,11 @@ public partial class SavedPageViewModel : ObservableObject
     private bool isLoading = false;
 
     private readonly IRestAPI restAPI;
-    public SavedPageViewModel(IRestAPI rest)
+    private readonly IKeyCloakService keyCloakService;
+    public SavedPageViewModel(IRestAPI rest, IKeyCloakService keyCloakService)
     {
         restAPI = rest;
+        this.keyCloakService = keyCloakService;
     }
 
     public SavedPageViewModel() { }
@@ -103,5 +107,17 @@ public partial class SavedPageViewModel : ObservableObject
         DisplayedLottery6Numbers = temp6;
 
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    public async void Logout()
+    {
+        bool success = await keyCloakService.Logout();
+
+        if (success)
+        {
+            Debug.WriteLine("Logged out");
+            App.Current.MainPage = new LoginPage(new LoginViewModel(keyCloakService));
+        }
     }
 }

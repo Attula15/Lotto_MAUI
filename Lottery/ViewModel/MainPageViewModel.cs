@@ -51,17 +51,18 @@ public partial class MainPageViewModel : ObservableObject
         PrizesHolderPOCO result = null;
 
         result = await restAPI.GetPrizes();
+        Debug.WriteLine("The result that I got: " + result.prizes[0].ToString() + ";" + result.prizes[1].ToString());
         
         if(result.prizes.Count != 0)
         {
             List<PrizesEntity> prizes = result.prizes;
             for (int i = 0; i < prizes.Count; i++)
             {
-                if (prizes[i].whichOne.Equals("5"))
+                if (prizes[i].whichOne.Equals(5))
                 {
                     Prize5 = prizes[i].prize.ToString() + " million HUF";
                 }
-                if (prizes[i].whichOne.Equals("6"))
+                if (prizes[i].whichOne.Equals(6))
                 {
                     Prize6 = prizes[i].prize.ToString() + " million HUF";
                 }
@@ -90,8 +91,8 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task GetWinningNumbers()
     {
-        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers("5");
-        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers("6");
+        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
+        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
         List<int> listOfNumbers;
         for (int i = 0; i < 2; i++)
         {

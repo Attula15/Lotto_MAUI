@@ -23,25 +23,24 @@ public class RestAPI : IRestAPI
         keyCloakService = keyCloak;
     }
 
-    public async Task<MyNumbersPOCO> GetWinningnumbers(string whichOne)
+    public async Task<MyNumbersPOCO> GetWinningnumbers(int whichOne)
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
         //string token = await DatabaseService.GetLatestToken();
-        Debug.WriteLine("Token: " + keyCloakService.GetSessionToken());
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
 
         try
         {
-            if (whichOne.Equals("5"))
+            if (whichOne.Equals(5))
             {
                 winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning5");
                 Debug.WriteLine(winningNumbers.numbers);
                 return MyNumberMapper.toPOCOFromWinning(winningNumbers);
             }
-            else if (whichOne.Equals("6"))
+            else if (whichOne.Equals(6))
             {
                 winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning6");
                 return MyNumberMapper.toPOCOFromWinning(winningNumbers);
@@ -74,6 +73,7 @@ public class RestAPI : IRestAPI
         {
             prize5 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize5");
             prize6 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize6");
+            Debug.WriteLine("Prize5 that is from the API: "+prize5.prize+";"+prize5.whichOne);
         }
         catch(Exception ex)
         {
@@ -85,7 +85,7 @@ public class RestAPI : IRestAPI
         {
             prize5, prize6
         };
-
+        Debug.WriteLine("The list that is being returned: "+returnable.prizes.ToString());
         return returnable;
     }
 
