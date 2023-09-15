@@ -4,6 +4,9 @@ using Lottery.View;
 using Lottery.ViewModel;
 using Microsoft.Extensions.Logging;
 using Microcharts.Maui;
+using Mopups.Hosting;
+using Mopups.Interfaces;
+using Mopups.Services;
 
 namespace Lottery;
 
@@ -15,6 +18,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.UseMicrocharts()
+			.ConfigureMopups()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -23,6 +27,9 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<IRestAPI, RestAPI>();
 		builder.Services.AddSingleton<IKeyCloakService, KeyCloakService>();
+		
+		builder.Services.AddSingleton<IPopupNavigation>(MopupService.Instance);
+		builder.Services.AddTransient<SessionPopuViewModel>();
 
 		builder.Services.AddSingleton<MainPage>();
 		builder.Services.AddSingleton<MainPageViewModel>();

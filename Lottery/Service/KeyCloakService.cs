@@ -1,6 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Net.Http.Json;
 using Lottery.Domain;
+using Lottery.HelperView;
+using Lottery.ViewModel;
+using Mopups.Interfaces;
+using Mopups.Services;
 
 namespace Lottery.Service;
 public class KeyCloakService : IKeyCloakService
@@ -11,6 +15,8 @@ public class KeyCloakService : IKeyCloakService
     private static string refreshToken { get; set; }
     private static DateTime? expireDate { get; set; }
 
+    private readonly IPopupNavigation popupNavigation;
+
     public string GetRefreshToken()
     {
         return refreshToken;
@@ -19,6 +25,11 @@ public class KeyCloakService : IKeyCloakService
     public string GetSessionToken()
     {
         return sessionToken;
+    }
+
+    public KeyCloakService(IPopupNavigation popup)
+    {
+        this.popupNavigation = popup;
     }
 
     public async Task<string> Login(string username, string password)
@@ -43,6 +54,8 @@ public class KeyCloakService : IKeyCloakService
             refreshToken = responseJson.refresh_token;
             expireDate = DateTime.Now.AddSeconds(responseJson.expires_in);
             App.Current.MainPage = new AppShell();
+            Thread sessionHandler = new Thread(new ThreadStart(Refresh));
+            sessionHandler.Start();
             return "";
         }
         else
@@ -80,5 +93,13 @@ public class KeyCloakService : IKeyCloakService
         }
 
         return true;
+    }
+
+    public async void Refresh()
+    {
+        Debug.WriteLine("10 Seconds started");
+        Thread.Sleep(10000);
+        Debug.WriteLine("10 Seconds ended");
+        await popupNavigation.PushAsync(new SessionPopup(new SessionPopuViewModel(this, popupNavigation)));
     }
 }
