@@ -80,6 +80,9 @@
 	  <MauiXaml Update="HelperView\MyNumber.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="HelperView\OneRowOfTableData.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\DataPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

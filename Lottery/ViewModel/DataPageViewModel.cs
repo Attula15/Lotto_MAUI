@@ -137,9 +137,9 @@ public partial class DataPageViewModel : ObservableObject
 
     private void LoadWinnersDataForChart(List<LotteryWinnersDataPOCO> latestWinnersData5, List<LotteryWinnersDataPOCO> latestWinnersData6)
     {
+        /*
         List<ChartEntry> chartEntries5 = new List<ChartEntry>();
         List<ChartEntry> chartEntries6 = new List<ChartEntry>();
-
         for (int i = 0; i < latestWinnersData5.Count; i++)
         {
             ChartEntry newChartEntry = new ChartEntry(latestWinnersData5[i].numberOfWinners);
@@ -212,7 +212,7 @@ public partial class DataPageViewModel : ObservableObject
             Entries = chartEntries6,
             BackgroundColor = SKColor.Parse("#001220"),
             LabelTextSize = 30
-        };
+        };*/
     }
 
     [RelayCommand]

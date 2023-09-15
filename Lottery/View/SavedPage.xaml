@@ -8,7 +8,7 @@
              xmlns:helper="clr-namespace:Lottery.HelperView"
              xmlns:model="clr-namespace:Lottery.POCO"
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
-    <Grid ColumnDefinitions="10*, 80*, 10*">
+    <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
         <VerticalStackLayout Grid.Column="1">
             <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
             <Label Text="These are your generated numbers" HorizontalOptions="Center"/>

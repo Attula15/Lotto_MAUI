@@ -6,7 +6,8 @@
     xmlns:local="clr-namespace:Lottery"
     xmlns:views="clr-namespace:Lottery.View"
     Shell.FlyoutBehavior="Disabled"
-    Shell.TabBarBackgroundColor="#1E7836">
+    Shell.TabBarBackgroundColor="#1E7836"
+    Shell.NavBarIsVisible="False">
 
     <TabBar >
         <Tab Title="Main"
