@@ -8,9 +8,40 @@
              Title="SessionPopup" 
              BackgroundColor="#80000000"
              CloseWhenBackgroundIsClicked="False">
-    <VerticalStackLayout WidthRequest="100" HeightRequest="100" VerticalOptions="CenterAndExpand" BackgroundColor="Red">
-        <Label Text="Your session has nearly expired, do you want to renew it?"/>
-        <Button Text="Yes" Command="{Binding YesCommand}"/>
-        <Button Text="No" Command="{Binding NoCommand}"/>
-    </VerticalStackLayout>
+    <Grid 
+        MinimumWidthRequest="100" 
+        MinimumHeightRequest="100" 
+        MaximumWidthRequest="250"
+        VerticalOptions="CenterAndExpand" 
+        HorizontalOptions="Center"
+        BackgroundColor="Red"
+        ColumnDefinitions="Auto, Auto"
+        RowDefinitions="Auto, Auto"
+        x:Name="MainGrid">
+
+        <VerticalStackLayout x:Name="MainVerticalStackLayout" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" MaximumWidthRequest="250">
+            <Label Text="Your session has nearly expired, do you want to renew it?" LineBreakMode="WordWrap"/>
+            <Label Text="(Choosing 'No' will log you out)"/>
+        </VerticalStackLayout>
+        
+        
+        <Button Grid.Row="1" Grid.Column="0" WidthRequest="75" HeightRequest="40" HorizontalOptions="Start" Text="Yes" Command="{Binding YesCommand}"/>
+        <Button Grid.Row="1" Grid.Column="1" WidthRequest="75" HeightRequest="40" HorizontalOptions="End" Text="No" Command="{Binding NoCommand}"/>
+        
+    </Grid>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter TargetName="MainGrid" Property="MaximumWidthRequest" Value="600"/>
+                    <Setter TargetName="MainVerticalStackLayout" Property="MaximumWidthRequest" Value="600"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
 </popup:PopupPage>

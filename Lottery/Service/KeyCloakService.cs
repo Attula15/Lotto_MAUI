@@ -14,6 +14,8 @@ public class KeyCloakService : IKeyCloakService
     private static string sessionToken { get; set; }
     private static string refreshToken { get; set; }
     private static DateTime? expireDate { get; set; }
+    private static Thread sessionHandler { get; set; }
+    private static bool loggedIn { get; set; } = false;
 
     private readonly IPopupNavigation popupNavigation;
 
@@ -54,7 +56,9 @@ public class KeyCloakService : IKeyCloakService
             refreshToken = responseJson.refresh_token;
             expireDate = DateTime.Now.AddSeconds(responseJson.expires_in);
             App.Current.MainPage = new AppShell();
-            Thread sessionHandler = new Thread(new ThreadStart(Refresh));
+            loggedIn = true;
+            sessionHandler = new Thread(new ThreadStart(RefreshMopupCaller));
+            sessionHandler.Name = "SessionHandler Thread";
             sessionHandler.Start();
             return "";
         }
@@ -67,6 +71,7 @@ public class KeyCloakService : IKeyCloakService
 
     public async Task<bool> Logout()
     {
+        loggedIn = false;
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
         try
@@ -89,17 +94,32 @@ public class KeyCloakService : IKeyCloakService
         catch (Exception ex)
         {
             Debug.WriteLine("\nException: " + ex.Message);
+            loggedIn = true;
             return false;
         }
 
         return true;
     }
 
-    public async void Refresh()
+    public async void RefreshToken()
+    {
+        //Refresh
+        //If success, then start thread
+        sessionHandler.Start();
+    }
+
+    public async void RefreshMopupCaller()
     {
         Debug.WriteLine("10 Seconds started");
         Thread.Sleep(10000);
         Debug.WriteLine("10 Seconds ended");
-        await popupNavigation.PushAsync(new SessionPopup(new SessionPopuViewModel(this, popupNavigation)));
+        if(loggedIn)
+        {
+            await popupNavigation.PushAsync(new SessionPopup(new SessionPopuViewModel(this, popupNavigation)));
+        }
+        else
+        {
+            Debug.WriteLine("The user has already logged out");
+        }
     }
 }

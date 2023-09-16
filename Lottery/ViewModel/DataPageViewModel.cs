@@ -107,7 +107,7 @@ public partial class DataPageViewModel : ObservableObject
         Chart5 = new LineChart
         {
             Entries = chartEntries5,
-            BackgroundColor = SKColor.Parse("#001220"),
+            BackgroundColor = SKColor.Parse("#FF000000"),
             ShowYAxisLines = true,
             ValueLabelTextSize = 15,
             ValueLabelOrientation = Orientation.Horizontal,
@@ -122,7 +122,7 @@ public partial class DataPageViewModel : ObservableObject
         Chart6 = new LineChart
         {
             Entries = chartEntries6,
-            BackgroundColor = SKColor.Parse("#001220"),
+            BackgroundColor = SKColor.Parse("#FF000000"),
             ShowYAxisLines = true,
             ValueLabelTextSize = 15,
             ValueLabelOrientation = Orientation.Horizontal,
