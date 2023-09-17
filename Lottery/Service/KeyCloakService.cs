@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices.JavaScript;
 using Lottery.Domain;
 using Lottery.HelperView;
 using Lottery.ViewModel;
@@ -51,13 +52,12 @@ public class KeyCloakService : IKeyCloakService
         if (response.IsSuccessStatusCode)
         {
             responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
-            //await DatabaseService.AddToken(responseJson.access_token, responseJson.refresh_token);
             sessionToken = responseJson.access_token;
             refreshToken = responseJson.refresh_token;
             expireDate = DateTime.Now.AddSeconds(responseJson.expires_in);
             App.Current.MainPage = new AppShell();
             loggedIn = true;
-            sessionHandler = new Thread(new ThreadStart(RefreshMopupCaller));
+            sessionHandler = new Thread(RefreshMopupCaller);
             sessionHandler.Name = "SessionHandler Thread";
             sessionHandler.Start();
             return "";
@@ -101,18 +101,52 @@ public class KeyCloakService : IKeyCloakService
         return true;
     }
 
-    public async void RefreshToken()
+    public async Task RefreshToken()
     {
         //Refresh
-        //If success, then start thread
-        sessionHandler.Start();
+        loggedIn = false;
+        KeyCloakResponsePOCO responseJson;
+        using HttpClient client = new HttpClient();
+        client.Timeout = TimeSpan.FromSeconds(5);
+        try
+        {
+            List<KeyValuePair<string, string>> bodyData = new List<KeyValuePair<string, string>>();
+
+            bodyData.Add(new KeyValuePair<string, string>("client_id", "login-app"));
+            bodyData.Add(new KeyValuePair<string, string>("grant_type", "refresh_token"));
+            bodyData.Add(new KeyValuePair<string, string>("refresh_token", refreshToken));
+            
+            HttpContent content = new FormUrlEncodedContent(bodyData);
+            HttpResponseMessage response = await client.PostAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
+                responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
+                refreshToken = responseJson.refresh_token;
+                sessionToken = responseJson.access_token;
+                Debug.WriteLine("New session token: " + sessionToken);
+                expireDate = DateTime.Now.AddSeconds(responseJson.expires_in); 
+                
+                loggedIn = false;
+                sessionHandler = new Thread(RefreshMopupCaller);
+                sessionHandler.Name = "SessionHandler Thread";
+                sessionHandler.Start();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
     }
 
     public async void RefreshMopupCaller()
     {
-        Debug.WriteLine("10 Seconds started");
-        Thread.Sleep(10000);
-        Debug.WriteLine("10 Seconds ended");
+        Debug.WriteLine("Thread started");
+        Debug.WriteLine("Milliseconds till expireDate" + expireDate.Value.Subtract(DateTime.Now).TotalMilliseconds);
+        Debug.WriteLine("Seconds till expireDate" + expireDate.Value.Subtract(DateTime.Now).TotalSeconds);
+        int seconds = (int) Math.Floor(expireDate.Value.Subtract(DateTime.Now).TotalSeconds);
+        Debug.WriteLine("Seconds that gets into the thread" + seconds);
+        Thread.Sleep((seconds - 60) * 1000);
+        Debug.WriteLine("Thread wait ended");
         if(loggedIn)
         {
             await popupNavigation.PushAsync(new SessionPopup(new SessionPopuViewModel(this, popupNavigation)));

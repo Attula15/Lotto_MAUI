@@ -51,10 +51,11 @@ public partial class MainPageViewModel : ObservableObject
         PrizesHolderPOCO result = null;
 
         result = await restAPI.GetPrizes();
-        Debug.WriteLine("The result that I got: " + result.prizes[0].ToString() + ";" + result.prizes[1].ToString());
+        
         
         if(result.prizes.Count != 0)
         {
+            Debug.WriteLine("The result that I got: " + result.prizes[0].ToString() + ";" + result.prizes[1].ToString());
             List<PrizesEntity> prizes = result.prizes;
             for (int i = 0; i < prizes.Count; i++)
             {

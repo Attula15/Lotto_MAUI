@@ -22,6 +22,7 @@ public partial class SessionPopuViewModel : ObservableObject
     private async void Yes()
     {
         Debug.WriteLine("Great, renewing...");
+        await keyCloakService.RefreshToken();
         await navigation.PopAsync();
     }
 

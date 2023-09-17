@@ -59,7 +59,7 @@
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
                 <CollectionView.EmptyView>
-                    <Label Text="There is nothing to show"/>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="5"/>
@@ -82,7 +82,7 @@
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
                 <CollectionView.EmptyView>
-                    <Label Text="There is nothing to show"/>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="6"/>
