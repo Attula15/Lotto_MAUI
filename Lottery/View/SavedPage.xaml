@@ -48,7 +48,7 @@
             </CollectionView>
         </VerticalStackLayout>
         <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
-            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
         </VerticalStackLayout>
     </Grid>
 
