@@ -126,8 +126,8 @@ public class KeyCloakService : IKeyCloakService
                 Debug.WriteLine("New session token: " + sessionToken);
                 expireDate = DateTime.Now.AddSeconds(responseJson.expires_in); 
                 
-                loggedIn = false;
-                sessionHandler = new Thread(RefreshMopupCaller);
+                loggedIn = true;
+                sessionHandler = new Thread(new ThreadStart(RefreshMopupCaller));
                 sessionHandler.Name = "SessionHandler Thread";
                 sessionHandler.Start();
             }
