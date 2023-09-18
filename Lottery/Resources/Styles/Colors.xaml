@@ -41,4 +41,8 @@
     <Color x:Key="Blue200Accent">#72ACF1</Color>
     <Color x:Key="Blue300Accent">#A7CBF6</Color>
 
+    <Color x:Key="LotteryDarkGreen">#1E7836</Color>
+    <Color x:Key="LotteryLightGreen">#35DF59</Color>
+    <Color x:Key="LotteryBackground">#001220</Color>
+
 </ResourceDictionary>

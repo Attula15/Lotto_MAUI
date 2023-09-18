@@ -1,11 +1,15 @@
-﻿namespace Lottery;
+﻿using Lottery.Domain;
+using Lottery.View;
+using Lottery.ViewModel;
+
+namespace Lottery;
 
 public partial class App : Application
 {
-	public App()
+    public App(IKeyCloakService key)
 	{
 		InitializeComponent();
-
-		MainPage = new AppShell();
+		LoginViewModel vm = new LoginViewModel(key);
+		MainPage = new LoginPage(vm);
 	}
 }

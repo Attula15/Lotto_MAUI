@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.MainPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             xmlns:model="clr-namespace:Lottery.POCO"
+             xmlns:helper="clr-namespace:Lottery.HelperView"
+             x:DataType="viewmodel:MainPageViewModel"
+             Title="Main menu"
+             NavigatedTo="ContentPage_NavigatedTo"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png">
+    <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
+        <VerticalStackLayout 
+                            HorizontalOptions="Center" 
+                            Margin="10"
+                            Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <VerticalStackLayout HorizontalOptions="Center"
+                             Margin="10">
+                <Label Text="Get to the webpage" FontSize="Large"/>
+                <Button 
+                x:Name="myWButton"
+                ImageSource="globe.png" 
+                    MinimumWidthRequest="100"
+                    MaximumWidthRequest="150" 
+                    MaximumHeightRequest="50"
+                    Margin="10"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    Command="{Binding OpenBrowserCommand}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+                <Label Text="Usefull informations" HorizontalTextAlignment="Center" FontSize="Large"/>
+                <Label x:Name="HugeText" Text="If the circle is blue, then it means, that your number has been choosen" HorizontalTextAlignment="Center" MaximumWidthRequest="200"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Center" Margin="10">
+                <Label Text="Current prizes" 
+                   FontSize="Large" 
+                   HorizontalTextAlignment="Center"/>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Lottery 5: " HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding Prize5}" HorizontalTextAlignment="End"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Lottery 6: " HorizontalTextAlignment="Start"/>
+                    <Label Text="{Binding Prize6}" HorizontalTextAlignment="End"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <Label Text="Currently winning numbers: " HorizontalOptions="Center"/>
+            <Label Text="Lottery 5" HorizontalOptions="Center"/>
+
+            <CollectionView ItemsSource="{Binding Lottery5WinningNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="300"
+                            MinimumWidthRequest="250"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            x:Name="MyMainCollection5">
+                <CollectionView.EmptyView>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="5"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Lottery 6" HorizontalOptions="Center"/>
+
+            <CollectionView ItemsSource="{Binding Lottery6WinningNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="300"
+                            MinimumWidthRequest="250"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never"
+                            x:Name="MyMainCollection6">
+                <CollectionView.EmptyView>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="6"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
+        </VerticalStackLayout>
+    </Grid>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="myWButton" Property="MinimumWidthRequest" Value="150"/>
+                    <Setter TargetName="myWButton" Property="Padding" Value="10, 0, 0, 0"/>
+                    <Setter TargetName="HugeText" Property="MaximumWidthRequest" Value="10000"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="400"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+</ContentPage>

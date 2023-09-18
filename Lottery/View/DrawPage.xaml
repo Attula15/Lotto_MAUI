@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.DrawPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:DrawPageViewModel"
+             xmlns:helper="clr-namespace:Lottery.HelperView"
+             xmlns:model="clr-namespace:Lottery.POCO"
+             Title="DrawPage"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png">
+    <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
+        <VerticalStackLayout Grid.Column="1" Spacing="15">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <Label 
+            Text="{Binding Communication}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            TextColor="Red"/>
+            <Label Text="For which lottery do you want to draw numbers"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"/>
+            <HorizontalStackLayout HorizontalOptions="Center" 
+                             RadioButtonGroup.GroupName="Numbers" 
+                             RadioButtonGroup.SelectedValue="{Binding Choosen}">
+                <RadioButton Content="5" Value="5"/>
+                <RadioButton Content="6" Value="6"/>
+            </HorizontalStackLayout>
+            <Entry Placeholder="How many tickets do you want to draw?" 
+               Text="{Binding HowMany}" 
+               Keyboard="Numeric"
+               HorizontalOptions="Center"
+               MaximumWidthRequest="300"
+               MinimumWidthRequest="300"
+               TextChanged="Entry_TextChanged"
+               ReturnCommand="{Binding drawNumbersCommand}"/>
+
+            <CollectionView ItemsSource="{Binding ShownNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="225"
+                            HorizontalScrollBarVisibility="Never"
+                            IsVisible="{Binding IsCollection5Visible}"
+                            x:Name="MyMainCollection5">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="5" VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView ItemsSource="{Binding ShownNumbers}"
+                            MaximumHeightRequest="250"
+                            HorizontalOptions="Center"
+                            MaximumWidthRequest="275"
+                            HorizontalScrollBarVisibility="Never"
+                            IsVisible="{Binding IsCollection6Visible}"
+                            x:Name="MyMainCollection6">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="6" VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
+                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Press me to draw" 
+                Command="{Binding drawNumbersCommand}" 
+                WidthRequest="300"
+                IsEnabled="{Binding IsDrawButtonEnabled}"
+                VerticalOptions="End"/>
+            <Button Text="Save"
+                Command="{Binding saveTheNumbersCommand}"
+                IsEnabled="{Binding IsDrawButtonEnabled}"
+                WidthRequest="300"/>
+        </VerticalStackLayout>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
+        </VerticalStackLayout>
+    </Grid>
+    
+
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="MyMainCollection6" Property="MaximumWidthRequest" Value="275"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>

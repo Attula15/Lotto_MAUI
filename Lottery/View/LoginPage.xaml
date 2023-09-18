@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.LoginPage"
+             Title="LoginPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:LoginViewModel"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png">
+    <Grid ColumnDefinitions="10*, 80*, 10*">
+        <VerticalStackLayout Spacing="10" VerticalOptions="Center" Grid.Column="1">
+            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <Grid>
+                <Image Source="white_person.png" MaximumHeightRequest="100" MaximumWidthRequest="100"/>
+
+                <Ellipse Stroke="{StaticResource LotteryLightGreen}"
+                 StrokeThickness="4"
+                 WidthRequest="100" 
+                 HeightRequest="100"/>
+            </Grid>
+            
+            <Entry x:Name="username" Placeholder="Username" PlaceholderColor="Gray" MaximumWidthRequest="200" Text="{Binding Username}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
+            <HorizontalStackLayout x:Name="horizontalStackLayout" VerticalOptions="Center" MaximumWidthRequest="200" Spacing="5">
+                <Entry x:Name="password" Placeholder="Password" PlaceholderColor="Gray" IsPassword="{Binding IsPassword}" MinimumWidthRequest="300" MaximumWidthRequest="250" Text="{Binding Password}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
+                <ImageButton Source="visibility_off.png" IsVisible="{Binding IsPassword}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
+                <ImageButton Source="visibility.png" IsVisible="{Binding IsVisible}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
+            </HorizontalStackLayout>
+            <Button x:Name="login_button" Text="Login" Command="{Binding LoginCommand}" MaximumWidthRequest="200" IsEnabled="{Binding IsEnabled}"/>
+            <Label Text="{Binding Communication}" FontSize="Medium" MaximumWidthRequest="200" HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Grid>
+    
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="username" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="password" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="login_button" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="horizontalStackLayout" Property="MaximumWidthRequest" Value="300"/>
+                    <Setter TargetName="horizontalStackLayout" Property="MinimumWidthRequest" Value="300"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>

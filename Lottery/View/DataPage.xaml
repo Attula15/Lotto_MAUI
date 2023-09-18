@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Lottery.View.DataPage"
+             Title="DataPage"
+             xmlns:viewmodel="clr-namespace:Lottery.ViewModel"
+             x:DataType="viewmodel:DataPageViewModel"
+             BackgroundImageSource="layered_waves_haikei_1080x2340.png"
+             xmlns:micro="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             xmlns:dg="clr-namespace:Maui.DataGrid;assembly=Maui.DataGrid"
+             xmlns:datagridmodel="clr-namespace:Lottery.Domain.ResponseBody"
+             xmlns:helper="clr-namespace:Lottery.HelperView">
+
+    <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
+        <ScrollView Grid.Column="1" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout>
+                <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+                <Label Text="Lottery 5 Prizes in the last 365 days:" HorizontalOptions="Center" FontSize="Medium"/>
+                <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
+                <Label Text="Lottery 6 Prizes in the last 365 days:" HorizontalOptions="Center" FontSize="Medium"/>
+                <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
+
+                <Label x:Name="chartViewWinners5Label" Text="Latest winners for Lottery 5:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
+                <CollectionView ItemsSource="{Binding LatestWinnersData5Collection}" x:Name="chartViewWinners5" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
+                    <CollectionView.Header>
+                        <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
+                            <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
+                            <Label Grid.Column="1" Text="Number of Winners" HorizontalTextAlignment="Center" FontSize="Small"/>
+                            <Label Grid.Column="2" Text="Prize(HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                            <Border Stroke="{StaticResource LotteryDarkGreen}" StrokeThickness="1" BackgroundColor="Transparent">
+                                <helper:OneRowOfTableData Prize="{Binding prize}" WinnerType="{Binding winnerType}" NumberOfWinners="{Binding numberOfWinners}"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!--<micro:ChartView Chart="{Binding ChartWinners5}" x:Name="chartViewWinners5" MinimumHeightRequest="200" MinimumWidthRequest="200" IsVisible="True"/>-->
+
+                <Label x:Name="chartViewWinners6Label" Text="Latest winners for Lottery 6:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
+                <CollectionView ItemsSource="{Binding LatestWinnersData6Collection}" x:Name="chartViewWinners6" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
+                    <CollectionView.Header>
+                        <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
+                            <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
+                            <Label Grid.Column="1" Text="Number of Winners" HorizontalTextAlignment="Center" FontSize="Small"/>
+                            <Label Grid.Column="2" Text="Prize(HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                            <Border Stroke="{StaticResource LotteryDarkGreen}" StrokeThickness="1" BackgroundColor="Transparent">
+                                <helper:OneRowOfTableData Prize="{Binding prize}" WinnerType="{Binding winnerType}" NumberOfWinners="{Binding numberOfWinners}"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!--<micro:ChartView Chart="{Binding ChartWinners6}" x:Name="chartViewWinners6" MinimumHeightRequest="200" MinimumWidthRequest="200" IsVisible="True"/>-->
+
+
+                <HorizontalStackLayout x:Name="PCDataGrid" IsVisible="False" HorizontalOptions="Center" Spacing="10">
+                    <VerticalStackLayout MinimumHeightRequest="210">
+                        <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center" FontSize="Medium"/>
+                        
+                        <Frame x:Name="dataGridFrame5" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                            <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
+                                <dg:DataGrid.NoDataView>
+                                    <Label Text="Nothing to see here"/>
+                                </dg:DataGrid.NoDataView>
+                                <dg:DataGrid.Columns>
+                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Number of winners">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Prize(HUF)">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                </dg:DataGrid.Columns>
+                                <dg:DataGrid.RowsBackgroundColorPalette>
+                                    <dg:PaletteCollection>
+                                        <Color>#1E7836</Color>
+                                        <Color>#001220</Color>
+                                    </dg:PaletteCollection>
+                                </dg:DataGrid.RowsBackgroundColorPalette>
+                            </dg:DataGrid>
+                        </Frame>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout MinimumHeightRequest="210">
+                        <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center" FontSize="Medium"/>
+
+                        <Frame x:Name="dataGridFrame6" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                            <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
+                                <dg:DataGrid.NoDataView>
+                                    <Label Text="Nothing to see here"/>
+                                </dg:DataGrid.NoDataView>
+                                <dg:DataGrid.Columns>
+                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Number of winners">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                    <dg:DataGridColumn Title="Prize(HUF)">
+                                        <dg:DataGridColumn.CellTemplate>
+                                            <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
+                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                            </DataTemplate>
+                                        </dg:DataGridColumn.CellTemplate>
+                                    </dg:DataGridColumn>
+                                </dg:DataGrid.Columns>
+                                <dg:DataGrid.RowsBackgroundColorPalette>
+                                    <dg:PaletteCollection>
+                                        <Color>#1E7836</Color>
+                                        <Color>#001220</Color>
+                                    </dg:PaletteCollection>
+                                </dg:DataGrid.RowsBackgroundColorPalette>
+                            </dg:DataGrid>
+                        </Frame>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
+        </VerticalStackLayout>
+    </Grid>
+
+    <!--PC-->
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WindowSizeStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="700"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
+                    <Setter TargetName="charView5" Property="MinimumHeightRequest" Value="300"/>
+                    <Setter TargetName="charView6" Property="MinimumHeightRequest" Value="300"/>
+                    <Setter TargetName="PCDataGrid" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="chartViewWinners5" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="chartViewWinners6" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="chartViewWinners5Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="chartViewWinners6Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="dataGridFrame5" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="dataGridFrame6" Property="IsVisible" Value="True"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+</ContentPage>
