@@ -25,7 +25,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}" NumberDrawnNot="{Binding IsDrawnNot}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -42,7 +42,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                        <helper:MyNumber NumberTitle="{Binding Number}"/>
+                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}" NumberDrawnNot="{Binding IsDrawnNot}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

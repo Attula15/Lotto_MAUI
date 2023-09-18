@@ -97,7 +97,7 @@ public partial class DrawPageViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Debug.WriteLine(ex.Message);
             Communication = "The number that you gave is not an actual number!";
             return;
         }
@@ -106,18 +106,6 @@ public partial class DrawPageViewModel : ObservableObject
 
         ShownNumbers = new ObservableCollection<MyDrawableNumberPOCO>();
         drawnChoosen = Choosen;
-        /*
-        if(drawnChoosen == 5)
-        {
-            Debug.WriteLine("Itt az 5");
-            CollectionViewItemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Horizontal);
-        }
-        else
-        {
-            Debug.WriteLine("Itt a 6");
-            CollectionViewItemsLayout = new GridItemsLayout(6, ItemsLayoutOrientation.Horizontal);
-        }
-        */
 
         if (drawnChoosen == 5)
         {
@@ -129,8 +117,7 @@ public partial class DrawPageViewModel : ObservableObject
             IsCollection6Visible = true;
             IsCollection5Visible = false;
         }
-
-        //ObservableCollection<MyDrawableNumber> ShownNumbersTemp = new ObservableCollection<MyDrawableNumber>();
+        
         drawnNumbers = new List<int>();
 
         for (int e = 0; e < howMany; e++)
@@ -141,10 +128,9 @@ public partial class DrawPageViewModel : ObservableObject
                 do
                 {
                     number = rand.Next(drawnChoosen == 5 ? 91 : 46);
-                } while (ticket.Contains(number));
+                } while (ticket.Contains(number) || number == 0);
                 drawnNumbers.Add(number);
                 ticket.Add(number);
-                //ShownNumbersTemp.Add(new MyDrawableNumber(number, false));
             }
         }
         for(int i = 0; i < drawnNumbers.Count; i++)
