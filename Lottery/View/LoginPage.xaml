@@ -21,8 +21,8 @@
             <Entry x:Name="username" Placeholder="Username" PlaceholderColor="Gray" MaximumWidthRequest="200" Text="{Binding Username}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
             <HorizontalStackLayout x:Name="horizontalStackLayout" VerticalOptions="Center" MaximumWidthRequest="200" Spacing="5">
                 <Entry x:Name="password" Placeholder="Password" PlaceholderColor="Gray" IsPassword="{Binding IsPassword}" MinimumWidthRequest="300" MaximumWidthRequest="250" Text="{Binding Password}" IsEnabled="{Binding IsEnabled}" ReturnCommand="{Binding LoginCommand}"/>
-                <ImageButton Source="visibility.png" IsVisible="{Binding IsPassword}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
-                <ImageButton Source="visibility_off.png" IsVisible="{Binding IsVisible}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
+                <ImageButton Source="visibility_off.png" IsVisible="{Binding IsPassword}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
+                <ImageButton Source="visibility.png" IsVisible="{Binding IsVisible}" Command="{Binding showPasswordCommand}" WidthRequest="44" HeightRequest="44" BackgroundColor="Transparent"/>
             </HorizontalStackLayout>
             <Button x:Name="login_button" Text="Login" Command="{Binding LoginCommand}" MaximumWidthRequest="200" IsEnabled="{Binding IsEnabled}"/>
             <Label Text="{Binding Communication}" FontSize="Medium" MaximumWidthRequest="200" HorizontalTextAlignment="Center"/>
