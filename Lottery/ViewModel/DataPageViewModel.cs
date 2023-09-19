@@ -28,6 +28,14 @@ public partial class DataPageViewModel : ObservableObject
     private Chart chartWinners6 = new BarChart();
 
     [ObservableProperty]
+    private bool isScrollViewVisible = true;
+
+    [ObservableProperty]
+    private bool isChart5ExtentededVisible = false;
+    [ObservableProperty]
+    private bool isChart6ExtentededVisible = false;
+
+    [ObservableProperty]
     private bool isLoading = false;
     
     [ObservableProperty]
@@ -39,6 +47,26 @@ public partial class DataPageViewModel : ObservableObject
     {
         this.restApi = restApi;
         this.keyCloakService = keyCloakService;
+    }
+
+    [RelayCommand]
+    private void Chart5ExtendedTapped()
+    {
+        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        {
+            IsScrollViewVisible = !IsScrollViewVisible;
+            IsChart5ExtentededVisible = !IsChart5ExtentededVisible;
+        }
+    }
+    
+    [RelayCommand]
+    private void Chart6ExtendedTapped()
+    {
+        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        {
+            IsScrollViewVisible = !IsScrollViewVisible;
+            IsChart5ExtentededVisible = !IsChart5ExtentededVisible;
+        }
     }
 
     public async void LoadData()

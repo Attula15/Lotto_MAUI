@@ -48,24 +48,29 @@ public class KeyCloakService : IKeyCloakService
         bodyData.Add(new KeyValuePair<string, string>("grant_type", "password"));
 
         HttpContent content = new FormUrlEncodedContent(bodyData);
-        HttpResponseMessage response = await client.PostAsync("", content);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
-            sessionToken = responseJson.access_token;
-            refreshToken = responseJson.refresh_token;
-            expireDate = DateTime.Now.AddSeconds(responseJson.expires_in);
-            App.Current.MainPage = new AppShell();
-            loggedIn = true;
-            sessionHandler = new Thread(RefreshMopupCaller);
-            sessionHandler.Name = "SessionHandler Thread";
-            sessionHandler.Start();
-            return "";
-        }
-        else
-        {
+            HttpResponseMessage response = await client.PostAsync("", content);
+            if (response.IsSuccessStatusCode)
+            {
+                responseJson = await response.Content.ReadFromJsonAsync<KeyCloakResponsePOCO>();
+                sessionToken = responseJson.access_token;
+                refreshToken = responseJson.refresh_token;
+                expireDate = DateTime.Now.AddSeconds(responseJson.expires_in);
+                App.Current.MainPage = new AppShell();
+                loggedIn = true;
+                sessionHandler = new Thread(RefreshMopupCaller);
+                sessionHandler.Name = "SessionHandler Thread";
+                sessionHandler.Start();
+                return "";
+            }
+
             Debug.WriteLine("Status code: " + response.StatusCode);
             return "Wrong username or password!";
+        }
+        catch (Exception ex)
+        {
+            return "Could not connect to the server";
         }
     }
 
