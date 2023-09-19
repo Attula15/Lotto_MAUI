@@ -43,6 +43,9 @@ public partial class DataPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<LotteryWinnersDataPOCO> latestWinnersData6Collection = new ObservableCollection<LotteryWinnersDataPOCO>();
 
+    private List<ChartEntry> chartEntries5;
+    private List<ChartEntry> chartEntries6;
+
     public DataPageViewModel(IRestAPI restApi, IKeyCloakService keyCloakService)
     {
         this.restApi = restApi;
@@ -54,6 +57,44 @@ public partial class DataPageViewModel : ObservableObject
     {
         if (DeviceInfo.Current.Platform == DevicePlatform.Android)
         {
+            SKPaint paint = new SKPaint();
+            paint.Color = SKColor.Parse("#1E7836");
+
+            if (IsChart5ExtentededVisible)
+            {
+                Chart5 = new LineChart
+                {
+                    Entries = chartEntries5,
+                    BackgroundColor = SKColor.Parse("#001220"),
+                    ShowYAxisLines = true,
+                    ValueLabelTextSize = 25,
+                    ValueLabelOrientation = Orientation.Horizontal,
+                    LabelColor = SKColor.Parse("#ffffff"),
+                    ValueLabelOption = ValueLabelOption.TopOfElement,
+                    Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
+                    YAxisLinesPaint = paint,
+                    LabelOrientation = Orientation.Horizontal,
+                    LabelTextSize = 0
+                };
+            }
+            else
+            {
+                Chart5 = new LineChart
+                {
+                    Entries = chartEntries5,
+                    BackgroundColor = SKColor.Parse("#001220"),
+                    ShowYAxisLines = true,
+                    ValueLabelTextSize = 25,
+                    ValueLabelOrientation = Orientation.Horizontal,
+                    LabelColor = SKColor.Parse("#ffffff"),
+                    ValueLabelOption = ValueLabelOption.TopOfElement,
+                    Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
+                    YAxisLinesPaint = paint,
+                    LabelOrientation = Orientation.Horizontal,
+                    LabelTextSize = 25,
+                };
+            }
+
             IsScrollViewVisible = !IsScrollViewVisible;
             IsChart5ExtentededVisible = !IsChart5ExtentededVisible;
         }
@@ -64,8 +105,46 @@ public partial class DataPageViewModel : ObservableObject
     {
         if (DeviceInfo.Current.Platform == DevicePlatform.Android)
         {
+            SKPaint paint = new SKPaint();
+            paint.Color = SKColor.Parse("#1E7836");
+
+            if (IsChart6ExtentededVisible)
+            {
+                Chart6 = new LineChart
+                {
+                    Entries = chartEntries6,
+                    BackgroundColor = SKColor.Parse("#001220"),
+                    ShowYAxisLines = true,
+                    ValueLabelTextSize = 25,
+                    ValueLabelOrientation = Orientation.Horizontal,
+                    LabelColor = SKColor.Parse("#ffffff"),
+                    ValueLabelOption = ValueLabelOption.TopOfElement,
+                    Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
+                    YAxisLinesPaint = paint,
+                    LabelOrientation = Orientation.Horizontal,
+                    LabelTextSize = 0,
+                };
+            }
+            else
+            {
+                Chart6 = new LineChart
+                {
+                    Entries = chartEntries6,
+                    BackgroundColor = SKColor.Parse("#001220"),
+                    ShowYAxisLines = true,
+                    ValueLabelTextSize = 25,
+                    ValueLabelOrientation = Orientation.Horizontal,
+                    LabelColor = SKColor.Parse("#ffffff"),
+                    ValueLabelOption = ValueLabelOption.TopOfElement,
+                    Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
+                    YAxisLinesPaint = paint,
+                    LabelOrientation = Orientation.Horizontal,
+                    LabelTextSize = 25,
+                };
+            }
+            
             IsScrollViewVisible = !IsScrollViewVisible;
-            IsChart5ExtentededVisible = !IsChart5ExtentededVisible;
+            IsChart6ExtentededVisible = !IsChart6ExtentededVisible;
         }
     }
 
@@ -112,8 +191,8 @@ public partial class DataPageViewModel : ObservableObject
         SKPaint paint = new SKPaint();
         paint.Color = SKColor.Parse("#1E7836");
 
-        List<ChartEntry> chartEntries5 = new List<ChartEntry>();
-        List<ChartEntry> chartEntries6 = new List<ChartEntry>();
+        chartEntries5 = new List<ChartEntry>();
+        chartEntries6 = new List<ChartEntry>();
 
         for (int i = 0; i < lastYearsPrizes5.Count; i++)
         {
@@ -140,14 +219,14 @@ public partial class DataPageViewModel : ObservableObject
             Entries = chartEntries5,
             BackgroundColor = SKColor.Parse("#001220"),
             ShowYAxisLines = true,
-            ValueLabelTextSize = 15,
+            ValueLabelTextSize = 25,
             ValueLabelOrientation = Orientation.Horizontal,
             LabelColor = SKColor.Parse("#ffffff"),
             ValueLabelOption = ValueLabelOption.TopOfElement,
             Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
             YAxisLinesPaint = paint,
             LabelOrientation = Orientation.Horizontal,
-            LabelTextSize = 15,
+            LabelTextSize = 0
         };
 
         Chart6 = new LineChart
@@ -155,14 +234,14 @@ public partial class DataPageViewModel : ObservableObject
             Entries = chartEntries6,
             BackgroundColor = SKColor.Parse("#001220"),
             ShowYAxisLines = true,
-            ValueLabelTextSize = 15,
+            ValueLabelTextSize = 25,
             ValueLabelOrientation = Orientation.Horizontal,
             LabelColor = SKColor.Parse("#ffffff"),
             ValueLabelOption = ValueLabelOption.TopOfElement,
             Typeface = SKTypeface.FromFamilyName("Times New Roman", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright),
             YAxisLinesPaint = paint,
             LabelOrientation = Orientation.Horizontal,
-            LabelTextSize = 15,
+            LabelTextSize = 0,
         };
     }
 

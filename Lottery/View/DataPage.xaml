@@ -13,8 +13,12 @@
 
     <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
         <!--Android Extended Charts-->
-        <Frame Padding="0" BackgroundColor="Transparent" Grid.Column="1" HeightRequest="300" WidthRequest="600" IsVisible="False">
-            <micro:ChartView Chart="{Binding Chart5}" x:Name="ChartView5Extended" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
+        <Frame Padding="0" BackgroundColor="Transparent" Grid.Column="1" HeightRequest="300" WidthRequest="600" IsVisible="False" BorderColor="Transparent">
+            <VerticalStackLayout Padding="0" Margin="0">
+                <Label Text="Lottery 5 Prizes in the last 8 weeks:" HorizontalOptions="Center" FontSize="Medium"/>
+                <micro:ChartView Chart="{Binding Chart5}" x:Name="ChartView5Extended" MinimumHeightRequest="275" MinimumWidthRequest="200"/>
+            </VerticalStackLayout>
+            
             <Frame.Triggers>
                 <DataTrigger TargetType="Frame" 
                              Binding="{Binding IsChart5ExtentededVisible}" 
@@ -28,8 +32,11 @@
             </Frame.GestureRecognizers>
         </Frame>
         
-        <Frame Padding="0" BackgroundColor="Transparent" Grid.Column="1" HeightRequest="300" WidthRequest="600" IsVisible="False">
-            <micro:ChartView Chart="{Binding Chart6}" x:Name="ChartView6Extended" MinimumHeightRequest="100" MinimumWidthRequest="200"/>
+        <Frame Padding="0" BackgroundColor="Transparent" Grid.Column="1" HeightRequest="300" WidthRequest="600" IsVisible="False" BorderColor="Transparent">
+            <VerticalStackLayout Padding="0" Margin="0">
+                <Label Text="Lottery 6 Prizes in the last 8 weeks:" HorizontalOptions="Center" FontSize="Medium"/>
+                <micro:ChartView Chart="{Binding Chart6}" x:Name="ChartView6Extended" MinimumHeightRequest="275" MinimumWidthRequest="200"/>
+            </VerticalStackLayout>
             <Frame.Triggers>
                 <DataTrigger TargetType="Frame" 
                              Binding="{Binding IsChart6ExtentededVisible}" 
@@ -48,24 +55,24 @@
             <VerticalStackLayout>
                 <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
                 <!--Prizes 5-->
-                <Label Text="Lottery 5 Prizes in the last 365 days:" HorizontalOptions="Center" FontSize="Medium"/>
-                <micro:ChartView Chart="{Binding Chart5}" x:Name="charView5" MinimumHeightRequest="100" MinimumWidthRequest="200">
+                <Label Text="Lottery 5 Prizes in the last 8 weeks:" HorizontalOptions="Center" FontSize="Small"/>
+                <micro:ChartView Chart="{Binding Chart5}" x:Name="ChartView5" MinimumHeightRequest="100" MinimumWidthRequest="200">
                     <micro:ChartView.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Chart5ExtendedTappedCommand}" NumberOfTapsRequired="2"/>
                     </micro:ChartView.GestureRecognizers>
                 </micro:ChartView>
                 
                 <!--Prizes 6-->
-                <Label Text="Lottery 6 Prizes in the last 365 days:" HorizontalOptions="Center" FontSize="Medium"/>
-                <micro:ChartView Chart="{Binding Chart6}" x:Name="charView6" MinimumHeightRequest="100" MinimumWidthRequest="200">
+                <Label Text="Lottery 6 Prizes in the last 8 weeks:" HorizontalOptions="Center" FontSize="Small"/>
+                <micro:ChartView Chart="{Binding Chart6}" x:Name="ChartView6" MinimumHeightRequest="100" MinimumWidthRequest="200">
                     <micro:ChartView.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Chart5ExtendedTappedCommand}" NumberOfTapsRequired="2"/>
+                        <TapGestureRecognizer Command="{Binding Chart6ExtendedTappedCommand}" NumberOfTapsRequired="2"/>
                     </micro:ChartView.GestureRecognizers>
                 </micro:ChartView>
 
                 <!--Android Winners 5-->
-                <Label x:Name="chartViewWinners5Label" Text="Latest winners for Lottery 5:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
-                <CollectionView ItemsSource="{Binding LatestWinnersData5Collection}" x:Name="chartViewWinners5" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
+                <Label x:Name="ChartViewWinners5Label" Text="Latest winners for Lottery 5:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
+                <CollectionView ItemsSource="{Binding LatestWinnersData5Collection}" x:Name="ChartViewWinners5" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
                             <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
@@ -84,7 +91,7 @@
 
                 <!--Android Winners 6-->
                 <Label x:Name="chartViewWinners6Label" Text="Latest winners for Lottery 6:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
-                <CollectionView ItemsSource="{Binding LatestWinnersData6Collection}" x:Name="chartViewWinners6" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
+                <CollectionView ItemsSource="{Binding LatestWinnersData6Collection}" x:Name="ChartViewWinners6" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
                             <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
@@ -101,11 +108,11 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 
-                <HorizontalStackLayout x:Name="PCDataGrid" IsVisible="False" HorizontalOptions="Center" Spacing="10">
+                <HorizontalStackLayout x:Name="PcDataGrid" IsVisible="False" HorizontalOptions="Center" Spacing="10">
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center" FontSize="Medium"/>
                         
-                        <Frame x:Name="dataGridFrame5" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="DataGridFrame5" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
@@ -145,7 +152,7 @@
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center" FontSize="Medium"/>
 
-                        <Frame x:Name="dataGridFrame6" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="DataGridFrame6" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
@@ -185,8 +192,8 @@
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </ScrollView>
-        <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
-            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
+        <VerticalStackLayout Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
+            <ImageButton Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
         </VerticalStackLayout>
     </Grid>
 
@@ -199,15 +206,15 @@
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
                     <Setter Property="BackgroundImageSource" Value="layered_waves_haikei_desktop.png"/>
-                    <Setter TargetName="charView5" Property="MinimumHeightRequest" Value="300"/>
-                    <Setter TargetName="charView6" Property="MinimumHeightRequest" Value="300"/>
-                    <Setter TargetName="PCDataGrid" Property="IsVisible" Value="True"/>
-                    <Setter TargetName="chartViewWinners5" Property="IsVisible" Value="False"/>
-                    <Setter TargetName="chartViewWinners6" Property="IsVisible" Value="False"/>
-                    <Setter TargetName="chartViewWinners5Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ChartView5" Property="MinimumHeightRequest" Value="300"/>
+                    <Setter TargetName="ChartView6" Property="MinimumHeightRequest" Value="300"/>
+                    <Setter TargetName="PcDataGrid" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="ChartViewWinners5" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ChartViewWinners6" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ChartViewWinners5Label" Property="IsVisible" Value="False"/>
                     <Setter TargetName="chartViewWinners6Label" Property="IsVisible" Value="False"/>
-                    <Setter TargetName="dataGridFrame5" Property="IsVisible" Value="True"/>
-                    <Setter TargetName="dataGridFrame6" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="DataGridFrame5" Property="IsVisible" Value="True"/>
+                    <Setter TargetName="DataGridFrame6" Property="IsVisible" Value="True"/>
                 </VisualState.Setters>
             </VisualState>
         </VisualStateGroup>
