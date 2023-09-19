@@ -91,15 +91,15 @@ public partial class SavedPageViewModel : ObservableObject
 
         if (useable5Nummbers != null)
         {
-            for (int i = 0; i < useable5Nummbers.numbers.Count; i++)
+            foreach (var number in useable5Nummbers.numbers)
             {
-                if (winning5.numberType != null && winning5.numbers.Contains(useable5Nummbers.numbers[i]))
+                if (winning5.numberType != null && winning5.numbers.Contains(number))
                 {
-                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], true));
+                    temp5.Add(new MyDrawableNumberPOCO(number, true));
                 }
                 else
                 {
-                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], false));
+                    temp5.Add(new MyDrawableNumberPOCO(number, false));
                 }
             }
         }
@@ -108,15 +108,15 @@ public partial class SavedPageViewModel : ObservableObject
 
         if (useable6Nummbers != null)
         {
-            for (int i = 0; i < useable6Nummbers.numbers.Count; i++)
+            foreach (var number in useable6Nummbers.numbers)
             {
-                if (winning6.numberType != null && winning6.numbers.Contains(useable6Nummbers.numbers[i]))
+                if (winning6.numberType != null && winning6.numbers.Contains(number))
                 {
-                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], true));
+                    temp6.Add(new MyDrawableNumberPOCO(number, true));
                 }
                 else
                 {
-                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], false));
+                    temp6.Add(new MyDrawableNumberPOCO(number, false));
                 }
             }
         }
