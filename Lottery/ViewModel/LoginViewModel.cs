@@ -22,6 +22,12 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool isEnabled = true;
 
+    [ObservableProperty]
+    private bool isPassword = true;
+
+    [ObservableProperty]
+    private bool isVisible = false;
+
     private static string url = "http://osiris.myddns.me:8015/realms/LotteryKeycloak/protocol/openid-connect/token";
 
     private readonly IKeyCloakService keycloak;
@@ -40,6 +46,13 @@ public partial class LoginViewModel : ObservableObject
         Communication = await keycloak.Login(Username, Password);
         IsEnabled = true;
         IsLoading = false;
+    }
+
+    [RelayCommand]
+    private void showPassword()
+    {
+        IsVisible = !IsVisible;
+        IsPassword = !IsPassword;
     }
 }
 

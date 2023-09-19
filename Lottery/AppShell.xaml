@@ -19,11 +19,11 @@
             <ShellContent ContentTemplate="{DataTemplate views:DrawPage}" Route="DrawPage"/>
         </Tab>
         <Tab Title="Saved Numbers"
-            Icon="ticket.png">
+            Icon="save.png">
             <ShellContent ContentTemplate="{DataTemplate views:SavedPage}" Route="SavedPage"/>
         </Tab>
         <Tab Title="Data"
-            Icon="ticket.png">
+            Icon="area_chart.png">
             <ShellContent ContentTemplate="{DataTemplate views:DataPage}" Route="DataPage"/>
         </Tab>
     </TabBar>

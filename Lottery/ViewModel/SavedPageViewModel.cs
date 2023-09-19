@@ -85,12 +85,22 @@ public partial class SavedPageViewModel : ObservableObject
 
         ObservableCollection<MyDrawableNumberPOCO> temp5 = new ObservableCollection<MyDrawableNumberPOCO>();
         ObservableCollection<MyDrawableNumberPOCO> temp6 = new ObservableCollection<MyDrawableNumberPOCO>();
+        
+        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
+        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
 
         if (useable5Nummbers != null)
         {
             for (int i = 0; i < useable5Nummbers.numbers.Count; i++)
             {
-                temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], false));
+                if (winning5.numberType != null && winning5.numbers.Contains(useable5Nummbers.numbers[i]))
+                {
+                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], true));
+                }
+                else
+                {
+                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], false));
+                }
             }
         }
 
@@ -100,7 +110,14 @@ public partial class SavedPageViewModel : ObservableObject
         {
             for (int i = 0; i < useable6Nummbers.numbers.Count; i++)
             {
-                temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], false));
+                if (winning6.numberType != null && winning6.numbers.Contains(useable6Nummbers.numbers[i]))
+                {
+                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], true));
+                }
+                else
+                {
+                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], false));
+                }
             }
         }
 

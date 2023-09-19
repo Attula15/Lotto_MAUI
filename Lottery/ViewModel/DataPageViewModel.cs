@@ -55,8 +55,6 @@ public partial class DataPageViewModel : ObservableObject
 
         LoadWinnersTableData(latestWinnersData5, latestWinnersData6);
 
-        LoadWinnersDataForChart(latestWinnersData5, latestWinnersData6);
-
         IsLoading = false;
     }
 
@@ -78,6 +76,11 @@ public partial class DataPageViewModel : ObservableObject
 
     private void LoadPrizesData(List<PrizesEntity> lastYearsPrizes5, List<PrizesEntity> lastYearsPrizes6)
     {
+        if(lastYearsPrizes5 == null || lastYearsPrizes6 == null)
+        {
+            return;
+        }
+
         SKPaint paint = new SKPaint();
         paint.Color = SKColor.Parse("#1E7836");
 
@@ -133,86 +136,6 @@ public partial class DataPageViewModel : ObservableObject
             LabelOrientation = Orientation.Horizontal,
             LabelTextSize = 15,
         };
-    }
-
-    private void LoadWinnersDataForChart(List<LotteryWinnersDataPOCO> latestWinnersData5, List<LotteryWinnersDataPOCO> latestWinnersData6)
-    {
-        /*
-        List<ChartEntry> chartEntries5 = new List<ChartEntry>();
-        List<ChartEntry> chartEntries6 = new List<ChartEntry>();
-        for (int i = 0; i < latestWinnersData5.Count; i++)
-        {
-            ChartEntry newChartEntry = new ChartEntry(latestWinnersData5[i].numberOfWinners);
-            if(i == 0)
-            {
-                newChartEntry.Color = SKColor.Parse("#35DF59");
-            }
-            else if(i == 1) 
-            {
-                newChartEntry.Color = SKColor.Parse("#00FFFF");
-            }
-            else if (i == 2)
-            {
-                newChartEntry.Color = SKColor.Parse("#00008B");
-            }
-            else if (i == 3)
-            {
-                newChartEntry.Color = SKColor.Parse("#00A36C");
-            }
-            else if (i == 4)
-            {
-                newChartEntry.Color = SKColor.Parse("#1F51FF");
-            }
-
-            newChartEntry.Label = latestWinnersData5[i].prize.ToString();
-            newChartEntry.ValueLabel = latestWinnersData5[i].winnerType.ToString();
-            newChartEntry.ValueLabelColor = SKColor.Parse("#35DF59");
-            chartEntries5.Add(newChartEntry);
-        }
-
-        ChartWinners5 = new BarChart
-        {
-            Entries = chartEntries5,
-            BackgroundColor = SKColor.Parse("#001220"),
-            LabelTextSize = 30
-        };
-
-        for (int i = 0; i < latestWinnersData6.Count; i++)
-        {
-            ChartEntry newChartEntry = new ChartEntry(latestWinnersData6[i].numberOfWinners);
-            if (i == 0)
-            {
-                newChartEntry.Color = SKColor.Parse("#35DF59");
-            }
-            else if (i == 1)
-            {
-                newChartEntry.Color = SKColor.Parse("#00FFFF");
-            }
-            else if (i == 2)
-            {
-                newChartEntry.Color = SKColor.Parse("#00008B");
-            }
-            else if (i == 3)
-            {
-                newChartEntry.Color = SKColor.Parse("#00A36C");
-            }
-            else if (i == 4)
-            {
-                newChartEntry.Color = SKColor.Parse("#1F51FF");
-            }
-
-            newChartEntry.Label = latestWinnersData6[i].prize.ToString();
-            newChartEntry.ValueLabel = latestWinnersData6[i].winnerType.ToString();
-            newChartEntry.ValueLabelColor = SKColor.Parse("#35DF59");
-            chartEntries6.Add(newChartEntry);
-        }
-
-        ChartWinners6 = new BarChart
-        {
-            Entries = chartEntries6,
-            BackgroundColor = SKColor.Parse("#001220"),
-            LabelTextSize = 30
-        };*/
     }
 
     [RelayCommand]

@@ -26,7 +26,7 @@
                         <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
                             <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
                             <Label Grid.Column="1" Text="Number of Winners" HorizontalTextAlignment="Center" FontSize="Small"/>
-                            <Label Grid.Column="2" Text="Prize(mill HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
+                            <Label Grid.Column="2" Text="Prize(HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
@@ -45,7 +45,7 @@
                         <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
                             <Label Grid.Column="0" Text="Number of hit numbers" HorizontalTextAlignment="Start" FontSize="Small"/>
                             <Label Grid.Column="1" Text="Number of Winners" HorizontalTextAlignment="Center" FontSize="Small"/>
-                            <Label Grid.Column="2" Text="Prize(mill HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
+                            <Label Grid.Column="2" Text="Prize(HUF)" HorizontalTextAlignment="End" FontSize="Small"/>
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
@@ -63,7 +63,7 @@
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center" FontSize="Medium"/>
                         
-                        <Frame x:Name="dataGridFrame5" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="dataGridFrame5" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
@@ -83,7 +83,7 @@
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
-                                    <dg:DataGridColumn Title="Prize(mill HUF)">
+                                    <dg:DataGridColumn Title="Prize(HUF)">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding prize}" HorizontalOptions="Center"/>
@@ -103,7 +103,7 @@
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center" FontSize="Medium"/>
 
-                        <Frame x:Name="dataGridFrame6" MaximumWidthRequest="500" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="dataGridFrame6" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
@@ -123,7 +123,7 @@
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
-                                    <dg:DataGridColumn Title="Prize">
+                                    <dg:DataGridColumn Title="Prize(HUF)">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding prize}" HorizontalOptions="Center"/>
@@ -144,7 +144,7 @@
             </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
-            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
         </VerticalStackLayout>
     </Grid>
 

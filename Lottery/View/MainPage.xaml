@@ -59,7 +59,7 @@
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection5">
                 <CollectionView.EmptyView>
-                    <Label Text="There is nothing to show"/>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="5"/>
@@ -82,7 +82,7 @@
                             HorizontalScrollBarVisibility="Never"
                             x:Name="MyMainCollection6">
                 <CollectionView.EmptyView>
-                    <Label Text="There is nothing to show"/>
+                    <Label Text="Could not connect to the server" HorizontalOptions="Center"/>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="6"/>
@@ -95,7 +95,7 @@
             </CollectionView>
         </VerticalStackLayout>
         <VerticalStackLayout x:Name="logout_vertical" Grid.Column="2" Margin="0, 5, 5, 0" HorizontalOptions="End">
-            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="{StaticResource LotteryBackground}"/>
+            <ImageButton x:Name="logout_button" Source="logout.png" Command="{Binding LogoutCommand}" MaximumWidthRequest="30" MaximumHeightRequest="30" BackgroundColor="Transparent"/>
         </VerticalStackLayout>
     </Grid>
 
