@@ -23,11 +23,6 @@ public partial class DataPageViewModel : ObservableObject
     private Chart chart6 = new BarChart();
 
     [ObservableProperty]
-    private Chart chartWinners5 = new BarChart();
-    [ObservableProperty]
-    private Chart chartWinners6 = new BarChart();
-
-    [ObservableProperty]
     private bool isScrollViewVisible = true;
 
     [ObservableProperty]
@@ -246,7 +241,7 @@ public partial class DataPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void Logout()
+    private async Task Logout()
     {
         bool success = await keyCloakService.Logout();
 
