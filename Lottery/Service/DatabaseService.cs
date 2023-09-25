@@ -19,19 +19,51 @@ public static class DatabaseService
             return;
         }
 
-        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData2.db3");
+        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LotteryDatabase.db3");
 
         try
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
             await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
-            await db.DeleteAllAsync<MyNumbersEntity>();
+            await db.CreateTableAsync<TokenEntity>();
+            //await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex + "\n\n");
         }
+    }
+
+    public static async Task AddTokens(string accessToken, string refreshToken, string username)
+    {
+        await Init();
+        
+        TokenEntity newEntity = new TokenEntity
+        {
+            access_token = accessToken,
+            refresh_token = refreshToken,
+            username = username
+        };
+
+        try
+        {
+            await db.DeleteAllAsync<TokenEntity>();
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error while adding new access Token");
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public static async Task<TokenEntity> GetToken()
+    {
+        await Init();
+
+        var q = db.Table<TokenEntity>();
+        return await q.FirstOrDefaultAsync();
     }
 
     public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)
