@@ -122,6 +122,7 @@ public class KeyCloakService : IKeyCloakService
         }
         catch (Exception ex)
         {
+            Debug.WriteLine(ex.Message);
             return "Could not connect to the server";
         }
     }
