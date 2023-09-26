@@ -53,7 +53,7 @@
         <!--Main Scroll View-->
         <ScrollView Grid.Column="1" VerticalScrollBarVisibility="Never" IsVisible="{Binding IsScrollViewVisible}">
             <VerticalStackLayout>
-                <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+                <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}"/>
                 <!--Prizes 5-->
                 <Label Text="Lottery 5 Prizes in the last 8 weeks:" HorizontalOptions="Center" FontSize="Small"/>
                 <micro:ChartView Chart="{Binding Chart5}" x:Name="ChartView5" MinimumHeightRequest="100" MinimumWidthRequest="200">
