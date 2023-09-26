@@ -238,6 +238,12 @@ public partial class DataPageViewModel : ObservableObject
             LabelOrientation = Orientation.Horizontal,
             LabelTextSize = 0,
         };
+        
+        if (DeviceInfo.Current.Platform == DevicePlatform.WinUI)
+        {
+            Chart5.LabelTextSize = 20;
+            Chart6.LabelTextSize = 20;
+        }
     }
 
     [RelayCommand]

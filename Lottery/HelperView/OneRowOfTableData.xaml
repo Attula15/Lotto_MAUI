@@ -11,6 +11,6 @@
           MinimumWidthRequest="200">
         <Label Grid.Column="0" HorizontalTextAlignment="Start" Text="{Binding WinnerType}" MinimumWidthRequest="66"/>
         <Label Grid.Column="1" HorizontalTextAlignment="Center" Text="{Binding NumberOfWinners}" MinimumWidthRequest="66"/>
-        <Label Grid.Column="2" HorizontalTextAlignment="End" Text="{Binding Prize}" MinimumWidthRequest="66"/>
+        <Label Grid.Column="2" HorizontalTextAlignment="End" Text="{Binding Prize, StringFormat='{0:N0}'}" MinimumWidthRequest="66"/>
     </Grid>
 </ContentView>

@@ -90,7 +90,7 @@
                 </CollectionView>
 
                 <!--Android Winners 6-->
-                <Label x:Name="chartViewWinners6Label" Text="Latest winners for Lottery 6:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
+                <Label x:Name="ChartViewWinners6Label" Text="Latest winners for Lottery 6:" HorizontalOptions="Center" IsVisible="True" FontSize="Medium"/>
                 <CollectionView ItemsSource="{Binding LatestWinnersData6Collection}" x:Name="ChartViewWinners6" IsVisible="True" MinimumHeightRequest="150" MinimumWidthRequest="200">
                     <CollectionView.Header>
                         <Grid ColumnDefinitions="33*, 33*, 33*" HorizontalOptions="Center">
@@ -112,20 +112,20 @@
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 5:" HorizontalOptions="Center" FontSize="Medium"/>
                         
-                        <Frame x:Name="DataGridFrame5" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="DataGridFrame5" MaximumWidthRequest="700" MinimumWidthRequest="500" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData5Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
                                 </dg:DataGrid.NoDataView>
                                 <dg:DataGrid.Columns>
-                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                    <dg:DataGridColumn Title="Number of hit numbers" Width="175">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
-                                    <dg:DataGridColumn Title="Number of winners">
+                                    <dg:DataGridColumn Title="Number of winners" Width="140">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
@@ -135,7 +135,7 @@
                                     <dg:DataGridColumn Title="Prize(HUF)">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                                <Label Text="{Binding prize, StringFormat='{0:N0}'}" HorizontalOptions="Center"/>
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
@@ -152,20 +152,20 @@
                     <VerticalStackLayout MinimumHeightRequest="210">
                         <Label Text="Latest winners table for Lottery 6:" HorizontalOptions="Center" FontSize="Medium"/>
 
-                        <Frame x:Name="DataGridFrame6" MaximumWidthRequest="600" MinimumWidthRequest="400" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
+                        <Frame x:Name="DataGridFrame6" MaximumWidthRequest="700" MinimumWidthRequest="500" BackgroundColor="Transparent" Padding="0" MinimumHeightRequest="210" IsVisible="False">
                             <dg:DataGrid ItemsSource="{Binding LatestWinnersData6Collection}" HeaderBackground="{StaticResource LotteryLightGreen}" >
                                 <dg:DataGrid.NoDataView>
                                     <Label Text="Nothing to see here"/>
                                 </dg:DataGrid.NoDataView>
                                 <dg:DataGrid.Columns>
-                                    <dg:DataGridColumn Title="Number of hit numbers">
+                                    <dg:DataGridColumn Title="Number of hit numbers" Width="175">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding winnerType}" HorizontalOptions="Center"/>
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
-                                    <dg:DataGridColumn Title="Number of winners">
+                                    <dg:DataGridColumn Title="Number of winners" Width="140">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
                                                 <Label Text="{Binding numberOfWinners}" HorizontalOptions="Center"/>
@@ -175,7 +175,7 @@
                                     <dg:DataGridColumn Title="Prize(HUF)">
                                         <dg:DataGridColumn.CellTemplate>
                                             <DataTemplate x:DataType="datagridmodel:LotteryWinnersDataPOCO">
-                                                <Label Text="{Binding prize}" HorizontalOptions="Center"/>
+                                                <Label Text="{Binding prize, StringFormat='{0:N0}'}" HorizontalOptions="Center"/>
                                             </DataTemplate>
                                         </dg:DataGridColumn.CellTemplate>
                                     </dg:DataGridColumn>
@@ -212,7 +212,7 @@
                     <Setter TargetName="ChartViewWinners5" Property="IsVisible" Value="False"/>
                     <Setter TargetName="ChartViewWinners6" Property="IsVisible" Value="False"/>
                     <Setter TargetName="ChartViewWinners5Label" Property="IsVisible" Value="False"/>
-                    <Setter TargetName="chartViewWinners6Label" Property="IsVisible" Value="False"/>
+                    <Setter TargetName="ChartViewWinners6Label" Property="IsVisible" Value="False"/>
                     <Setter TargetName="DataGridFrame5" Property="IsVisible" Value="True"/>
                     <Setter TargetName="DataGridFrame6" Property="IsVisible" Value="True"/>
                 </VisualState.Setters>
