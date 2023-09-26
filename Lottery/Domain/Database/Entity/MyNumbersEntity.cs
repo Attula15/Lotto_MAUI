@@ -2,7 +2,7 @@
 
 namespace Lottery.Domain.Database.Entity;
 
-[Table("MyNumbersEntity")]
+[Table("MyNumbersTable")]
 public class MyNumbersEntity
 {
     [PrimaryKey, AutoIncrement]

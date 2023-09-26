@@ -9,7 +9,7 @@ public interface IRestAPI
     public Task<PrizesHolderPOCO> GetPrizes();
     public Task<bool> uploadNumbers(List<int> numbers, int whichOne);
     public Task<SavedNumbersPOCO> getSavedNumbersFromAPI(int whichOne);
-    public Task<List<PrizesEntity>> getLastYearPrizes(string whichOne);
+    public Task<List<PrizesPOCO>> getLastYearPrizes(string whichOne);
     public Task<List<LotteryWinnersDataPOCO>> getLatestWinnersData(int whichOne);
 }
 

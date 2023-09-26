@@ -147,8 +147,8 @@ public partial class DataPageViewModel : ObservableObject
     {
         IsLoading = true;
        
-        List<PrizesEntity> lastYearsPrizes5 = await restApi.getLastYearPrizes("5");
-        List<PrizesEntity> lastYearsPrizes6 = await restApi.getLastYearPrizes("6");
+        List<PrizesPOCO> lastYearsPrizes5 = await restApi.getLastYearPrizes("5");
+        List<PrizesPOCO> lastYearsPrizes6 = await restApi.getLastYearPrizes("6");
 
         List<LotteryWinnersDataPOCO> latestWinnersData5 = await restApi.getLatestWinnersData(5);
         List<LotteryWinnersDataPOCO> latestWinnersData6 = await restApi.getLatestWinnersData(6);
@@ -176,7 +176,7 @@ public partial class DataPageViewModel : ObservableObject
         LatestWinnersData6Collection = temp6;
     }
 
-    private void LoadPrizesData(List<PrizesEntity> lastYearsPrizes5, List<PrizesEntity> lastYearsPrizes6)
+    private void LoadPrizesData(List<PrizesPOCO> lastYearsPrizes5, List<PrizesPOCO> lastYearsPrizes6)
     {
         if(lastYearsPrizes5 == null || lastYearsPrizes6 == null)
         {

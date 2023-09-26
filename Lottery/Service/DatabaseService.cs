@@ -3,6 +3,8 @@ using Lottery.Domain.Database.Entity;
 using Lottery.POCO;
 using SQLite;
 using System.Diagnostics;
+using Lottery.Domain.Entity;
+using Lottery.Mapper;
 
 namespace Lottery.Service;
 public static class DatabaseService
@@ -18,7 +20,7 @@ public static class DatabaseService
             return;
         }
 
-        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LotteryDatabase.db3");
+        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LotteryDatabaseV2.db3");
 
         try
         {
@@ -27,6 +29,7 @@ public static class DatabaseService
             await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
             await db.CreateTableAsync<WinningNumbersDBEntity>();
             await db.CreateTableAsync<TokenEntity>();
+            await db.CreateTableAsync<PrizesEntity>();
             //await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
@@ -35,15 +38,62 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type, string username)
+    public static async Task<PrizesHolderPOCO> GetPrizesFromCache()
     {
+        await Init();
+        
+        var q = db.Table<PrizesEntity>();
+        var prizes = await q.ToListAsync();
+
+        PrizesHolderPOCO returnable = new PrizesHolderPOCO();
+        List<PrizesPOCO> prizesList = new List<PrizesPOCO>();
+        
+        foreach(PrizesEntity prize in prizes)
+        {
+            prizesList.Add(PrizesMapper.toPOCOFromPrizesDBEntity(prize));
+        }
+
+        returnable.prizes = prizesList;
+        return returnable;
+    }
+
+    public static async Task AddPrizesToCache(int prize, int type)
+    {
+        await Init();
+        
+        PrizesEntity newEntity = new PrizesEntity();
+        newEntity.date = DateTime.Now;
+        newEntity.prize = prize;
+        newEntity.whichOne = type;
+        
+        try
+        {
+            var q = db.Table<PrizesEntity>();
+            var deletable = await q.Where(x => x.whichOne == type).FirstOrDefaultAsync();
+            if (deletable != null)
+            {
+                await db.DeleteAsync<PrizesEntity>(deletable.id);
+            }
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type)
+    {
+        await Init();
+        
         var q = db.Table<WinningNumbersDBEntity>();
-        var returnable = await q.Where(x => x.numberType == type && x.username.Equals(username)).FirstOrDefaultAsync();
+        var returnable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
 
         return returnable;
     }
 
-    public static async Task AddWinningNumbersToCache(List<int> numbers, int type, string username)
+    
+    public static async Task AddWinningNumbersToCache(List<int> numbers, int type)
     {
         await Init();
 
@@ -59,10 +109,15 @@ public static class DatabaseService
         newEntity.date = DateTime.Now;
         newEntity.numberType = type;
         newEntity.numbers = numbersInString;
-        newEntity.username = username;
 
         try
         {
+            var q = db.Table<WinningNumbersDBEntity>();
+            var deletable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
+            if (deletable != null)
+            {
+                await db.DeleteAsync<WinningNumbersDBEntity>(deletable.id);
+            }
             await db.InsertAsync(newEntity);
         }
         catch (Exception ex)

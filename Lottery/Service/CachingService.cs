@@ -8,20 +8,23 @@ namespace Lottery.Service;
 public class CachingService
 {
     private IRestAPI restApi;
+
+    private TimeSpan cachingTime = new TimeSpan(2, 0, 0, 0);
     
     public CachingService(IRestAPI restApi)
     {
         this.restApi = restApi;
     }
     
-    public async Task<MyNumbersPOCO> GetWinningNumbers(int type, string username)
+    public async Task<MyNumbersPOCO> GetWinningNumbers(int type)
     {
-        WinningNumbersPOCO databaseWinningNumbers = WinningNumbersMapper.toPOCOFromDB(await DatabaseService.GetWinningNumbersFromCache(type, username));
-        bool IsOld = DateTime.Now - databaseWinningNumbers.date > new TimeSpan(3, 0, 0, 0);
+        WinningNumbersPOCO databaseWinningNumbers = WinningNumbersMapper.toPOCOFromDB(await DatabaseService.GetWinningNumbersFromCache(type));
+        bool isOld;
         bool isOverride;
         
         if (databaseWinningNumbers != null)
         {
+            isOld = DateTime.Now - databaseWinningNumbers.date > cachingTime;
             if (type == 5)
             {
                 isOverride = DateTime.Now.DayOfWeek.Equals(DayOfWeek.Saturday);
@@ -34,16 +37,63 @@ public class CachingService
         else
         {
             isOverride = true;
+            isOld = false;
         }
         
 
-        if (isOverride || IsOld)
+        if (isOverride || isOld)
         {
             MyNumbersPOCO restApiWinnginNumbers = await restApi.GetWinningnumbers(type);
-            await DatabaseService.AddWinningNumbersToCache(restApiWinnginNumbers.numbers, type, username);
+            await DatabaseService.AddWinningNumbersToCache(restApiWinnginNumbers.numbers, type);
             return restApiWinnginNumbers;
         }
 
         return MyNumberMapper.toPOCOFromWinning(databaseWinningNumbers);
+    }
+
+    public async Task<PrizesHolderPOCO> GetPrizes()
+    {
+        PrizesHolderPOCO prizesHolderPoco = await DatabaseService.GetPrizesFromCache();
+
+        if (prizesHolderPoco.prizes.Count > 0)
+        {
+            bool isOverride = DateTime.Now.DayOfWeek.Equals(DayOfWeek.Saturday) || DateTime.Now.DayOfWeek.Equals(DayOfWeek.Sunday);
+
+            if (isOverride)
+            {
+                prizesHolderPoco = await restApi.GetPrizes();
+                foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                {
+                    await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                }
+            }
+            else
+            {
+                PrizesPOCO prize5 = prizesHolderPoco.prizes.Find(x => x.whichOne == 5);
+                PrizesPOCO prize6 = prizesHolderPoco.prizes.Find(x => x.whichOne == 6);
+                
+                bool isOld = DateTime.Now - prize5.date > cachingTime 
+                             || DateTime.Now - prize6.date > cachingTime;
+
+                if (isOld)
+                {
+                    prizesHolderPoco = await restApi.GetPrizes();
+                    foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                    {
+                        await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                    }
+                }
+            }
+        }
+        else
+        {
+            prizesHolderPoco = await restApi.GetPrizes();
+            foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+            {
+                await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+            }
+        }
+
+        return prizesHolderPoco;
     }
 }

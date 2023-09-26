@@ -2,7 +2,7 @@
 
 namespace Lottery.Domain.Database.Entity;
 
-[Table("WinningNumbersEntity")]
+[Table("WinningNumbersTable")]
 public class WinningNumbersDBEntity
 {
     [PrimaryKey, AutoIncrement] 
@@ -14,6 +14,4 @@ public class WinningNumbersDBEntity
     public int numberType { get; set; }
 
     public string numbers { get; set; }
-
-    public string username { get; set; }
 }

@@ -55,13 +55,12 @@ public partial class MainPageViewModel : ObservableObject
     {
         PrizesHolderPOCO result = null;
 
-        result = await restAPI.GetPrizes();
-        
+        result = await cachingService.GetPrizes();
         
         if(result.prizes.Count != 0)
         {
             Debug.WriteLine("The result that I got: " + result.prizes[0].ToString() + ";" + result.prizes[1].ToString());
-            List<PrizesEntity> prizes = result.prizes;
+            List<PrizesPOCO> prizes = result.prizes;
             for (int i = 0; i < prizes.Count; i++)
             {
                 if (prizes[i].whichOne.Equals(5))
@@ -97,8 +96,8 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task GetWinningNumbers()
     {
-        MyNumbersPOCO winning5 = await cachingService.GetWinningNumbers(5, keyCloak.GetCurrentUsername());
-        MyNumbersPOCO winning6 = await cachingService.GetWinningNumbers(6, keyCloak.GetCurrentUsername());
+        MyNumbersPOCO winning5 = await cachingService.GetWinningNumbers(5);
+        MyNumbersPOCO winning6 = await cachingService.GetWinningNumbers(6);
         
         List<int> listOfNumbers;
         for (int i = 0; i < 2; i++)

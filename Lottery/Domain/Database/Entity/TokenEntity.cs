@@ -2,7 +2,7 @@
 
 namespace Lottery.Domain.Database.Entity;
 
-[Table("TokenEntity")]
+[Table("TokenTable")]
 public class TokenEntity
 {
     [PrimaryKey, AutoIncrement] public int id { get; set; }
