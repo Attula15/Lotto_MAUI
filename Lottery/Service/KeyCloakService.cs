@@ -23,6 +23,8 @@ public class KeyCloakService : IKeyCloakService
 
     private readonly IPopupNavigation popupNavigation;
 
+    private static string currentUserName { get; set; }
+
     public string GetSessionToken()
     {
         return sessionToken;
@@ -33,14 +35,20 @@ public class KeyCloakService : IKeyCloakService
         this.popupNavigation = popup;
     }
 
+    public string GetCurrentUsername()
+    {
+        return currentUserName;
+    }
+
     public async Task<string> Login(string username, string password)
     {
+        currentUserName = username;
         using HttpClient client = new HttpClient();
         KeyCloakResponsePOCO responseJson;
         List<KeyValuePair<string, string>> bodyData = new List<KeyValuePair<string, string>>();
         HttpContent content;
         
-        TokenEntity token = await DatabaseService.GetToken();
+        TokenEntity token = await DatabaseService.GetToken(currentUserName);
         
         //Get the token from the DB, if it exists
         if (token != null && token.username != null && token.username.Equals(username))
@@ -190,7 +198,7 @@ public class KeyCloakService : IKeyCloakService
                 sessionHandler = new Thread(new ThreadStart(RefreshMopupCaller));
                 sessionHandler.Name = "SessionHandler Thread";
                 sessionHandler.Start();
-                var token = await DatabaseService.GetToken();
+                var token = await DatabaseService.GetToken(currentUserName);
                 await DatabaseService.AddTokens(sessionToken, refreshToken, token.username);
             }
         }

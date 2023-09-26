@@ -35,15 +35,15 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type)
+    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type, string username)
     {
         var q = db.Table<WinningNumbersDBEntity>();
-        var returnable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
+        var returnable = await q.Where(x => x.numberType == type && x.username.Equals(username)).FirstOrDefaultAsync();
 
         return returnable;
     }
 
-    public static async Task AddWinningNumbersToCache(List<int> numbers, int type)
+    public static async Task AddWinningNumbersToCache(List<int> numbers, int type, string username)
     {
         await Init();
 
@@ -59,6 +59,7 @@ public static class DatabaseService
         newEntity.date = DateTime.Now;
         newEntity.numberType = type;
         newEntity.numbers = numbersInString;
+        newEntity.username = username;
 
         try
         {
@@ -93,15 +94,15 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<TokenEntity> GetToken()
+    public static async Task<TokenEntity> GetToken(string username)
     {
         await Init();
 
         var q = db.Table<TokenEntity>();
-        return await q.FirstOrDefaultAsync();
+        return await q.Where(x => x.username.Equals(username)).FirstOrDefaultAsync();
     }
 
-    public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)
+    public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type, string username)
     {
         await Init();
 
@@ -121,6 +122,7 @@ public static class DatabaseService
             insertable.numbers = numbersInList;
             insertable.date = currentDate;
             insertable.numberType = type;
+            insertable.username = username;
 
             await db.InsertAsync(insertable);
         }
@@ -135,48 +137,12 @@ public static class DatabaseService
         return myNumber;
     }
 
-    public static async Task<MyNumbersEntity> DeleteNumber(MyNumbersEntity number)
+    public static async Task<MyNumbersPOCO> GetLatestNumbers(int type, string username)
     {
         await Init();
 
         var q = db.Table<MyNumbersEntity>();
-        q = q.Where(x => x.id.Equals(number.id));
-        var myNumber = await q.FirstOrDefaultAsync();
-
-        try
-        {
-            await db.DeleteAsync(number);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex + "\n\n");
-        }
-
-        return myNumber;
-    }
-
-    public static async Task DeleteAll()
-    {
-        await Init();
-
-        await db.DeleteAllAsync<MyNumbersEntity>();
-    }
-
-    public static async Task<List<MyNumbersEntity>> GetAllNumbers()
-    {
-        await Init();
-        var q = db.Table<MyNumbersEntity>();
-        List<MyNumbersEntity> numbers = await q.ToListAsync();
-
-        return numbers;
-    }
-
-    public static async Task<MyNumbersPOCO> GetLatestNumbers(int type)
-    {
-        await Init();
-
-        var q = db.Table<MyNumbersEntity>();
-        var dataFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+        var dataFromDB = await q.Where(x => x.numberType == type && x.username.Equals(username)).OrderByDescending(x => x.date).FirstOrDefaultAsync();
 
         if(dataFromDB == null)
         {
@@ -184,34 +150,6 @@ public static class DatabaseService
         }
 
         return MyNumberMapper.toPOCOFromDBEntity(dataFromDB);
-    }
-    
-
-    public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
-    {
-        await Init();
-        PageableNumbers returnable = new PageableNumbers(type);
-
-        var q = db.Table<MyNumbersEntity>();
-        var numbersFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
-
-        if(numbersFromDB == null)
-        {
-            return null;
-        }
-
-        MyNumbersPOCO numbersPOCO = MyNumberMapper.toPOCOFromDBEntity(numbersFromDB);
-
-        int numberOfNumbers = type == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-
-        for (int i = (page - 1) * numberOfNumbers; i < Math.Min(page * numberOfNumbers, numbersPOCO.numbers.Count); i++)
-        {
-            returnable.AppendNumber(numbersPOCO.numbers[i]);
-        }
-
-        returnable.MaxNumberOfElements = numbersPOCO.numbers.Count;
-
-        return returnable;
     }
 }
 

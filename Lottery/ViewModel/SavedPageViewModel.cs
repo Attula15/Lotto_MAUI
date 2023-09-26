@@ -47,8 +47,8 @@ public partial class SavedPageViewModel : ObservableObject
             lottery6NumbersFromAPI = MyNumberMapper.toPOCOFromSavedNumbersPOCO(await restAPI.getSavedNumbersFromAPI(6), 6);
         }
 
-        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
-        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
+        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5, keyCloakService.GetCurrentUsername());
+        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6, keyCloakService.GetCurrentUsername());
 
         MyNumbersPOCO useable5Nummbers = lottery5Numbers;
         MyNumbersPOCO useable6Nummbers = lottery6Numbers;

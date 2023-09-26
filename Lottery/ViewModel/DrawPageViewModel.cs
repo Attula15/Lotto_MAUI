@@ -176,7 +176,7 @@ public partial class DrawPageViewModel : ObservableObject
             return;
         }
 
-        await DatabaseService.AddNumber(drawnNumbers, IsCollection5Visible ? 5 : 6);
+        await DatabaseService.AddNumber(drawnNumbers, IsCollection5Visible ? 5 : 6, keyCloakService.GetCurrentUsername());
         bool success = await restAPI.uploadNumbers(drawnNumbers, IsCollection5Visible ? 5 : 6);
 
         if(success)

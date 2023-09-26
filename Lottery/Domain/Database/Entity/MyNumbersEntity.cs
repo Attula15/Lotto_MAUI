@@ -13,5 +13,7 @@ public class MyNumbersEntity
     public int numberType { get; set; }
 
     public string numbers { get; set; }
+
+    public string username { get; set; }
 }
 

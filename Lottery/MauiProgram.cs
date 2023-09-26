@@ -27,6 +27,7 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<IRestAPI, RestAPI>();
 		builder.Services.AddSingleton<IKeyCloakService, KeyCloakService>();
+		builder.Services.AddSingleton<CachingService>();
 		
 		builder.Services.AddSingleton<IPopupNavigation>(MopupService.Instance);
 		builder.Services.AddTransient<SessionPopuViewModel>();

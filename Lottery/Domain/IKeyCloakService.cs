@@ -5,5 +5,6 @@ public interface IKeyCloakService
     public Task<bool> Logout();
     public string GetSessionToken();
     public Task RefreshToken();
+    public string GetCurrentUsername();
 }
 
