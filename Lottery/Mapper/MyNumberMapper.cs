@@ -28,7 +28,7 @@ public static class MyNumberMapper
             );
     }
 
-    public static MyNumbersPOCO toPOCOFromWinning(WinningNumbersEntity entity)
+    public static MyNumbersPOCO toPOCOFromWinning(WinningNumbersPOCO entity)
     {
         string[] listOfNumbersInString = entity.numbers.Split(";");
         List<int> extractedNumbers = new List<int>();

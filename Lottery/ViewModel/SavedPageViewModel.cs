@@ -89,32 +89,86 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
         MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
 
+        TimeSpan oneWeek = new TimeSpan(7, 0, 0, 0);
+        
         if (useable5Nummbers != null)
         {
-            foreach (var number in useable5Nummbers.numbers)
+
+            DateTime? winning5DateTime;
+
+            try
             {
-                if (winning5.numberType != null && winning5.numbers.Contains(number))
+                //Azert kell, mert csak eddig lehet szelvenyt feladni
+                winning5DateTime = new DateTime(winning5.date.Value.Year, winning5.date.Value.Month, winning5.date.Value.Day, 17, 30, 0);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                winning5DateTime = new DateTime(1900, 1, 1);
+            }
+            
+            bool ticketTooOld = winning5DateTime - useable5Nummbers.date > oneWeek;
+            
+            if (winning5.date > useable5Nummbers.date && !ticketTooOld)
+            {
+                foreach (var number in useable5Nummbers.numbers)
                 {
-                    temp5.Add(new MyDrawableNumberPOCO(number, true));
+                    if (winning5.numberType != null && winning5.numbers.Contains(number))
+                    {
+                        temp5.Add(new MyDrawableNumberPOCO(number, true));
+                    }
+                    else
+                    {
+                        temp5.Add(new MyDrawableNumberPOCO(number, false));
+                    }
                 }
-                else
+            }
+            else
+            {
+                foreach (var number in useable5Nummbers.numbers)
                 {
                     temp5.Add(new MyDrawableNumberPOCO(number, false));
                 }
             }
+            
         }
 
         DisplayedLottery5Numbers = temp5;
 
         if (useable6Nummbers != null)
         {
-            foreach (var number in useable6Nummbers.numbers)
+            DateTime? winning6DateTime;
+            
+            try
             {
-                if (winning6.numberType != null && winning6.numbers.Contains(number))
+                //Azert kell, mert csak eddig lehet szelvenyt feladni
+                winning6DateTime = new DateTime(winning5.date.Value.Year, winning5.date.Value.Month, winning5.date.Value.Day, 14, 30, 0);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                winning6DateTime = new DateTime(1900, 1, 1);
+            }
+            
+            bool ticketTooOld = winning6DateTime - useable6Nummbers.date > oneWeek;
+            
+            if (winning6.date > useable6Nummbers.date && !ticketTooOld)
+            {
+                foreach (var number in useable6Nummbers.numbers)
                 {
-                    temp6.Add(new MyDrawableNumberPOCO(number, true));
+                    if (winning6.numberType != null && winning6.numbers.Contains(number))
+                    {
+                        temp6.Add(new MyDrawableNumberPOCO(number, true));
+                    }
+                    else
+                    {
+                        temp6.Add(new MyDrawableNumberPOCO(number, false));
+                    }
                 }
-                else
+            }
+            else
+            {
+                foreach (var number in useable6Nummbers.numbers)
                 {
                     temp6.Add(new MyDrawableNumberPOCO(number, false));
                 }

@@ -4,7 +4,6 @@ using Lottery.Domain.Entity;
 using Lottery.Domain.RequestBody;
 using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
-using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -29,20 +28,20 @@ public class RestAPI : IRestAPI
         client.Timeout = TimeSpan.FromSeconds(5);
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
+        WinningNumbersPOCO winningNumbersApi = new WinningNumbersPOCO();
 
         try
         {
             if (whichOne.Equals(5))
             {
-                winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning5");
-                Debug.WriteLine(winningNumbers.numbers);
-                return MyNumberMapper.toPOCOFromWinning(winningNumbers);
+                winningNumbersApi = await client.GetFromJsonAsync<WinningNumbersPOCO>(baseURL + "/getWinning5");
+                Debug.WriteLine(winningNumbersApi.numbers);
+                return MyNumberMapper.toPOCOFromWinning(winningNumbersApi);
             }
             else if (whichOne.Equals(6))
             {
-                winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning6");
-                return MyNumberMapper.toPOCOFromWinning(winningNumbers);
+                winningNumbersApi = await client.GetFromJsonAsync<WinningNumbersPOCO>(baseURL + "/getWinning6");
+                return MyNumberMapper.toPOCOFromWinning(winningNumbersApi);
             }
             else
             {

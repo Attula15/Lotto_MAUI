@@ -1,5 +1,4 @@
-﻿
-using Lottery.Domain.Database;
+﻿using Lottery.Domain.Database;
 using Lottery.Domain.Database.Entity;
 using Lottery.POCO;
 using SQLite;
@@ -26,12 +25,48 @@ public static class DatabaseService
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
             await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
+            await db.CreateTableAsync<WinningNumbersDBEntity>();
             await db.CreateTableAsync<TokenEntity>();
             //await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex + "\n\n");
+        }
+    }
+
+    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type)
+    {
+        var q = db.Table<WinningNumbersDBEntity>();
+        var returnable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
+
+        return returnable;
+    }
+
+    public static async Task AddWinningNumbersToCache(List<int> numbers, int type)
+    {
+        await Init();
+
+        string numbersInString = "";
+        
+        //Convert list of numbers to storeable string
+        for(int i = 0; i < numbers.Count; i++)
+        {
+            numbersInString = numbersInString + numbers[i] + ";";
+        }
+        
+        WinningNumbersDBEntity newEntity = new WinningNumbersDBEntity();
+        newEntity.date = DateTime.Now;
+        newEntity.numberType = type;
+        newEntity.numbers = numbersInString;
+
+        try
+        {
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
         }
     }
 

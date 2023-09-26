@@ -6,6 +6,8 @@ using Lottery.POCO;
 using Lottery.View;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Lottery.Mapper;
+using Lottery.Service;
 
 namespace Lottery.ViewModel;
 
@@ -92,8 +94,38 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task GetWinningNumbers()
     {
-        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
-        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
+        WinningNumbersPOCO winningNumbers5Poco = WinningNumbersMapper.toPOCOFromDB(await DatabaseService.GetWinningNumbersFromCache(5));
+        WinningNumbersPOCO winningNumbers6Poco = WinningNumbersMapper.toPOCOFromDB(await DatabaseService.GetWinningNumbersFromCache(6));
+
+        MyNumbersPOCO winning5;
+        MyNumbersPOCO winning6;
+
+        //Check a datum eleg friss
+        if (winningNumbers5Poco != null)
+        {
+            if (DateTime.Now - winningNumbers5Poco.date < new TimeSpan(3, 0, 0, 0))
+            {
+                winning5 = MyNumberMapper.toPOCOFromWinning(winningNumbers5Poco);
+                winning6 = MyNumberMapper.toPOCOFromWinning(winningNumbers6Poco);
+            }
+            else
+            {
+                winning5 = await restAPI.GetWinningnumbers(5);
+                winning6 = await restAPI.GetWinningnumbers(6);
+
+                await DatabaseService.AddWinningNumbersToCache(winning5.numbers, 5);
+                await DatabaseService.AddWinningNumbersToCache(winning6.numbers, 6);
+            }
+        }
+        else
+        {
+            winning5 = await restAPI.GetWinningnumbers(5);
+            winning6 = await restAPI.GetWinningnumbers(6);
+            
+            await DatabaseService.AddWinningNumbersToCache(winning5.numbers, 5);
+            await DatabaseService.AddWinningNumbersToCache(winning6.numbers, 6);
+        }
+        
         List<int> listOfNumbers;
         for (int i = 0; i < 2; i++)
         {
