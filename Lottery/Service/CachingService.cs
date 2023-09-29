@@ -51,9 +51,9 @@ public class CachingService
         return MyNumberMapper.toPOCOFromWinning(databaseWinningNumbers);
     }
 
-    public async Task<PrizesHolderPOCO> GetPrizes()
+    public async Task<PrizesHolderPOCO> GetLatestPrizes()
     {
-        PrizesHolderPOCO prizesHolderPoco = await DatabaseService.GetPrizesFromCache();
+        PrizesHolderPOCO prizesHolderPoco = await DatabaseService.GetLatestPrizesFromCache();
 
         if (prizesHolderPoco.prizes.Count > 0)
         {
@@ -64,7 +64,7 @@ public class CachingService
                 prizesHolderPoco = await restApi.GetPrizes();
                 foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
                 {
-                    await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                    await DatabaseService.AddLatestPrizesToCache(prize.prize, prize.whichOne);
                 }
             }
             else
@@ -80,7 +80,7 @@ public class CachingService
                     prizesHolderPoco = await restApi.GetPrizes();
                     foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
                     {
-                        await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                        await DatabaseService.AddLatestPrizesToCache(prize.prize, prize.whichOne);
                     }
                 }
             }
@@ -90,10 +90,50 @@ public class CachingService
             prizesHolderPoco = await restApi.GetPrizes();
             foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
             {
-                await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                await DatabaseService.AddLatestPrizesToCache(prize.prize, prize.whichOne);
             }
         }
 
         return prizesHolderPoco;
+    }
+
+    public async Task<List<PrizesPOCO>> GetPrizes(int type)
+    {
+        List<PrizesPOCO> prizesFromDB = await DatabaseService.GetPrizesFromCache(type);
+        List<PrizesPOCO> prizesFromAPI = null;
+
+        if (prizesFromDB.Count > 0)
+        {
+            bool isOverride = DateTime.Now.DayOfWeek.Equals(DayOfWeek.Saturday) || DateTime.Now.DayOfWeek.Equals(DayOfWeek.Sunday);
+
+            if (isOverride)
+            {
+                prizesFromAPI = await restApi.getLastYearPrizes(type);
+                await DatabaseService.AddPrizes(prizesFromAPI);
+                
+                return prizesFromAPI;
+            }
+            else
+            {
+                //Mi van, ha atlog az elozo honapba?
+                var lastSunday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, (int)(DateTime.Now.Day - DateTime.Now.DayOfWeek));
+
+                if (prizesFromDB[0].date < lastSunday)
+                {
+                    prizesFromAPI = await restApi.getLastYearPrizes(type);
+                    await DatabaseService.AddPrizes(prizesFromAPI);
+                    return prizesFromAPI;
+                }
+
+                return prizesFromDB;
+            }
+        }
+        else
+        {
+            prizesFromAPI = await restApi.getLastYearPrizes(type);
+            await DatabaseService.AddPrizes(prizesFromAPI);
+
+            return prizesFromAPI;
+        }
     }
 }

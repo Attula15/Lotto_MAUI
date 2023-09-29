@@ -140,7 +140,7 @@ public class RestAPI : IRestAPI
         }
     }
 
-    public async Task<List<PrizesPOCO>> getLastYearPrizes(string whichOne)
+    public async Task<List<PrizesPOCO>> getLastYearPrizes(int whichOne)
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);

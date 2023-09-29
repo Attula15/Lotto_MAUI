@@ -55,7 +55,7 @@ public partial class MainPageViewModel : ObservableObject
     {
         PrizesHolderPOCO result = null;
 
-        result = await cachingService.GetPrizes();
+        result = await cachingService.GetLatestPrizes();
         
         if(result.prizes.Count != 0)
         {

@@ -8,6 +8,7 @@ using Microcharts;
 using SkiaSharp;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Lottery.Service;
 
 namespace Lottery.ViewModel;
 public partial class DataPageViewModel : ObservableObject
@@ -15,6 +16,8 @@ public partial class DataPageViewModel : ObservableObject
     private readonly IRestAPI restApi;
 
     private readonly IKeyCloakService keyCloakService;
+
+    private readonly CachingService cachingService;
 
     [ObservableProperty]
     private Chart chart5 = new BarChart();
@@ -41,10 +44,11 @@ public partial class DataPageViewModel : ObservableObject
     private List<ChartEntry> chartEntries5;
     private List<ChartEntry> chartEntries6;
 
-    public DataPageViewModel(IRestAPI restApi, IKeyCloakService keyCloakService)
+    public DataPageViewModel(IRestAPI restApi, IKeyCloakService keyCloakService, CachingService cachingService)
     {
         this.restApi = restApi;
         this.keyCloakService = keyCloakService;
+        this.cachingService = cachingService;
     }
 
     [RelayCommand]
@@ -147,8 +151,8 @@ public partial class DataPageViewModel : ObservableObject
     {
         IsLoading = true;
        
-        List<PrizesPOCO> lastYearsPrizes5 = await restApi.getLastYearPrizes("5");
-        List<PrizesPOCO> lastYearsPrizes6 = await restApi.getLastYearPrizes("6");
+        List<PrizesPOCO> lastYearsPrizes5 = await cachingService.GetPrizes(5);
+        List<PrizesPOCO> lastYearsPrizes6 = await cachingService.GetPrizes(6);
 
         List<LotteryWinnersDataPOCO> latestWinnersData5 = await restApi.getLatestWinnersData(5);
         List<LotteryWinnersDataPOCO> latestWinnersData6 = await restApi.getLatestWinnersData(6);

@@ -30,6 +30,8 @@ public static class DatabaseService
             await db.CreateTableAsync<WinningNumbersDBEntity>();
             await db.CreateTableAsync<TokenEntity>();
             await db.CreateTableAsync<PrizesEntity>();
+            await db.CreateTableAsync<PrizesForDataEntity>();
+            await db.CreateIndexAsync<PrizesForDataEntity>(i => i.type);
             //await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
@@ -38,7 +40,42 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<PrizesHolderPOCO> GetPrizesFromCache()
+    public static async Task<List<PrizesPOCO>> GetPrizesFromCache(int type)
+    {
+        await Init();
+
+        var q = db.Table<PrizesForDataEntity>();
+        var prizes = await q.Where(x => x.type == type).OrderBy(x => x.date).ToListAsync();
+
+        List<PrizesPOCO> returnable = new List<PrizesPOCO>();
+        
+        foreach (var prize in prizes)
+        {
+            returnable.Add(PrizesMapper.toPOCOFromPrizesForDataEntity(prize));
+        }
+
+        return returnable;
+    }
+
+    public static async Task AddPrizes(List<PrizesPOCO> prizesList)
+    {
+        await Init();
+
+        List<PrizesForDataEntity> insertable = new List<PrizesForDataEntity>();
+
+        var currentDate = DateTime.Now;
+        
+        foreach (var prize in prizesList)
+        {
+            insertable.Add(PrizesMapper.toDataEntityFromPOCO(prize, currentDate));
+        }
+        
+        await db.DeleteAllAsync<PrizesForDataEntity>();
+        
+        await db.InsertAllAsync(insertable);
+    }
+
+    public static async Task<PrizesHolderPOCO> GetLatestPrizesFromCache()
     {
         await Init();
         
@@ -57,7 +94,7 @@ public static class DatabaseService
         return returnable;
     }
 
-    public static async Task AddPrizesToCache(int prize, int type)
+    public static async Task AddLatestPrizesToCache(int prize, int type)
     {
         await Init();
         
