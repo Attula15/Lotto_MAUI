@@ -10,8 +10,6 @@ namespace Lottery.Service;
 public static class DatabaseService
 {
     private static SQLiteAsyncConnection db = null;
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY6 = 18;
 
     private static async Task Init()
     {

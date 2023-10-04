@@ -130,7 +130,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Logout()
+    public async Task Logout()
     {
         bool success = await keyCloak.Logout();
 

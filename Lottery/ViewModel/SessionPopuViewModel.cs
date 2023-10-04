@@ -19,7 +19,7 @@ public partial class SessionPopuViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void Yes()
+    private async Task Yes()
     {
         Debug.WriteLine("Great, renewing...");
         await keyCloakService.RefreshToken();
@@ -27,7 +27,7 @@ public partial class SessionPopuViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void No()
+    private async Task No()
     {
         bool success = await keyCloakService.Logout();
         if (success)

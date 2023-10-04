@@ -153,10 +153,13 @@ public partial class DataPageViewModel : ObservableObject
         List<LotteryWinnersDataPOCO> latestWinnersData5 = await restApi.getLatestWinnersData(5);
         List<LotteryWinnersDataPOCO> latestWinnersData6 = await restApi.getLatestWinnersData(6);
 
-        LoadPrizesData(lastYearsPrizes5, lastYearsPrizes6);
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+        {
+            LoadPrizesData(lastYearsPrizes5, lastYearsPrizes6);
 
-        LoadWinnersTableData(latestWinnersData5, latestWinnersData6);
-
+            LoadWinnersTableData(latestWinnersData5, latestWinnersData6);
+        }
+        
         IsLoading = false;
     }
 
@@ -178,6 +181,9 @@ public partial class DataPageViewModel : ObservableObject
 
     private void LoadPrizesData(List<PrizesPOCO> lastYearsPrizes5, List<PrizesPOCO> lastYearsPrizes6)
     {
+        chartEntries5 = new List<ChartEntry>();
+        chartEntries6 = new List<ChartEntry>();
+        
         if(lastYearsPrizes5 == null || lastYearsPrizes6 == null)
         {
             return;
@@ -185,9 +191,6 @@ public partial class DataPageViewModel : ObservableObject
 
         SKPaint paint = new SKPaint();
         paint.Color = SKColor.Parse("#1E7836");
-
-        chartEntries5 = new List<ChartEntry>();
-        chartEntries6 = new List<ChartEntry>();
 
         for (int i = 0; i < lastYearsPrizes5.Count; i++)
         {

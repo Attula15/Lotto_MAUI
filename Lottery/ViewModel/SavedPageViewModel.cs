@@ -31,8 +31,6 @@ public partial class SavedPageViewModel : ObservableObject
 
     public async void LoadNumbersIntoDrawnList()
     {
-        NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
         IsLoading = true;
 
         DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
@@ -41,7 +39,7 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersPOCO lottery5NumbersFromAPI = null;
         MyNumbersPOCO lottery6NumbersFromAPI = null;
 
-        if (accessType == Connectivity.Current.NetworkAccess)
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
             lottery5NumbersFromAPI = MyNumberMapper.toPOCOFromSavedNumbersPOCO(await restAPI.getSavedNumbersFromAPI(5), 5);
             lottery6NumbersFromAPI = MyNumberMapper.toPOCOFromSavedNumbersPOCO(await restAPI.getSavedNumbersFromAPI(6), 6);
@@ -181,7 +179,7 @@ public partial class SavedPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Logout()
+    public async Task Logout()
     {
         bool success = await keyCloakService.Logout();
 

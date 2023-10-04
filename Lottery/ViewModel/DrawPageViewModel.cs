@@ -193,7 +193,7 @@ public partial class DrawPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void Logout()
+    private async Task Logout()
     {
         bool success = await keyCloakService.Logout();
 
