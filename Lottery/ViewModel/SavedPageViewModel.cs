@@ -62,6 +62,13 @@ public partial class SavedPageViewModel : ObservableObject
                 {
                     useable5Nummbers = lottery5NumbersFromAPI;
                 }
+                else
+                {
+                    if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                    {
+                        await restAPI.uploadNumbers(useable5Nummbers.numbers, 5);   
+                    }
+                }
             }
         }
 
@@ -76,6 +83,13 @@ public partial class SavedPageViewModel : ObservableObject
                 if (lottery6NumbersFromAPI.date > lottery6Numbers.date)
                 {
                     useable6Nummbers = lottery6NumbersFromAPI;
+                }
+                else
+                {
+                    if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                    {
+                        await restAPI.uploadNumbers(useable6Nummbers.numbers, 6);   
+                    }
                 }
             }
         }
