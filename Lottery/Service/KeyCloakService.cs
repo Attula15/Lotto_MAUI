@@ -217,6 +217,7 @@ public class KeyCloakService : IKeyCloakService
         int seconds = (int) Math.Floor(expireDate.Value.Subtract(DateTime.Now).TotalSeconds);
         Debug.WriteLine("Seconds that gets into the thread" + seconds);
         Thread.Sleep((seconds - 60) * 1000);
+        //Thread.Sleep(5*1000);
         Debug.WriteLine("Thread wait ended");
         if(loggedIn)
         {

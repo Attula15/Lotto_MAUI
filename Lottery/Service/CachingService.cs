@@ -1,4 +1,5 @@
-﻿using Lottery.Domain;
+﻿using System.Diagnostics;
+using Lottery.Domain;
 using Lottery.Domain.Entity;
 using Lottery.Mapper;
 using Lottery.POCO;
@@ -53,18 +54,26 @@ public class CachingService
 
     public async Task<PrizesHolderPOCO> GetPrizes()
     {
+        bool canGetFromAPI = true;
         PrizesHolderPOCO prizesHolderPoco = await DatabaseService.GetPrizesFromCache();
 
-        if (prizesHolderPoco.prizes.Count > 0)
+        if (prizesHolderPoco != null && prizesHolderPoco.prizes.Count > 0)
         {
             bool isOverride = DateTime.Now.DayOfWeek.Equals(DayOfWeek.Saturday) || DateTime.Now.DayOfWeek.Equals(DayOfWeek.Sunday);
 
             if (isOverride)
             {
                 prizesHolderPoco = await restApi.GetPrizes();
-                foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                if (prizesHolderPoco != null)
                 {
-                    await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                    foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                    {
+                        await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                    }
+                }
+                else
+                {
+                    canGetFromAPI = false;
                 }
             }
             else
@@ -78,9 +87,16 @@ public class CachingService
                 if (isOld)
                 {
                     prizesHolderPoco = await restApi.GetPrizes();
-                    foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                    if (prizesHolderPoco != null)
                     {
-                        await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                        foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                        {
+                            await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                        }
+                    }
+                    else
+                    {
+                        canGetFromAPI = false;
                     }
                 }
             }
@@ -88,10 +104,23 @@ public class CachingService
         else
         {
             prizesHolderPoco = await restApi.GetPrizes();
-            foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+            if (prizesHolderPoco != null)
             {
-                await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                foreach (PrizesPOCO prize in prizesHolderPoco.prizes)
+                {
+                    await DatabaseService.AddPrizesToCache(prize.prize, prize.whichOne);
+                }
             }
+            else
+            {
+                canGetFromAPI = false;
+            }
+        }
+
+        if (!canGetFromAPI)
+        {
+            Debug.WriteLine("Couldn't access the API");
+            return null;
         }
 
         return prizesHolderPoco;

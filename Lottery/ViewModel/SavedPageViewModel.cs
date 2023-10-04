@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
-using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
 using Lottery.Service;
 using Lottery.View;

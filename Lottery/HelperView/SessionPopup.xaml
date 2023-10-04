@@ -8,28 +8,34 @@
              Title="SessionPopup" 
              BackgroundColor="#80000000"
              CloseWhenBackgroundIsClicked="False">
-    <Grid 
-        MinimumWidthRequest="100" 
-        MinimumHeightRequest="100" 
-        MaximumWidthRequest="250"
+    <Grid
+        MaximumWidthRequest="300"
+        MaximumHeightRequest="160"
         VerticalOptions="CenterAndExpand" 
         HorizontalOptions="Center"
-        BackgroundColor="Red"
+        BackgroundColor="Transparent"
         ColumnDefinitions="Auto, Auto"
         RowDefinitions="Auto, Auto"
-        x:Name="MainGrid">
-
-        <VerticalStackLayout x:Name="MainVerticalStackLayout" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" MaximumWidthRequest="250">
+        x:Name="MainBorder">
+        
+        <Border StrokeShape="RoundRectangle 10, 10, 10, 10"
+                StrokeThickness="3"
+                Stroke="{StaticResource LotteryLightGreen}"
+                Grid.ColumnSpan="2"
+                Grid.RowSpan="2"
+                BackgroundColor="{StaticResource LotteryDarkGreen}"/>
+        
+        <VerticalStackLayout x:Name="MainVerticalStackLayout" Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" MaximumWidthRequest="250" Padding="10">
             <Label Text="Your session has nearly expired, do you want to renew it?" LineBreakMode="WordWrap"/>
             <Label Text="(Choosing 'No' will log you out)"/>
         </VerticalStackLayout>
-        
-        
-        <Button Grid.Row="1" Grid.Column="0" WidthRequest="75" HeightRequest="40" HorizontalOptions="Start" Text="Yes" Command="{Binding YesCommand}"/>
-        <Button Grid.Row="1" Grid.Column="1" WidthRequest="75" HeightRequest="40" HorizontalOptions="End" Text="No" Command="{Binding NoCommand}"/>
-        
+    
+    
+        <Button Grid.Row="1" Grid.Column="0" WidthRequest="75" HeightRequest="40" HorizontalOptions="Start" Text="Yes" Command="{Binding YesCommand}" Margin="12, 0, 0, 12"/>
+        <Button Grid.Row="1" Grid.Column="1" WidthRequest="75" HeightRequest="40" HorizontalOptions="End" Text="No" Command="{Binding NoCommand}" Margin="0, 0, 12, 12"/>
+    
     </Grid>
-
+    
     <!--PC-->
     <VisualStateManager.VisualStateGroups>
         <VisualStateGroup x:Name="WindowSizeStates">
@@ -38,7 +44,7 @@
                     <AdaptiveTrigger MinWindowWidth="700"/>
                 </VisualState.StateTriggers>
                 <VisualState.Setters>
-                    <Setter TargetName="MainGrid" Property="MaximumWidthRequest" Value="600"/>
+                    <Setter TargetName="MainBorder" Property="MaximumWidthRequest" Value="600"/>
                     <Setter TargetName="MainVerticalStackLayout" Property="MaximumWidthRequest" Value="600"/>
                 </VisualState.Setters>
             </VisualState>

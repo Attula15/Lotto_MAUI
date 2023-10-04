@@ -87,6 +87,9 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="Could not connect to the server!" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                    </CollectionView.EmptyView>
                 </CollectionView>
 
                 <!--Android Winners 6-->
@@ -106,6 +109,9 @@
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="Could not connect to the server!" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                    </CollectionView.EmptyView>
                 </CollectionView>
                 
                 <HorizontalStackLayout x:Name="PcDataGrid" IsVisible="False" HorizontalOptions="Center" Spacing="10">
