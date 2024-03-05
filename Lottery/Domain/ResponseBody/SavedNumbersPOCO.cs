@@ -2,7 +2,7 @@
 namespace Lottery.Domain.ResponseBody;
 public class SavedNumbersPOCO
 {
-    public string? numbers { get; set; }
+    public string numbers { get; set; }
     public DateTime? date { get; set; }
 
     public SavedNumbersPOCO() 

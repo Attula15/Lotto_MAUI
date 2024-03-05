@@ -7,17 +7,7 @@
           ColumnDefinitions="Auto, Auto, Auto"
           BindingContext="{x:Reference Number}"
           BackgroundColor="Transparent">
-
-        <Ellipse Fill="{StaticResource Blue100Accent}" 
-                 Stroke="{StaticResource Blue300Accent}"
-                 StrokeThickness="4"
-                 WidthRequest="40" 
-                 HeightRequest="40"
-                 Grid.ColumnSpan="3"
-                 Grid.RowSpan="3"
-                 Grid.Row="0"
-                 Grid.Column="0"
-                 IsVisible="{Binding NumberDrawn}"/>
+        
         <Ellipse Fill="{StaticResource LotteryDarkGreen}" 
                  Stroke="{StaticResource LotteryLightGreen}"
                  StrokeThickness="4"
@@ -26,8 +16,16 @@
                  Grid.ColumnSpan="3"
                  Grid.RowSpan="3"
                  Grid.Row="0"
-                 Grid.Column="0"
-                 IsVisible="{Binding NumberDrawnNot}"/>
+                 Grid.Column="0">
+            <Ellipse.Triggers>
+                <DataTrigger TargetType="Ellipse"
+                         Binding="{Binding NumberDrawn}"
+                         Value="True">
+                    <Setter Property="Fill" Value="{StaticResource Blue100Accent}" />
+                    <Setter Property="Stroke" Value="{StaticResource Blue300Accent}" />
+                </DataTrigger>
+            </Ellipse.Triggers>
+        </Ellipse>
         <Label Text="{Binding NumberTitle}" 
                Grid.Column="1" 
                Grid.Row="1"

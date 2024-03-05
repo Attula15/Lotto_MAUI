@@ -6,6 +6,8 @@ using Lottery.POCO;
 using Lottery.View;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Lottery.Mapper;
+using Lottery.Service;
 
 namespace Lottery.ViewModel;
 
@@ -32,10 +34,13 @@ public partial class MainPageViewModel : ObservableObject
 
     private readonly IKeyCloakService keyCloak;
 
-    public MainPageViewModel(IRestAPI rest, IKeyCloakService keyCloak)
+    private readonly CachingService cachingService;
+
+    public MainPageViewModel(IRestAPI rest, IKeyCloakService keyCloak, CachingService cachingService)
     {
         restAPI = rest;
         this.keyCloak = keyCloak;
+        this.cachingService = cachingService;
     }
 
     public async void Init()
@@ -50,13 +55,12 @@ public partial class MainPageViewModel : ObservableObject
     {
         PrizesHolderPOCO result = null;
 
-        result = await restAPI.GetPrizes();
-        
+        result = await cachingService.GetPrizes();
         
         if(result.prizes.Count != 0)
         {
             Debug.WriteLine("The result that I got: " + result.prizes[0].ToString() + ";" + result.prizes[1].ToString());
-            List<PrizesEntity> prizes = result.prizes;
+            List<PrizesPOCO> prizes = result.prizes;
             for (int i = 0; i < prizes.Count; i++)
             {
                 if (prizes[i].whichOne.Equals(5))
@@ -92,8 +96,9 @@ public partial class MainPageViewModel : ObservableObject
 
     private async Task GetWinningNumbers()
     {
-        MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
-        MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
+        MyNumbersPOCO winning5 = await cachingService.GetWinningNumbers(5);
+        MyNumbersPOCO winning6 = await cachingService.GetWinningNumbers(6);
+        
         List<int> listOfNumbers;
         for (int i = 0; i < 2; i++)
         {
@@ -125,7 +130,7 @@ public partial class MainPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Logout()
+    public async Task Logout()
     {
         bool success = await keyCloak.Logout();
 

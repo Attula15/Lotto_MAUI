@@ -4,7 +4,6 @@ using Lottery.Domain.Entity;
 using Lottery.Domain.RequestBody;
 using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
-using System;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -29,20 +28,20 @@ public class RestAPI : IRestAPI
         client.Timeout = TimeSpan.FromSeconds(5);
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        WinningNumbersEntity winningNumbers = new WinningNumbersEntity();
+        WinningNumbersPOCO winningNumbersApi = new WinningNumbersPOCO();
 
         try
         {
             if (whichOne.Equals(5))
             {
-                winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning5");
-                Debug.WriteLine(winningNumbers.numbers);
-                return MyNumberMapper.toPOCOFromWinning(winningNumbers);
+                winningNumbersApi = await client.GetFromJsonAsync<WinningNumbersPOCO>(baseURL + "/getWinning5");
+                Debug.WriteLine(winningNumbersApi.numbers);
+                return MyNumberMapper.toPOCOFromWinning(winningNumbersApi);
             }
             else if (whichOne.Equals(6))
             {
-                winningNumbers = await client.GetFromJsonAsync<WinningNumbersEntity>(baseURL + "/getWinning6");
-                return MyNumberMapper.toPOCOFromWinning(winningNumbers);
+                winningNumbersApi = await client.GetFromJsonAsync<WinningNumbersPOCO>(baseURL + "/getWinning6");
+                return MyNumberMapper.toPOCOFromWinning(winningNumbersApi);
             }
             else
             {
@@ -63,14 +62,14 @@ public class RestAPI : IRestAPI
         string token = keyCloakService.GetSessionToken();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        PrizesEntity prize5;
-        PrizesEntity prize6;
+        PrizesPOCO prize5;
+        PrizesPOCO prize6;
         PrizesHolderPOCO returnable = new PrizesHolderPOCO();
 
         try
         {
-            prize5 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize5");
-            prize6 = await client.GetFromJsonAsync<PrizesEntity>(baseURL + "/getPrize6");
+            prize5 = await client.GetFromJsonAsync<PrizesPOCO>(baseURL + "/getPrize5");
+            prize6 = await client.GetFromJsonAsync<PrizesPOCO>(baseURL + "/getPrize6");
             Debug.WriteLine("Prize5 that is from the API: " + prize5.prize + ";" + prize5.whichOne);
         }
         catch(Exception ex)
@@ -79,7 +78,7 @@ public class RestAPI : IRestAPI
             return returnable;
         }
 
-        returnable.prizes = new List<PrizesEntity>
+        returnable.prizes = new List<PrizesPOCO>
         {
             prize5, prize6
         };
@@ -141,7 +140,7 @@ public class RestAPI : IRestAPI
         }
     }
 
-    public async Task<List<PrizesEntity>> getLastYearPrizes(string whichOne)
+    public async Task<List<PrizesPOCO>> getLastYearPrizes(string whichOne)
     {
         using HttpClient client = new HttpClient();
         client.Timeout = TimeSpan.FromSeconds(5);
@@ -150,7 +149,7 @@ public class RestAPI : IRestAPI
             string token = keyCloakService.GetSessionToken();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            return await client.GetFromJsonAsync<List<PrizesEntity>>(baseURL + "/getLastYearPrize?whichOne=" + whichOne);
+            return await client.GetFromJsonAsync<List<PrizesPOCO>>(baseURL + "/getLastYearPrize?whichOne=" + whichOne);
         }
         catch (Exception ex)
         {

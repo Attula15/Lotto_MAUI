@@ -14,7 +14,7 @@
                             HorizontalOptions="Center" 
                             Margin="10"
                             Grid.Column="1">
-            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <ActivityIndicator IsRunning="{Binding IsLoading}"/>
             <VerticalStackLayout HorizontalOptions="Center"
                              Margin="10">
                 <Label Text="Get to the webpage" FontSize="Large"/>

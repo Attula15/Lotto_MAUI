@@ -10,7 +10,7 @@
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
         <VerticalStackLayout Grid.Column="1" Spacing="15">
-            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <ActivityIndicator IsRunning="{Binding IsLoading}"/>
             <Label 
             Text="{Binding Communication}"
             VerticalOptions="Center" 

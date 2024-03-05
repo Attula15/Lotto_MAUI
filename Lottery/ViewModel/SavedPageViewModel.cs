@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
-using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
 using Lottery.Service;
 using Lottery.View;
@@ -31,8 +30,6 @@ public partial class SavedPageViewModel : ObservableObject
 
     public async void LoadNumbersIntoDrawnList()
     {
-        NetworkAccess accessType = Connectivity.Current.NetworkAccess;
-
         IsLoading = true;
 
         DisplayedLottery5Numbers = new ObservableCollection<MyDrawableNumberPOCO>();
@@ -41,14 +38,14 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersPOCO lottery5NumbersFromAPI = null;
         MyNumbersPOCO lottery6NumbersFromAPI = null;
 
-        if (accessType == Connectivity.Current.NetworkAccess)
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
         {
             lottery5NumbersFromAPI = MyNumberMapper.toPOCOFromSavedNumbersPOCO(await restAPI.getSavedNumbersFromAPI(5), 5);
             lottery6NumbersFromAPI = MyNumberMapper.toPOCOFromSavedNumbersPOCO(await restAPI.getSavedNumbersFromAPI(6), 6);
         }
 
-        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5);
-        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6);
+        MyNumbersPOCO lottery5Numbers = await DatabaseService.GetLatestNumbers(5, keyCloakService.GetCurrentUsername());
+        MyNumbersPOCO lottery6Numbers = await DatabaseService.GetLatestNumbers(6, keyCloakService.GetCurrentUsername());
 
         MyNumbersPOCO useable5Nummbers = lottery5Numbers;
         MyNumbersPOCO useable6Nummbers = lottery6Numbers;
@@ -65,6 +62,13 @@ public partial class SavedPageViewModel : ObservableObject
                 {
                     useable5Nummbers = lottery5NumbersFromAPI;
                 }
+                else
+                {
+                    if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                    {
+                        await restAPI.uploadNumbers(useable5Nummbers.numbers, 5);   
+                    }
+                }
             }
         }
 
@@ -80,6 +84,13 @@ public partial class SavedPageViewModel : ObservableObject
                 {
                     useable6Nummbers = lottery6NumbersFromAPI;
                 }
+                else
+                {
+                    if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                    {
+                        await restAPI.uploadNumbers(useable6Nummbers.numbers, 6);   
+                    }
+                }
             }
         }
 
@@ -89,34 +100,88 @@ public partial class SavedPageViewModel : ObservableObject
         MyNumbersPOCO winning5 = await restAPI.GetWinningnumbers(5);
         MyNumbersPOCO winning6 = await restAPI.GetWinningnumbers(6);
 
+        TimeSpan oneWeek = new TimeSpan(7, 0, 0, 0);
+        
         if (useable5Nummbers != null)
         {
-            for (int i = 0; i < useable5Nummbers.numbers.Count; i++)
+
+            DateTime? winning5DateTime;
+
+            try
             {
-                if (winning5.numberType != null && winning5.numbers.Contains(useable5Nummbers.numbers[i]))
+                //Azert kell, mert csak eddig lehet szelvenyt feladni
+                winning5DateTime = new DateTime(winning5.date.Value.Year, winning5.date.Value.Month, winning5.date.Value.Day, 17, 30, 0);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                winning5DateTime = new DateTime(1900, 1, 1);
+            }
+            
+            bool ticketTooOld = winning5DateTime - useable5Nummbers.date > oneWeek;
+            
+            if (winning5.date > useable5Nummbers.date && !ticketTooOld)
+            {
+                foreach (var number in useable5Nummbers.numbers)
                 {
-                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], true));
-                }
-                else
-                {
-                    temp5.Add(new MyDrawableNumberPOCO(useable5Nummbers.numbers[i], false));
+                    if (winning5.numberType != null && winning5.numbers.Contains(number))
+                    {
+                        temp5.Add(new MyDrawableNumberPOCO(number, true));
+                    }
+                    else
+                    {
+                        temp5.Add(new MyDrawableNumberPOCO(number, false));
+                    }
                 }
             }
+            else
+            {
+                foreach (var number in useable5Nummbers.numbers)
+                {
+                    temp5.Add(new MyDrawableNumberPOCO(number, false));
+                }
+            }
+            
         }
 
         DisplayedLottery5Numbers = temp5;
 
         if (useable6Nummbers != null)
         {
-            for (int i = 0; i < useable6Nummbers.numbers.Count; i++)
+            DateTime? winning6DateTime;
+            
+            try
             {
-                if (winning6.numberType != null && winning6.numbers.Contains(useable6Nummbers.numbers[i]))
+                //Azert kell, mert csak eddig lehet szelvenyt feladni
+                winning6DateTime = new DateTime(winning5.date.Value.Year, winning5.date.Value.Month, winning5.date.Value.Day, 14, 30, 0);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                winning6DateTime = new DateTime(1900, 1, 1);
+            }
+            
+            bool ticketTooOld = winning6DateTime - useable6Nummbers.date > oneWeek;
+            
+            if (winning6.date > useable6Nummbers.date && !ticketTooOld)
+            {
+                foreach (var number in useable6Nummbers.numbers)
                 {
-                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], true));
+                    if (winning6.numberType != null && winning6.numbers.Contains(number))
+                    {
+                        temp6.Add(new MyDrawableNumberPOCO(number, true));
+                    }
+                    else
+                    {
+                        temp6.Add(new MyDrawableNumberPOCO(number, false));
+                    }
                 }
-                else
+            }
+            else
+            {
+                foreach (var number in useable6Nummbers.numbers)
                 {
-                    temp6.Add(new MyDrawableNumberPOCO(useable6Nummbers.numbers[i], false));
+                    temp6.Add(new MyDrawableNumberPOCO(number, false));
                 }
             }
         }
@@ -127,7 +192,7 @@ public partial class SavedPageViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Logout()
+    public async Task Logout()
     {
         bool success = await keyCloakService.Logout();
 

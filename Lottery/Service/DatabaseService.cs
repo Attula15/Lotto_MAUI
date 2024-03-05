@@ -1,16 +1,15 @@
-﻿
-using Lottery.Domain.Database;
+﻿using Lottery.Domain.Database;
 using Lottery.Domain.Database.Entity;
 using Lottery.POCO;
 using SQLite;
 using System.Diagnostics;
+using Lottery.Domain.Entity;
+using Lottery.Mapper;
 
 namespace Lottery.Service;
 public static class DatabaseService
 {
     private static SQLiteAsyncConnection db = null;
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY5 = 15;
-    private static int NUMBER_OF_NUMBERS_IN_LOTTERY6 = 18;
 
     private static async Task Init()
     {
@@ -19,14 +18,17 @@ public static class DatabaseService
             return;
         }
 
-        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData2.db3");
+        var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "LotteryDatabaseV2.db3");
 
         try
         {
             db = new SQLiteAsyncConnection(databasePath); // Get an absolute path to the database file  
             await db.CreateTableAsync<MyNumbersEntity>();
             await db.CreateIndexAsync<MyNumbersEntity>(t => t.numberType);
-            await db.DeleteAllAsync<MyNumbersEntity>();
+            await db.CreateTableAsync<WinningNumbersDBEntity>();
+            await db.CreateTableAsync<TokenEntity>();
+            await db.CreateTableAsync<PrizesEntity>();
+            //await db.DeleteAllAsync<MyNumbersEntity>();
         }
         catch (Exception ex)
         {
@@ -34,7 +36,126 @@ public static class DatabaseService
         }
     }
 
-    public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type)
+    public static async Task<PrizesHolderPOCO> GetPrizesFromCache()
+    {
+        await Init();
+        
+        var q = db.Table<PrizesEntity>();
+        var prizes = await q.ToListAsync();
+
+        PrizesHolderPOCO returnable = new PrizesHolderPOCO();
+        List<PrizesPOCO> prizesList = new List<PrizesPOCO>();
+        
+        foreach(PrizesEntity prize in prizes)
+        {
+            prizesList.Add(PrizesMapper.toPOCOFromPrizesDBEntity(prize));
+        }
+
+        returnable.prizes = prizesList;
+        return returnable;
+    }
+
+    public static async Task AddPrizesToCache(int prize, int type)
+    {
+        await Init();
+        
+        PrizesEntity newEntity = new PrizesEntity();
+        newEntity.date = DateTime.Now;
+        newEntity.prize = prize;
+        newEntity.whichOne = type;
+        
+        try
+        {
+            var q = db.Table<PrizesEntity>();
+            var deletable = await q.Where(x => x.whichOne == type).FirstOrDefaultAsync();
+            if (deletable != null)
+            {
+                await db.DeleteAsync<PrizesEntity>(deletable.id);
+            }
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public static async Task<WinningNumbersDBEntity> GetWinningNumbersFromCache(int type)
+    {
+        await Init();
+        
+        var q = db.Table<WinningNumbersDBEntity>();
+        var returnable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
+
+        return returnable;
+    }
+
+    
+    public static async Task AddWinningNumbersToCache(List<int> numbers, int type)
+    {
+        await Init();
+
+        string numbersInString = "";
+        
+        //Convert list of numbers to storeable string
+        for(int i = 0; i < numbers.Count; i++)
+        {
+            numbersInString = numbersInString + numbers[i] + ";";
+        }
+        
+        WinningNumbersDBEntity newEntity = new WinningNumbersDBEntity();
+        newEntity.date = DateTime.Now;
+        newEntity.numberType = type;
+        newEntity.numbers = numbersInString;
+
+        try
+        {
+            var q = db.Table<WinningNumbersDBEntity>();
+            var deletable = await q.Where(x => x.numberType == type).FirstOrDefaultAsync();
+            if (deletable != null)
+            {
+                await db.DeleteAsync<WinningNumbersDBEntity>(deletable.id);
+            }
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public static async Task AddTokens(string accessToken, string refreshToken, string username)
+    {
+        await Init();
+        
+        TokenEntity newEntity = new TokenEntity
+        {
+            access_token = accessToken,
+            refresh_token = refreshToken,
+            username = username
+        };
+
+        try
+        {
+            await db.DeleteAllAsync<TokenEntity>();
+            await db.InsertAsync(newEntity);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error while adding new access Token");
+            Debug.WriteLine(ex.Message);
+        }
+    }
+
+    public static async Task<TokenEntity> GetToken(string username)
+    {
+        await Init();
+
+        var q = db.Table<TokenEntity>();
+        return await q.Where(x => x.username.Equals(username)).FirstOrDefaultAsync();
+    }
+
+    public static async Task<MyNumbersEntity> AddNumber(List<int> listOfNumbers, int type, string username)
     {
         await Init();
 
@@ -54,6 +175,7 @@ public static class DatabaseService
             insertable.numbers = numbersInList;
             insertable.date = currentDate;
             insertable.numberType = type;
+            insertable.username = username;
 
             await db.InsertAsync(insertable);
         }
@@ -68,48 +190,12 @@ public static class DatabaseService
         return myNumber;
     }
 
-    public static async Task<MyNumbersEntity> DeleteNumber(MyNumbersEntity number)
+    public static async Task<MyNumbersPOCO> GetLatestNumbers(int type, string username)
     {
         await Init();
 
         var q = db.Table<MyNumbersEntity>();
-        q = q.Where(x => x.id.Equals(number.id));
-        var myNumber = await q.FirstOrDefaultAsync();
-
-        try
-        {
-            await db.DeleteAsync(number);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex + "\n\n");
-        }
-
-        return myNumber;
-    }
-
-    public static async Task DeleteAll()
-    {
-        await Init();
-
-        await db.DeleteAllAsync<MyNumbersEntity>();
-    }
-
-    public static async Task<List<MyNumbersEntity>> GetAllNumbers()
-    {
-        await Init();
-        var q = db.Table<MyNumbersEntity>();
-        List<MyNumbersEntity> numbers = await q.ToListAsync();
-
-        return numbers;
-    }
-
-    public static async Task<MyNumbersPOCO> GetLatestNumbers(int type)
-    {
-        await Init();
-
-        var q = db.Table<MyNumbersEntity>();
-        var dataFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
+        var dataFromDB = await q.Where(x => x.numberType == type && x.username.Equals(username)).OrderByDescending(x => x.date).FirstOrDefaultAsync();
 
         if(dataFromDB == null)
         {
@@ -117,34 +203,6 @@ public static class DatabaseService
         }
 
         return MyNumberMapper.toPOCOFromDBEntity(dataFromDB);
-    }
-    
-
-    public static async Task<PageableNumbers> GetLatestPageableNumbers(int type, int page)
-    {
-        await Init();
-        PageableNumbers returnable = new PageableNumbers(type);
-
-        var q = db.Table<MyNumbersEntity>();
-        var numbersFromDB = await q.Where(x => x.numberType == type).OrderByDescending(x => x.date).FirstOrDefaultAsync();
-
-        if(numbersFromDB == null)
-        {
-            return null;
-        }
-
-        MyNumbersPOCO numbersPOCO = MyNumberMapper.toPOCOFromDBEntity(numbersFromDB);
-
-        int numberOfNumbers = type == 5 ? NUMBER_OF_NUMBERS_IN_LOTTERY5 : NUMBER_OF_NUMBERS_IN_LOTTERY6;
-
-        for (int i = (page - 1) * numberOfNumbers; i < Math.Min(page * numberOfNumbers, numbersPOCO.numbers.Count); i++)
-        {
-            returnable.AppendNumber(numbersPOCO.numbers[i]);
-        }
-
-        returnable.MaxNumberOfElements = numbersPOCO.numbers.Count;
-
-        return returnable;
     }
 }
 

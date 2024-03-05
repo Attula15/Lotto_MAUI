@@ -2,18 +2,16 @@
 
 namespace Lottery.Domain.Database.Entity;
 
-[Table("MyNumbersTable")]
-public class MyNumbersEntity
+[Table("WinningNumbersTable")]
+public class WinningNumbersDBEntity
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey, AutoIncrement] 
     public int id { get; set; }
+    
     public DateTime date { get; set; }
 
     [Indexed]
     public int numberType { get; set; }
 
     public string numbers { get; set; }
-
-    public string username { get; set; }
 }
-

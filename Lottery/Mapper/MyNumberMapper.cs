@@ -2,6 +2,7 @@
 using Lottery.Domain.Entity;
 using Lottery.Domain.ResponseBody;
 using Lottery.POCO;
+using System.Diagnostics;
 
 public static class MyNumberMapper
 {
@@ -27,7 +28,7 @@ public static class MyNumberMapper
             );
     }
 
-    public static MyNumbersPOCO toPOCOFromWinning(WinningNumbersEntity entity)
+    public static MyNumbersPOCO toPOCOFromWinning(WinningNumbersPOCO entity)
     {
         string[] listOfNumbersInString = entity.numbers.Split(";");
         List<int> extractedNumbers = new List<int>();
@@ -42,6 +43,7 @@ public static class MyNumberMapper
             }
             catch(FormatException ex)
             {
+                Debug.WriteLine(ex.Message);
                 transformable = false;
             }
 
@@ -81,6 +83,7 @@ public static class MyNumberMapper
             }
             catch (FormatException ex)
             {
+                Debug.WriteLine(ex.Message);
                 transformable = false;
             }
 

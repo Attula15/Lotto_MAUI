@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Lottery.Domain;
-using Lottery.Service;
-using System.Diagnostics;
-using System.Net.Http.Json;
 
 namespace Lottery.ViewModel;
 public partial class LoginViewModel : ObservableObject
@@ -28,8 +25,6 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool isVisible = false;
 
-    private static string url = "http://osiris.myddns.me:8015/realms/LotteryKeycloak/protocol/openid-connect/token";
-
     private readonly IKeyCloakService keycloak;
 
     public LoginViewModel(IKeyCloakService keycloak)
@@ -38,7 +33,7 @@ public partial class LoginViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void Login()
+    private async Task Login()
     {
         IsLoading = true;
         IsEnabled = false;

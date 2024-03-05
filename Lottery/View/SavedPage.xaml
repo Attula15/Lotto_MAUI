@@ -10,7 +10,7 @@
              BackgroundImageSource="layered_waves_haikei_1080x2340.png">
     <Grid ColumnDefinitions="10*, 80*, 10*" Padding="0, 10, 0, 0">
         <VerticalStackLayout Grid.Column="1">
-            <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Color="{StaticResource LotteryLightGreen}"/>
+            <ActivityIndicator IsRunning="{Binding IsLoading}"/>
             <Label Text="These are your generated numbers" HorizontalOptions="Center"/>
             <Label Text="Lottery 5" HorizontalOptions="Center"/>
             <CollectionView ItemsSource="{Binding DisplayedLottery5Numbers}"
@@ -25,7 +25,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}" NumberDrawnNot="{Binding IsDrawnNot}"/>
+                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -42,7 +42,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyDrawableNumberPOCO">
-                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}" NumberDrawnNot="{Binding IsDrawnNot}"/>
+                        <helper:MyNumber NumberTitle="{Binding Number}" NumberDrawn="{Binding IsDrawn}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
